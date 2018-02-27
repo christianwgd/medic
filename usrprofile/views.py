@@ -49,6 +49,6 @@ def userprof(request):
                 logger.exception('Fehler beim Speichern der Einstellungen für Benutzer {}: {}'.format(usr.username, e))
                 messages.add_message(request, ERROR, 'Fehler beim Speichern der Einstellungen: %s' % e)
     else:  # GET
-        form = UsrProfForm(instance=usrProf)
+        form = UsrProfForm(instance=usrProf, initial={'email': usr.email})
         
     return render(request, 'usrprofile/usrprof.html', {'form': form, 'usr': usr})
