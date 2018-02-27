@@ -1,0 +1,93 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 l10n %}
+
+{% block title %}Statistik{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="list-group">
+        <div class="list-group-item active">
+            <h4 class="list-group-item-heading">Minimal-, Maximal- und Mittelwerte</h4>
+            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="btn-group" role="group" >
+        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
+            <i class="far fa-home"></i>
+        </a>
+        <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
+            <i class="far fa-list"></i>
+        </a>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 20px;">
+    <h4 class="list-group-item-heading">Blutdruck</h4>
+    <table class="table table-responsive table-bordered">
+        <tbody>
+            <tr>
+                <th>Minimum RR-Sys:</th><td>{{ minrrsys }} mm/Hg</td>
+            </tr>
+            <tr>
+                <th>Maximum RR-Sys:</th><td>{{ maxrrsys }} mm/Hg</td>
+                <th>Mittelwert:</th><td>{{ medrrsys|floatformat:1 }} mm/Hg</td>
+            </tr>
+            <tr>
+                <th>Minimum RR-Dia:</th><td>{{ minrrdia }} mm/Hg</td>
+            </tr>
+            <tr>
+                <th>Maximum RR-Dia:</th><td>{{ maxrrdia }} mm/Hg</td>
+                <th>Mittelwert:</th><td>{{ medrrdia|floatformat:1 }} mm/Hg</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <h4>Puls</h4>
+    <table class="table table-responsive table-bordered">
+        <tbody>
+            <tr>
+                <th>Minimum Puls:</th><td>{{ minpuls }} /min</td>
+            </tr>
+            <tr>
+                <th>Maximum Puls:</th><td>{{ maxpuls }} /min</td>
+                <th>Mittelwert:</th><td>{{ medpuls|floatformat:1 }} /min</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <h4>Temperatur</h4>
+    <table class="table table-responsive table-bordered">
+        <tbody>
+            <tr>
+                <th>Minimum Temp.:</th><td>{{ mintemp|floatformat:1 }} &deg;C</td>
+            </tr>
+            <tr>
+                <th>Maximum Temp.:</th><td>{{ maxtemp|floatformat:1 }} &deg;C</td>
+                <th>Mittelwert:</th><td>{{ medtemp|floatformat:1 }} &deg;C</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <h4>Gewicht</h4>
+    <table class="table table-responsive table-bordered">
+        <tbody>
+            <tr>
+                <th>Minimum Gewicht:</th><td>{{ mingew|floatformat:1 }} Kg</td>
+            </tr>
+            <tr>
+                <th>Maximum Gewicht:</th><td>{{ maxgew|floatformat:1 }} Kg</td>
+                <th>Mittelwert:</th><td>{{ medgew|floatformat:1 }} Kg</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

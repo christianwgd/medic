@@ -1,0 +1,32 @@
+{% block subject %}
+Werte für {{ user.last_name }}, {{ user.first_name }} vom {{ von }} bis {{ bis }}
+{% endblock %}
+
+{% block html %}
+<p>{{ text }}</p>
+<br>
+<table>
+<thead>
+        <tr>
+                <th>Datum</th>
+                <th>RR-Sys</th>
+                <th>RR-Dia</th>
+                <th>Puls</th>
+                <th>Temp.</th>
+                <th>Gewicht</th>
+        </tr>
+</thead>
+<tbody>
+{% for wert in wertelist %}
+        <tr>
+                <td>{{ wert.date|date:_("d.m.Y H:i") }}</td>
+                <td>{{ wert.rrsys|default_if_none:"-" }}</td>
+                <td>{{ wert.rrdia|default_if_none:"-" }}</td>
+                <td>{{ wert.puls|default_if_none:"-" }}</td>
+                <td>{{ wert.temp|default_if_none:"-" }}</td>
+                <td>{{ wert.gew|default_if_none:"-" }}</td>
+        </tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

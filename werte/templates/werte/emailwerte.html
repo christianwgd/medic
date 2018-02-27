@@ -1,0 +1,55 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 l10n %}
+
+{% block title %}Messwerte versenden{% endblock %}
+
+
+{% block content %}
+
+<div class="row v-offset">
+    <form method="POST" class="form" role="form" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form_errors form %}
+        {% bootstrap_form form %}
+        {% buttons layout='inline'  %}
+            {% bootstrap_button "senden" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-send" %}
+            {% bootstrap_button "abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
+        {% endbuttons %}
+    </form>
+</div>
+
+
+
+
+<div class="row v-offset">
+    <h4>Werte vom {{von}} bis {{bis}}</h4>
+    <table id="wertelist" class="table table-condensed table-striped table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>RR-Sys<br>(mm/Hg)</th>
+                <th>RR-Dia<br>(mm/Hg)</th>
+                <th>Puls<br>(1/min)</th>
+                <th>Temp.<br>(&deg;C)</th>
+                <th>Gewicht<br>(Kg)</th>
+                <th>Besonderheiten</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for wert in wertelist %}
+            <tr>
+                <td>{{ wert.date|date:_("d.m.Y H:i") }}</td>
+                <td>{{ wert.rrsys|default_if_none:"" }}</td>
+                <td>{{ wert.rrdia|default_if_none:"" }}</td>
+                <td>{{ wert.puls|default_if_none:"" }}</td>
+                <td>{{ wert.temp|floatformat:1 }}</td>
+                <td>{{ wert.gew|floatformat:1 }}</td>
+                <td>{{ wert.bemerkung }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
