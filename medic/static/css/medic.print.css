@@ -1,0 +1,16 @@
+/*
+    Druck css
+*/
+
+.container {
+	width: 90%;
+	margin: 0 auto !important;
+}
+
+.btn-group, .btn {
+	display: none !important;
+}
+
+a[href]::after {
+    content: "" !important;
+}

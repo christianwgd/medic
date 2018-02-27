@@ -1,0 +1,23 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 %}
+
+{% block bootstrap3_extra_head %}
+{{ block.super }}
+<style>
+</style>
+{% endblock %}
+
+{% block title %}Verordnung löschen{% endblock %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    <p>Soll die Verordnung für das Medikament "{{ object }}" wirklich gelöscht werden?</p>
+    {% buttons layout='inline' %}
+        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-ok" %}
+        {% bootstrap_button "Abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
+    {% endbuttons %}
+</form>
+
+{% endblock %}

@@ -1,0 +1,192 @@
+# -*- coding: utf-8 -*-
+# Django settings for werte project.
+
+import os
+import sys
+
+# turn warnings into exception...
+# import warnings
+# warnings.filterwarnings(
+#     'error', r"DateTimeField .* received a naive datetime",
+#     RuntimeWarning, r'django\.db\.models\.fields')
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
+
+# Include BOOTSTRAP3_FOLDER in path
+# BOOTSTRAP3_FOLDER = os.path.abspath(os.path.join(BASE_DIR, '../../', 'bootstrap3'))
+# if BOOTSTRAP3_FOLDER not in sys.path:
+#     sys.path.insert(0, BOOTSTRAP3_FOLDER)
+
+ADMINS = (
+    'cwiegand', 'cwiegand@wgdnet.de'
+)
+
+EMAIL_HOST = 'smtp.strato.de'
+EMAIL_HOST_USER = 'wgdsrv@wgdnet.de'
+EMAIL_HOST_PASSWORD = 'mistral+99'
+EMAIL_USE_TLS = True
+
+MANAGERS = ADMINS
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+LOGIN_REDIRECT_URL = '/'
+
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = ['*']
+
+# Local time zone for this installation. Choices can be found here:
+# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+# although not all choices may be available on all operating systems.
+# In a Windows environment this must be set to your system time zone.
+TIME_ZONE = 'Europe/Berlin'
+
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'de-DE'
+
+SITE_ID = 1
+
+# If you set this to False, Django will make some optimizations so as not
+# to load the internationalization machinery.
+USE_I18N = True
+
+# If you set this to False, Django will not format dates, numbers and
+# calendars according to the current locale.
+USE_L10N = True
+
+# If you set this to False, Django will not use timezone-aware datetimes.
+USE_TZ = True
+
+DECIMAL_SEPARATOR = ','
+THOUSAND_SEPARATOR = '.'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = '8f)e&xzykr-5&@21q9kkvh^35k1p0q#q^x%&z=xk8#-kt)bs*m'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+MIDDLEWARE_CLASSES = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'medic.urls'
+
+# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = 'wsgi.application'
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    #'registration',
+    'orderable',
+    'medic',
+    'usrprofile.apps.UsrProfileConfig',
+    'werte.apps.WerteConfig',
+    'medikamente.apps.MedikamenteConfig',
+    'bootstrap3',
+    'bootstrap3_datetime',
+]
+
+ACCOUNT_ACTIVATION_DAYS = 3
+
+BOOTSTRAP3 = {
+    'jquery_url': '/static/js/jquery-2.2.4.min.js',
+    'javascript_in_head': True,
+}
+
+LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root' : {'level': 'DEBUG',
+              'handlers': None},
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(name)s %(funcName)s %(message)s'
+            },
+        },
+
+    'handlers': {
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'formatter': 'verbose',
+            'filename' : LOG_FILE,
+            'when': 'd',
+            'interval' : 10,
+            'backupCount': 5,  # 5 Generationen aufheben
+            },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'verbose',
+            }
+        },
+    'loggers': {
+        'django.db.backends' : {
+            'level': 'CRITICAL',
+#            'level': 'DEBUG',
+        },
+        'medic' : {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+        }
+    }
+
+}
+
+##################
+# LOCAL SETTINGS #
+##################
+
+# Allow any settings to be defined in local_settings.py which should be
+# ignored in your version control system allowing for settings to be
+# defined per machine.
+
+# Instead of doing "from .local_settings import *", we use exec so that
+# local_settings has full access to everything defined in this module.
+# Also force into sys.modules so it's visible to Django's autoreload.
+
+f = os.path.join(PROJECT_APP_PATH, "localsettings.py")
+if os.path.exists(f):
+    import sys
+    import imp
+    module_name = "%s.localsettings" % PROJECT_APP
+    module = imp.new_module(module_name)
+    module.__file__ = f
+    sys.modules[module_name] = module
+    exec(open(f, "rb").read())

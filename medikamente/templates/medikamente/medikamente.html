@@ -1,0 +1,66 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 %}
+
+{% block title %}Medikamente{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="list-group">
+        <div class="list-group-item active">
+            <h4 class="list-group-item-heading">Medikamente</h4>
+            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="btn-group" role="group" >
+        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+            <i class="far fa-home"></i>
+        </a>
+        <a href="{% url 'medikamente:mednew' %}" class="btn btn-primary" role="button" title="Neues Medikament hinzufügen">
+            <i class="far fa-plus"></i>
+        </a>
+    </div>
+</div>
+
+
+<div class="row v-offset">
+    <table id="wertelist" class="table table-striped table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>Bestand</th>
+                <th>Verlauf</th>
+                <th>Medikament</th>
+                <th>Packungsgr&ouml;&szlig;e</th>
+                <th style="text-align: right;">Dosis</th>
+                <th></th>
+                <th style="text-align: right; padding-right: 40px;">Bestand</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for med in medikamente %}
+            <tr>
+                <td>
+                    <a href="{% url 'medikamente:bestandedit' med.id %}" class="btn btn-xs btn-primary" role="button" title="Bestandsveränderung">
+                        <i class="far fa-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'medikamente:besthistory' med.id %}" class="btn btn-xs btn-primary" role="button" title="Bestandshistorie">
+                        <i class="far fa-history"></i>
+                    </a>
+                </td>
+                <td><a href="{% url 'medikamente:mededit' med.id %}">{{ med.name }}</a></td>
+                <td>{{ med.packung }} Tabl.</td>
+                <td style="text-align: right;">{{ med.staerke|floatformat:2 }}</td>
+                <td>{{ med.einheit }}</td>
+                <td style="text-align: right;">{{ med.bestand|floatformat:2 }} Tabl.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

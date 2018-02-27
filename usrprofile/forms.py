@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+from bootstrap3_datetime.widgets import DateTimePicker
+from django import forms
+from django.forms import EmailInput
+from django.forms.models import ModelForm
+from usrprofile.models import UserProfile
+
+
+class UsrProfForm(ModelForm):
+    email = forms.EmailField(label='eMail-Adresse', required=False,
+                             widget=EmailInput(attrs={"autofocus": "autofocus"}))
+
+    class Meta:
+        model = UserProfile
+        fields = ['warnenTageVorher', 'werteLetzteTage', 'zeigeArztWerte',
+                  'zeigeArztMed', 'email_arzt', 'myStartPage', 'gebdat']
+        widgets = {
+            'warnenTageVorher': forms.TextInput(attrs={'pattern': '^[0-9]{3}$'}),
+            'werteLetzteTage': forms.TextInput(attrs={'pattern': '^[0-9]{3}$'}),
+            'gebdat': DateTimePicker(options={
+                "format": "DD.MM.YYYY",
+                "locale": "de"
+            })
+        }
+
+
+class MailForm(forms.Form):
+    mailadr = forms.EmailField(label="an")
+    subject = forms.CharField(max_length=80, label="Betreff")
+    text = forms.CharField(max_length=500, required=False,
+                           label="Text", widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}))

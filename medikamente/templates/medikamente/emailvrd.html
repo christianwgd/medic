@@ -1,0 +1,58 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 l10n %}
+
+{% block title %}Medikamentenplan versenden{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <form method="post" action="" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form_errors form %}
+        {% bootstrap_form form %}
+        {% buttons layout='inline'  %}
+            {% bootstrap_button "senden" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-send" %}
+            {% bootstrap_button "abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
+        {% endbuttons %}
+    </form>
+</div>
+
+<div class="row v-offset">
+    <table id="wertelist" class="table table-striped table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>Medikament</th>
+                <th>Morgen</th>
+                <th>Mittag</th>
+                <th>Abend</th>
+                <th>Nacht</th>
+                <th>Wochentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in verordnungen %}
+            <tr>
+                <td>
+                    {{ vo.ref_medikament.name }}
+                    {{ vo.ref_medikament.staerke }}
+                    {{ vo.ref_medikament.einheit }}
+                </td>
+                <td>{% if vo.morgen %}{{ vo.morgen|floatformat:2 }} Tbl.{% endif %}</td>
+                <td>{% if vo.mittag %}{{ vo.mittag|floatformat:2 }} Tbl.{% endif %}</td>
+                <td>{% if vo.abend %}{{ vo.abend|floatformat:2 }} Tbl.{% endif %}</td>
+                <td>{% if vo.nacht %}{{ vo.nacht|floatformat:2 }} Tbl.{% endif %}</td>
+                <td>
+                {% if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so %}
+                    <span>alle</span>
+                {% else %}
+                    {{ vo.mo|yesno:"Mo ," }}{{ vo.di|yesno:"Di ," }}{{ vo.mi|yesno:"Mi ," }}{{ vo.do|yesno:"Do ," }}{{ vo.fr|yesno:"Fr ," }}{{ vo.sa|yesno:"Sa ," }}{{ vo.so|yesno:"So ," }}</td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

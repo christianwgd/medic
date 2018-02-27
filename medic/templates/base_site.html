@@ -1,0 +1,104 @@
+{% extends 'bootstrap.html' %}
+{% load bootstrap3 staticfiles i18n %}
+
+{% block bootstrap3_extra_head %}
+{{ block.super }}
+{{ form.media.css }}
+{{ form.media.js }}
+<link rel="stylesheet" href="{% static 'font-awesome-5.0.1/css/fontawesome.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/medic.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/medic.print.css" %}" media="print"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/animate.css" %}" />
+
+<script defer src="{% static 'font-awesome-5.0.1/js/fontawesome-all.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-notify.min.js' %}"></script>
+
+<meta name="viewport" content="width=device-width"/>
+
+<link rel="apple-touch-icon" sizes="57x57" href="{% static 'icons/apple-icon-57x57.png' %}">
+<link rel="apple-touch-icon" sizes="60x60" href="{% static 'icons/apple-icon-60x60.png' %}">
+<link rel="apple-touch-icon" sizes="72x72" href="{% static 'icons/apple-icon-72x72.png' %}">
+<link rel="apple-touch-icon" sizes="76x76" href="{% static 'icons/apple-icon-76x76.png' %}">
+<link rel="apple-touch-icon" sizes="114x114" href="{% static 'icons/apple-icon-114x114.png' %}">
+<link rel="apple-touch-icon" sizes="120x120" href="{% static 'icons/apple-icon-120x120.png' %}">
+<link rel="apple-touch-icon" sizes="144x144" href="{% static 'icons/apple-icon-144x144.png' %}">
+<link rel="apple-touch-icon" sizes="152x152" href="{% static 'icons/apple-icon-152x152.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-icon-180x180.png' %}">
+<link rel="icon" type="image/png" sizes="192x192"  href="{% static 'icons/android-icon-192x192.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="96x96" href="{% static 'icons/favicon-96x96.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'icons/manifest.json' %}">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="{% static 'icons/ms-icon-144x144.png' %}">
+<meta name="theme-color" content="#ffffff">
+{% endblock %}
+
+
+{% block bootstrap3_content %}
+
+<!-- Container -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#medicNavbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="{% url 'startpage' %}">medic <i class="far fa-heartbeat" style="color: red;"></i></a>
+        </div>
+        <div class="collapse navbar-collapse" id="medicNavbar">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Messwerte<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'werte:werte' %}">Liste</a></li>
+                      <li><a href="{% url 'werte:neu' %}">Neuer Messwert</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'medikamente:medikamente' %}">Medikamente</a></li>
+                <li><a href="{% url 'medikamente:verordnungen' %}">Verordnungen</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-user"></i>
+                        {% if user.last_name %}{{ user.last_name }}, {{ user.first_name }}{% else %}{{ user.username }}{% endif %}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'logoff' %}">
+                            <i class="far fa-sign-out"></i>
+                            Abmelden</a>
+                        </li>
+                        <li><a href="{% url 'usrprofile:userprof' %}">
+                            <i class="far fa-cog"></i>
+                            Einstellungen</a>
+                        </li>
+
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="container" style="margin-top: 60px;">
+
+    <h1>{% block title %}(no content){% endblock %}</h1>
+    {% bootstrap_messages %}
+
+    {% block content %}(no content){% endblock %}
+
+</div>
+<!-- END Content -->
+
+{% endblock %}

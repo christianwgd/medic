@@ -1,0 +1,142 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 %}
+
+{% block bootstrap3_extra_head %}
+{{ block.super }}
+<style>
+    td, th { text-align: center; }
+</style>
+{% endblock %}
+
+{% block bootstrap3_extra_script %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function(){
+  	calcdosis("#id_morgen", "#modosis");
+	calcdosis("#id_mittag", "#midosis");
+	calcdosis("#id_abend", "#abdosis");
+	calcdosis("#id_nacht", "#nadosis");
+});
+
+function checkall() {
+    $('#id_mo').prop('checked', true);
+    $('#id_di').prop('checked', true);
+    $('#id_mi').prop('checked', true);
+    $('#id_do').prop('checked', true);
+    $('#id_fr').prop('checked', true);
+    $('#id_sa').prop('checked', true);
+    $('#id_so').prop('checked', true);
+}
+
+function checknone() {
+    $('#id_mo').prop('checked', false);
+    $('#id_di').prop('checked', false);
+    $('#id_mi').prop('checked', false);
+    $('#id_do').prop('checked', false);
+    $('#id_fr').prop('checked', false);
+    $('#id_sa').prop('checked', false);
+    $('#id_so').prop('checked', false);
+}
+
+function calcdosis (tabl_id, dosis_id) {
+	var med_id = $("#id_ref_medikament").children(":selected").val();
+	if (med_id) {
+        var url = "/medikamente/getmed/" + med_id + "/";
+        $.get(url, function (data) {
+            med = data[0]['fields'];
+            medstaerke = med['staerke'];
+            medeinheit = med['einheit'];
+            var tabl = $(tabl_id).val();
+            if (tabl != "") {
+                var dosis = medstaerke * parseFloat(tabl.replace(/,/g, '.'));
+                var strdosis = dosis.toFixed(2).toString().replace(/\./g, ',');
+                $(dosis_id).html('( = ' + strdosis + ' ' + medeinheit + ')');
+            }
+        });
+    }
+}
+
+$("#id_morgen").change(function () {
+	calcdosis("#id_morgen", "#modosis");
+});
+$("#id_mittag").change(function () {
+	calcdosis("#id_mittag", "#midosis");
+});
+$("#id_abend").change(function () {
+	calcdosis("#id_abend", "#abdosis");
+});
+$("#id_nacht").change(function () {
+	calcdosis("#id_nacht", "#nadosis");
+});
+$("#id_ref_medikament").change(function () {
+	calcdosis("#id_morgen", "#modosis");
+	calcdosis("#id_mittag", "#midosis");
+	calcdosis("#id_abend", "#abdosis");
+	calcdosis("#id_nacht", "#nadosis");
+});
+</script>
+{% endblock %}
+
+{% block title %}Verordnung{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <form method="post" action="" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form_errors form %}
+
+        {% bootstrap_field form.ref_medikament %}
+
+        {% bootstrap_field form.morgen addon_after='Tabl. <span id="modosis"></span>' %}
+        {% bootstrap_field form.mittag addon_after='Tabl. <span id="midosis"></span>' %}
+        {% bootstrap_field form.abend addon_after='Tabl. <span id="abdosis"></span>' %}
+        {% bootstrap_field form.nacht addon_after='Tabl. <span id="nadosis"></span>' %}
+
+        <h4>Wochentage</h4>
+        <div class="btn-group" role="group" >
+            <button type="button" class="btn btn-sm btn-default" onclick="checkall();">
+                <i class="far fa-check-square-o"></i> alle
+            </button>
+            <button type="button" class="btn btn-sm btn-default" onclick="checknone();">
+                <i class="far fa-square-o"></i> keine
+            </button>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{form.mo.label}}</th>
+                    <th>{{form.di.label}}</th>
+                    <th>{{form.mi.label}}</th>
+                    <th>{{form.do.label}}</th>
+                    <th>{{form.fr.label}}</th>
+                    <th>{{form.sa.label}}</th>
+                    <th>{{form.so.label}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{form.mo}}</td>
+                    <td>{{form.di}}</td>
+                    <td>{{form.mi}}</td>
+                    <td>{{form.do}}</td>
+                    <td>{{form.fr}}</td>
+                    <td>{{form.sa}}</td>
+                    <td>{{form.so}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% buttons layout='inline' %}
+            {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-ok" %}
+            {% bootstrap_button "Abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
+            {% if vrd %}
+                <a href="{% url 'medikamente:deletevrd' vrd.id %}" class="btn btn-default" role="button">
+                    Löschen
+                </a>
+            {% endif %}
+        {% endbuttons %}
+    </form>
+</div>
+
+{% endblock %}

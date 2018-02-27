@@ -1,0 +1,106 @@
+{% extends "base_site.html" %}
+{% load bootstrap3 medi_tags %}
+
+{% block title %}Medikamenten-Plan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="list-group">
+        <div class="list-group-item active">
+            <h4 class="list-group-item-heading">Verordnungen für</h4>
+            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="btn-group" role="group" >
+        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+            <i class="far fa-home"></i>
+        </a>
+        <a href="{% url 'medikamente:vrdnew' %}" class="btn btn-primary" role="button" title="Neue Verordnung hinzufügen">
+            <i class="far fa-plus"></i>
+        </a>
+        <a href="{% url 'medikamente:emailverordnungen' %}" class="btn btn-primary" role="button" title="Medikamentenplan per email versenden">
+            <i class="far fa-envelope"></i>
+        </a>
+    </div>
+</div>
+
+<div class="row v-offset">
+    <table id="wertelist" class="table table-striped table-responsive table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Medikament</th>
+                <th>Morgen</th>
+                <th>Mittag</th>
+                <th>Abend</th>
+                <th>Nacht</th>
+                <th>Wochentage</th>
+                <!--<th><span style="margin-left: 12px;">Bestand</span></th>-->
+                <!--<th><span style="margin-left: 15px;">reicht f&uuml;r</span></th>-->
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in verordnungen %}
+            <tr>
+                <td>
+                    <a href="{% url 'medikamente:vrdedit' vo.id %}">
+                        {{ vo.ref_medikament.name }}
+                        {{ vo.ref_medikament.staerke }}
+                        {{ vo.ref_medikament.einheit }}
+                    </a>
+                </td>
+                <td>
+                    {% if vo.morgen %}
+                        {{ vo.morgen|floatformat:2 }} Tbl.<br/>
+                        <small>{% calc_dosis vo.morgen vo.id %}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if vo.mittag %}
+                        {{ vo.mittag|floatformat:2 }} Tbl.<br/>
+                       <small>{% calc_dosis vo.mittag vo.id %}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if vo.abend %}
+                        {{ vo.abend|floatformat:2 }} Tbl.<br/>
+                        <small>{% calc_dosis vo.abend vo.id %}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if vo.nacht %}
+                        {{ vo.nacht|floatformat:2 }} Tbl.<br/>
+                        <small>{% calc_dosis vo.nacht vo.id %}</small>
+                    {% endif %}
+                </td>
+                <td>
+                {% if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so %}
+                    <span>alle</span>
+                {% else %}
+                    {{ vo.mo|yesno:"Mo ," }}{{ vo.di|yesno:"Di ," }}{{ vo.mi|yesno:"Mi ," }}{{ vo.do|yesno:"Do ," }}{{ vo.fr|yesno:"Fr ," }}{{ vo.sa|yesno:"Sa ," }}{{ vo.so|yesno:"So ," }}</td>
+                {% endif %}
+                <!--<td style="text-align: right;">{{ vo.bestand|floatformat:2 }} Tabl.</td>-->
+                <!--{% if vo.zeitraum == 'Tage' %}-->
+                    <!--{% if vo.days < mindays %}-->
+                        <!--<td style="text-align: right; color: red;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
+                    <!--{% else %}-->
+                        <!--<td style="text-align: right;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
+                    <!--{% endif %}-->
+                <!--{% else %}-->
+                    <!--{% if vo.days <= minweeks %}-->
+                        <!--<td style="text-align: right; color: red;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
+                    <!--{% else %}-->
+                        <!--<td style="text-align: right;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
+                    <!--{% endif %}-->
+                <!--{% endif %}-->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</form>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+.centered {
+    text-align: center;
+}
+
+.v-offset {
+    margin-top: 10px;
+}
+
+.menu {
+    width: 80%;
+}
+
+.row { margin-left: 5px; margin-right: 5px; }
+
+.bootstrap-growl { width: 300px !important; }

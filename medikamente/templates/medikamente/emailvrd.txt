@@ -1,0 +1,30 @@
+{% block subject %}
+Medikamentenplan für {{ user.last_name }}, {{ user.first_name }} vom {{ date }}
+{% endblock %}
+
+{% block html %}
+<p>{{ text }}</p>
+<br>
+<table>
+<thead>
+        <tr>
+                <th>Medikament</th>
+                <th>Morgen</th>
+                <th>Mittag</th>
+                <th>Abend</th>
+                <th>Nacht</th>
+        </tr>
+</thead>
+<tbody>
+{% for vo in verordnungen %}
+<tr id="{{ vo.id }}">
+	<td>{{ vo.ref_medikament }}</a></td>
+	<td>{% if vo.morgen %}{{ vo.morgen|floatformat:2 }} Tbl.{% endif %}</td>
+	<td>{% if vo.mittag %}{{ vo.mittag|floatformat:2 }} Tbl.{% endif %}</td>
+	<td>{% if vo.abend %}{{ vo.abend|floatformat:2 }} Tbl.{% endif %}</td>
+	<td>{% if vo.nacht %}{{ vo.nacht|floatformat:2 }} Tbl.{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
