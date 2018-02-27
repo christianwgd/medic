@@ -44,7 +44,7 @@
                 <td>{{ wert.puls|default_if_none:"" }}</td>
                 <td>{{ wert.temp|floatformat:1 }}</td>
                 <td>{{ wert.gew|floatformat:1 }}</td>
-                <td>{{ wert.bemerkung }}</td>
+                <td>{{ wert.bemerkung|default_if_none:"" }}</td>
             </tr>
             {% endfor %}
         </tbody>
