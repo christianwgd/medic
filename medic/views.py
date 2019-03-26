@@ -6,8 +6,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django import forms
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.messages.constants import ERROR
 from django.contrib.auth.decorators import login_required

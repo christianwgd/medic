@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
+from __future__ import absolute_import
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
@@ -17,7 +18,7 @@ import datetime
 import logging
 from django.core import serializers
 from django.http.response import HttpResponseRedirect
-from forms import vrdForm, vrdFutForm, medForm, bestEditForm
+from .forms import vrdForm, vrdFutForm, medForm, bestEditForm
 from usrprofile.forms import MailForm
 
 logger = logging.getLogger('medic')

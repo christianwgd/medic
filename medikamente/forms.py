@@ -1,8 +1,9 @@
+from __future__ import absolute_import
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 
 
-from models import Verordnung, VrdFuture, Medikament, Bestandsveraenderung, GRUND_CHOICES
+from .models import Verordnung, VrdFuture, Medikament, Bestandsveraenderung, GRUND_CHOICES
 
 
 class vrdForm(forms.ModelForm):
