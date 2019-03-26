@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.formats import date_format
@@ -11,7 +12,7 @@ from future.utils import python_2_unicode_compatible
 @python_2_unicode_compatible
 class Wert (models.Model):
     
-    class Meta:
+    class Meta(object):
         verbose_name = "Messwert"
         verbose_name_plural = "Messwerte"
 

@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import object
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 
@@ -14,7 +15,7 @@ class vrdForm(forms.ModelForm):
         self.fields['abend'].widget = forms.NumberInput(attrs={'step': 1.0, 'min': 0})
         self.fields['nacht'].widget = forms.NumberInput(attrs={'step': 1.0, 'min': 0})
 
-    class Meta:
+    class Meta(object):
         model = Verordnung
         fields = ['ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so']
 
@@ -28,7 +29,7 @@ class vrdFutForm(forms.ModelForm):
         self.fields['abend'].widget = forms.TextInput()
         self.fields['nacht'].widget = forms.TextInput()
 
-    class Meta:
+    class Meta(object):
         model = VrdFuture
         fields = ['ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so',
                   'gueltig_ab']
@@ -39,13 +40,13 @@ class medForm(forms.ModelForm):
         super(medForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget = forms.TextInput({"autofocus": "autofocus"})
 
-    class Meta:
+    class Meta(object):
         model = Medikament
         fields = ['name', 'hersteller', 'wirkstoff', 'packung', 'staerke', 'einheit']
 
 
 class bestEditForm(forms.ModelForm):
-    class Meta:
+    class Meta(object):
         model = Bestandsveraenderung
         fields = ['date', 'grund', 'menge', 'text', ]
 

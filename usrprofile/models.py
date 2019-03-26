@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -14,7 +15,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 @python_2_unicode_compatible
 class StartUrl(Orderable):
 
-    class Meta:
+    class Meta(object):
         verbose_name = "Startseite"
         verbose_name_plural = "Startseiten"
 
@@ -28,7 +29,7 @@ class StartUrl(Orderable):
 @python_2_unicode_compatible
 class UserProfile(models.Model):
     
-    class Meta:
+    class Meta(object):
         verbose_name = "Einstellung"
         verbose_name_plural = "Einstellungen"
         

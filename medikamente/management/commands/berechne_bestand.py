@@ -2,7 +2,8 @@
 
 from __future__ import unicode_literals
 
-from django.core.management.base import CommandError, NoArgsCommand
+from builtins import range
+from django.core.management.base import CommandError, BaseCommand
 from medikamente.models import Medikament, Verordnung
 from django.contrib.auth.models import User
 import datetime
@@ -32,7 +33,7 @@ def vrd_for_weekday(weekday, vrd):
         return False
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = u'Berechnet die aktuellen Bestaende der Medikamente.'
 
     def handle_noargs(self, **options):

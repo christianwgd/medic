@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from builtins import object
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.forms import EmailInput
@@ -10,7 +11,7 @@ class UsrProfForm(ModelForm):
     email = forms.EmailField(label='eMail-Adresse', required=False,
                              widget=EmailInput(attrs={"autofocus": "autofocus"}))
 
-    class Meta:
+    class Meta(object):
         model = UserProfile
         fields = ['warnenTageVorher', 'werteLetzteTage', 'zeigeArztWerte',
                   'zeigeArztMed', 'email_arzt', 'myStartPage', 'gebdat']

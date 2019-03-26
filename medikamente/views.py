@@ -2,7 +2,9 @@
 
 from __future__ import unicode_literals
 from __future__ import absolute_import
+from __future__ import division
 
+from past.utils import old_div
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.views.generic.edit import DeleteView
@@ -83,13 +85,13 @@ def verordnungen(request):
                                                                           'ref_medikament__staerke')
 
         mintg = up.warnenTageVorher
-        minw = mintg / 7
+        minw = old_div(mintg, 7)
 
         for vo in volist:
             m = vo.ref_medikament
             tpt, zeitraum = berechne_tpt(vo)
             if tpt > 0:
-                vo.days = float(m.bestand) / float(tpt)
+                vo.days = old_div(float(m.bestand), float(tpt))
             else:
                 vo.days = 0.0
     except Exception as e:
