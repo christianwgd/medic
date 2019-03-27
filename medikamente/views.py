@@ -330,7 +330,7 @@ class VerordnungDelete(DeleteView):
         if 'cancel' in request.POST:
             return HttpResponseRedirect(reverse_lazy('medikamente:vrdedit',
                                                      kwargs = {'vrd_id': self.kwargs['pk']}))
-        messages.add_message(request, SUCCESS, "Verordnung gelöscht.")
+        messages.success(request, "Verordnung gelöscht.")
         return super(VerordnungDelete, self).post(request, args, kwargs)
 
 
@@ -345,17 +345,17 @@ def medikamente(request):
         medikamente = Medikament.objects.filter(ref_usr=request.user).order_by('name', 'staerke')
     except User.DoesNotExist:
         message = 'Benutzer existiert nicht.'
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
         return HttpResponseRedirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
         message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(user)
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
         return HttpResponseRedirect(reverse_lazy('startpage'))
     except Exception as e:
         message = 'Fehler beim Anzeigen der Medikantenliste: {}'.format(e)
     if message != '':
         logger.exception(message)
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
 
     return render(request, 'medikamente/medikamente.html',
                   {'medikamente': medikamente, 'user': user, 'min': mintg})
@@ -364,7 +364,7 @@ def medikamente(request):
 @login_required(login_url='/login/')
 def mednew(request):
     if 'cancel' in request.POST:
-        messages.add_message(request, INFO, u'Änderung abgebrochen.')
+        messages.info(request, u'Änderung abgebrochen.')
         return HttpResponseRedirect(reverse_lazy('medikamente:medikamente'))
 
     if request.method == 'POST':
@@ -377,12 +377,12 @@ def mednew(request):
                 new_med.bestand_vom = datetime.date.today()
                 new_med.save()
                 msg = '{} {} {} gespeichert.'.format(new_med.name, new_med.staerke, new_med.einheit)
-                messages.add_message(request, SUCCESS, msg)
+                messages.success(request, msg)
                 return HttpResponseRedirect(reverse_lazy('medikamente:medikamente'))
             except Exception as e:
                 message = 'Fehler beim Speichern von {}: {}'.format(new_med.name, e)
                 logger.exception(message)
-                messages.add_message(request, ERROR, message)
+                messages.error(request, message)
     else:  # GET
         form = medForm(initial={'ref_usr': request.user})
 
@@ -392,7 +392,7 @@ def mednew(request):
 @login_required(login_url='/login/')
 def mededit(request, med_id):
     if 'cancel' in request.POST:
-        messages.add_message(request, INFO, 'Änderung abgebrochen.')
+        messages.info(request, 'Änderung abgebrochen.')
         return HttpResponseRedirect(reverse_lazy('medikamente:medikamente'))
 
     med = Medikament.objects.get(id=med_id)
@@ -403,12 +403,12 @@ def mededit(request, med_id):
             try:
                 form.save()
                 msg = '{} {} {} gespeichert.'.format(med.name, med.staerke, med.einheit)
-                messages.add_message(request, SUCCESS, msg)
+                messages.success(request, msg)
                 return HttpResponseRedirect(reverse_lazy('medikamente:medikamente'))
             except Exception as e:
                 message = 'Fehler beim Speichern von {}: {}'.fomat(med.name, e)
                 logger.exception(message)
-                messages.add_message(request, ERROR, message)
+                messages.error(request, message)
     else:  # GET
         form = medForm(instance=med)
 
@@ -424,14 +424,14 @@ class MedDelete(DeleteView):
         if 'cancel' in request.POST:
             return HttpResponseRedirect(reverse_lazy('medikamente:mededit',
                                                      kwargs = {'med_id': self.kwargs['pk']}))
-        messages.add_message(request, SUCCESS, "Medikament gelöscht.")
+        messages.success(request, "Medikament gelöscht.")
         return super(MedDelete, self).post(request, args, kwargs)
 
 
 @login_required(login_url='/login/')
 def bestandedit(request, med_id):
     if 'cancel' in request.POST:
-        messages.add_message(request, INFO, u'Änderung abgebrochen.')
+        messages.info(request, u'Änderung abgebrochen.')
         return HttpResponseRedirect(reverse_lazy('medikamente:medikamente'))
 
     medikament = Medikament.objects.get(id=med_id)
@@ -457,7 +457,7 @@ def bestandedit(request, med_id):
             try:
                 delta = form.save(commit=False)
                 if delta.menge == 0:
-                    messages.add_message(request, ERROR, 'Keine Menge angegeben!')
+                    messages.error(request, 'Keine Menge angegeben!')
                 else:
                     delta.ref_medikament = medikament
                     delta.ref_usr = request.user
@@ -468,12 +468,12 @@ def bestandedit(request, med_id):
                     medikament.save()
                     delta.save()
                     msg = 'Bestand von {} übernommen ({}).'.format(delta.ref_medikament, delta.menge)
-                    messages.add_message(request, SUCCESS, msg)
+                    messages.success(request, msg)
                     return HttpResponseRedirect(reverse_lazy('medikamente:medikamente'))
             except Exception as e:
                 message = 'Fehler beim Speichern von {}: {}'.format(delta.ref_medikament, e)
                 logger.exception(message)
-                messages.add_message(request, ERROR, message)
+                messages.error(request, message)
     else:  # GET
         today = datetime.date.today().strftime("%d.%m.%Y")
         form = bestEditForm(initial={'ref_usr': request.user, 'ref_medikament': medikament, 'date': today})
@@ -491,7 +491,7 @@ def besthistory(request, med_id):
     except Exception as e:
         message = 'Fehler beim Anhzeigen der Bestandshistorie für Benutzer {}: {}'.format(request.user, e)
         logger.exception(message)
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
 
     return render(request, 'medikamente/besthistory.html',
                   {'bestchangelist': bestchangelist, 'medikament': medikament})

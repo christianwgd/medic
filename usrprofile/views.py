@@ -19,7 +19,7 @@ logger = getLogger('medic')
 @login_required(login_url='/login/')
 def userprof(request):
     if 'cancel' in request.POST:
-        messages.add_message(request, INFO, 'Änderung abgebrochen.')
+        messages.info(request, 'Änderung abgebrochen.')
         return HttpResponseRedirect(reverse_lazy('startpage'))
 
     try:
@@ -27,11 +27,11 @@ def userprof(request):
         usrProf = UserProfile.objects.get(ref_usr = usr)
     except User.DoesNotExist:
         message = 'Benutzer existiert nicht.'
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
         return HttpResponseRedirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
         message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(usr)
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
         usrProf = UserProfile.objects.create(ref_usr_id=usr.id)
     
     if request.method == 'POST':
@@ -42,12 +42,15 @@ def userprof(request):
                 if form.cleaned_data['email'] != usr.email:
                     usr.email = form.cleaned_data['email']
                     usr.save()
-                messages.add_message(request, SUCCESS,
-                                     'Einstellungen für Benutzer {} gespeichert.'.format(usrProf.ref_usr.username))
+                messages.success(request,
+                    'Einstellungen für Benutzer {} gespeichert.'.format(usrProf.ref_usr.username)
+                )
                 return HttpResponseRedirect(reverse_lazy('startpage'))
             except Exception as e:
                 logger.exception('Fehler beim Speichern der Einstellungen für Benutzer {}: {}'.format(usr.username, e))
-                messages.add_message(request, ERROR, 'Fehler beim Speichern der Einstellungen: %s' % e)
+                messages.error(request,
+                    'Fehler beim Speichern der Einstellungen: %s' % e
+                )
     else:  # GET
         form = UsrProfForm(instance=usrProf, initial={'email': usr.email})
         
