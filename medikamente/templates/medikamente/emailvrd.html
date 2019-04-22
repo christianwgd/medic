@@ -5,15 +5,15 @@
 
 {% block content %}
 
-    <form method="post" action="" novalidate>
-        {% csrf_token %}
-        {% bootstrap_form_errors form %}
-        {% bootstrap_form form %}
-        {% buttons layout='inline'  %}
-            {% bootstrap_button "senden" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-send" %}
-            {% bootstrap_button "abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
-        {% endbuttons %}
-    </form>
+<form method="post" action="" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+    {% buttons layout='inline'  %}
+        {% bootstrap_button "<i class='far fa-paper-plane'></i> senden" button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button "abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+    {% endbuttons %}
+</form>
 
 <div class="v-offset">
     <table id="wertelist" class="table table-striped table-condensed table-bordered">
