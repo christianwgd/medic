@@ -4,31 +4,27 @@
 {% block title %}Medikamenten-Plan{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="list-group">
-        <div class="list-group-item active">
-            <h4 class="list-group-item-heading">Verordnungen für</h4>
-            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-        </div>
+<div class="list-group user-header">
+    <div class="list-group-item active">
+        <h4 class="list-group-item-heading">Verordnungen für</h4>
+        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
     </div>
 </div>
 
-<div class="row">
-    <div class="btn-group" role="group" >
-        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
-            <i class="far fa-home"></i>
-        </a>
-        <a href="{% url 'medikamente:vrdnew' %}" class="btn btn-primary" role="button" title="Neue Verordnung hinzufügen">
-            <i class="far fa-plus"></i>
-        </a>
-        <a href="{% url 'medikamente:emailverordnungen' %}" class="btn btn-primary" role="button" title="Medikamentenplan per email versenden">
-            <i class="far fa-envelope"></i>
-        </a>
-    </div>
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+        <i class="far fa-home"></i>
+    </a>
+    <a href="{% url 'medikamente:vrdnew' %}" class="btn btn-primary" role="button" title="Neue Verordnung hinzufügen">
+        <i class="far fa-plus"></i>
+    </a>
+    <a href="{% url 'medikamente:emailverordnungen' %}" class="btn btn-primary" role="button" title="Medikamentenplan per email versenden">
+        <i class="far fa-envelope"></i>
+    </a>
 </div>
 
-<div class="row v-offset">
-    <table id="wertelist" class="table table-striped table-responsive table-bordered table-condensed">
+<div class="v-offset">
+    <table id="wertelist" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
                 <th>Medikament</th>

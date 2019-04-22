@@ -4,32 +4,28 @@
 {% block title %}Bestandsverlauf{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="list-group">
-        <div class="list-group-item active">
-            <h4 class="list-group-item-heading"><b>Medikament:</b> {{ medikament.name }} {{ medikament.staerke }} {{ medikament.einheit }}</h4>
-            <p class="list-group-item-text"><b>Bestand:</b> {{ medikament.bestand }} Tabletten</p>
-        </div>
+<div class="list-group user-header">
+    <div class="list-group-item active">
+        <h4 class="list-group-item-heading"><b>Medikament:</b> {{ medikament.name }} {{ medikament.staerke }} {{ medikament.einheit }}</h4>
+        <p class="list-group-item-text"><b>Bestand:</b> {{ medikament.bestand }} Tabletten</p>
     </div>
 </div>
 
-<div class="row">
-    <div class="btn-group" role="group" >
-        <a href="{% url 'index' %}" class="btn btn-primary" role="button" title="Startseite">
-            <i class="far fa-home"></i>
-        </a>
-        <a href="{% url 'medikamente:medikamente' %}" class="btn btn-primary" role="button" title="Medikamente">
-            <i class="far fa-list"></i>
-        </a>
-    </div>
+<div class="btn-group" role="group" >
+    <a href="{% url 'index' %}" class="btn btn-primary" role="button" title="Startseite">
+        <i class="far fa-home"></i>
+    </a>
+    <a href="{% url 'medikamente:medikamente' %}" class="btn btn-primary" role="button" title="Medikamente">
+        <i class="far fa-list"></i>
+    </a>
 </div>
 
-<div class="row v-offset">
-    <table id="wertelist" class="table table-striped table-responsive table-bordered">
+<div class="v-offset">
+    <table id="wertelist" class="table table-striped table-condensed table-bordered">
         <thead>
             <tr>
                 <th>Datum</th>
-                <th>Menge</th>
+                <th style="text-align: right; padding-right: 10px;">Menge</th>
                 <th>Grund</th>
                 <th>Text</th>
             </tr>

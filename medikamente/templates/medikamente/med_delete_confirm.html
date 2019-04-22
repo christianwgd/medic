@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
 
-{% block bootstrap4_extra_head %}
-{{ block.super }}
-<style>
-</style>
-{% endblock %}
-
 {% block title %}Medikament löschen{% endblock %}
 
 {% block content %}
@@ -14,10 +8,10 @@
 <form action="" method="post" novalidate>
     {% csrf_token %}
     <p>Soll das Medikament "{{ object }}" wirklich gelöscht werden?</p>
-    <p>Achtung: Verordnungen des Medikaments werden mit gelöscht!</p>
+    <p>Achtung: Alle Verordnungen des Medikaments werden mit gelöscht!</p>
     {% buttons layout='inline' %}
-        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-ok" %}
-        {% bootstrap_button "Abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
+        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button "Abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
     {% endbuttons %}
 </form>
 
