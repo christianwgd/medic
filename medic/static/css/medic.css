@@ -10,6 +10,8 @@
     width: 80%;
 }
 
-.row { margin-left: 5px; margin-right: 5px; }
+.user-header {
+    margin-bottom: 3px;
+}
 
 .bootstrap-growl { width: 300px !important; }

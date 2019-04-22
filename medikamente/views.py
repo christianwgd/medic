@@ -5,14 +5,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 from past.utils import old_div
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic.edit import DeleteView
 from mail_templated import send_mail
 from medikamente.models import Verordnung, Medikament, Bestandsveraenderung, VrdFuture
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.messages.constants import SUCCESS, ERROR, WARNING, INFO
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from usrprofile.models import UserProfile
@@ -122,10 +121,11 @@ def emailverordnungen(request):
                 try:
                     mail_to = []
                     if user.email is None or user.email == '':
-                        messages.add_message(request, WARNING,
-                                             'emails können nicht gesendet werden, da keine eigene email-Adresse \
-                                              angegeben wurde(s.a. Einstellungen).'
-                                             )
+                        messages.warning(
+                            request,
+                            'emails können nicht gesendet werden, da keine eigene email-Adresse \
+                            angegeben wurde(s.a. Einstellungen).'
+                        )
                     else:
                         mail_to.append(form.cleaned_data['mailadr'])
                         email_from = user.email

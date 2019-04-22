@@ -47,7 +47,9 @@ class UserProfile(models.Model):
     zeigeArztMed = models.BooleanField(default=False, verbose_name="Arzt darf Medikamente sehen")
     ref_usr = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     email_arzt = models.EmailField(verbose_name="email-Adresse Arzt", null=True, blank=True)
-    myStartPage = models.ForeignKey(StartUrl, verbose_name="Meine Startseite", blank=True, null=True)
+    myStartPage = models.ForeignKey(StartUrl, on_delete=models.PROTECT, verbose_name="Meine Startseite",
+                                    blank=True, null=True)
+
     @property
     def usrinf(self):
         if self.gebdat is None:

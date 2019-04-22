@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from builtins import object
-from bootstrap3_datetime.widgets import DateTimePicker
+from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
 
 
@@ -51,7 +51,7 @@ class bestEditForm(forms.ModelForm):
         fields = ['date', 'grund', 'menge', 'text', ]
 
     date = forms.DateField(label='Datum',
-                           widget=DateTimePicker(options={
+                           widget=DatePickerInput(options={
                                "format": "DD.MM.YYYY",
                                 "locale": "de"
                            }))

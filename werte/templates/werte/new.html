@@ -1,19 +1,18 @@
 {% extends "base.html" %}
-{% load bootstrap3 l10n %}
+{% load bootstrap4 l10n %}
 
 {% block title %}Messwert erfassen{% endblock %}
 
 {% block content %}
 
-<div class="row">
-    <form method="post" action="" novalidate>
-        {% csrf_token %}
-        {% bootstrap_form_errors form %}
-        {% bootstrap_form form %}
-        {% buttons layout='inline' %}
-            {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='Ok' %}
-            {% bootstrap_button "abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
-        {% endbuttons %}
-    </form>
-</div>
+<form method="post" action="" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+    {% buttons layout='inline' %}
+        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='Ok' %}
+        {% bootstrap_button "abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+    {% endbuttons %}
+</form>
+
 {% endblock %}

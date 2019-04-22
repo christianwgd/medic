@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load static bootstrap3 l10n %}
+{% load static bootstrap4 l10n %}
 
-{% block bootstrap3_extra_script %}
+{% block bootstrap4_extra_script %}
 {{ block.super }}
 {{ form.media }}
-<link rel="stylesheet" href="{% static 'bootstrap3_datetime/bootstrap-datetimepicker.min.css' %}" type="text/css" />
-<script src="{% static 'bootstrap3_datetime/moment-with-locales.min.js' %}"></script>
-<script src="{% static 'bootstrap3_datetime/bootstrap-datetimepicker.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.css' %}" type="text/css" />
+<script src="{% static 'bootstrap4_datetime/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
 {% block title %}Einstellungen{% endblock %}

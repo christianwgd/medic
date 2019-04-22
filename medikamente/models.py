@@ -34,7 +34,7 @@ class Medikament (models.Model):
     einheit = models.CharField(verbose_name="Einheit", max_length=2, choices=EINHEIT_CHOICES)
     bestand = models.DecimalField(verbose_name='Bestand', max_digits=5, decimal_places=2)
     bestand_vom = models.DateField(verbose_name='Bestandsänderung vom', auto_now_add=True)
-    ref_usr = models.ForeignKey(User)
+    ref_usr = models.ForeignKey(User, on_delete=models.PROTECT)
 
 
 @python_2_unicode_compatible
@@ -47,7 +47,7 @@ class Verordnung (models.Model):
     def __str__(self):
         return '{}'.format(self.ref_medikament)
         
-    ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament')
+    ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament', on_delete=models.PROTECT)
     morgen = models.DecimalField(verbose_name='Morgen', max_digits=3, decimal_places=2, null=True, blank=True)
     mittag = models.DecimalField(verbose_name='Mittag', max_digits=3, decimal_places=2, null=True, blank=True)
     abend = models.DecimalField(verbose_name='Abend', max_digits=3, decimal_places=2, null=True, blank=True)
@@ -59,7 +59,7 @@ class Verordnung (models.Model):
     fr = models.BooleanField(verbose_name='Fr', default=False)
     sa = models.BooleanField(verbose_name='Sa', default=False)
     so = models.BooleanField(verbose_name='So', default=False)
-    ref_usr = models.ForeignKey(User, verbose_name='Benutzer')
+    ref_usr = models.ForeignKey(User, verbose_name='Benutzer', on_delete=models.PROTECT)
 
 
 @python_2_unicode_compatible
@@ -73,8 +73,8 @@ class VrdFuture (models.Model):
         return ('{}-{}-{}-{}-{}'.format(self.ref_medikament, self.morgen, self.mittag,
                                         self.abend, self.nacht))
 
-    ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament')
-    ref_usr = models.ForeignKey(User, verbose_name='Benutzer')
+    ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament', on_delete=models.PROTECT)
+    ref_usr = models.ForeignKey(User, verbose_name='Benutzer', on_delete=models.PROTECT)
     morgen = models.DecimalField(verbose_name='Morgen', max_digits=3, decimal_places=2,
                                  null=True, blank=True, help_text=" Tabl.")
     mittag = models.DecimalField(verbose_name='Mittag', max_digits=3, decimal_places=2,
@@ -116,9 +116,9 @@ class Bestandsveraenderung(models.Model):
     def __str__(self):
         return self.ref_medikament
 
-    ref_medikament = models.ForeignKey(Medikament)
+    ref_medikament = models.ForeignKey(Medikament, on_delete=models.PROTECT)
     date = models.DateTimeField(verbose_name='Datum', auto_now_add=False)
     menge = models.DecimalField(verbose_name='Menge', max_digits=5, decimal_places=2)
     grund = models.CharField(verbose_name="Einheit", max_length=2, choices=GRUND_CHOICES)
     text = models.CharField(verbose_name='Anmerkung', max_length=50, null=True, blank=True)
-    ref_usr = models.ForeignKey(User)
+    ref_usr = models.ForeignKey(User, on_delete=models.PROTECT)

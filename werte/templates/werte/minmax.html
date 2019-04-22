@@ -1,32 +1,29 @@
 {% extends "base.html" %}
-{% load bootstrap3 l10n %}
+{% load bootstrap4 l10n %}
 
 {% block title %}Statistik{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="list-group">
-        <div class="list-group-item active">
-            <h4 class="list-group-item-heading">Minimal-, Maximal- und Mittelwerte</h4>
-            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-        </div>
+
+<div class="list-group user-header">
+    <div class="list-group-item active">
+        <h4 class="list-group-item-heading">Minimal-, Maximal- und Mittelwerte</h4>
+        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
     </div>
 </div>
 
-<div class="row">
-    <div class="btn-group" role="group" >
-        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
-            <i class="far fa-home"></i>
-        </a>
-        <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
-            <i class="far fa-list"></i>
-        </a>
-    </div>
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
+        <i class="far fa-home"></i>
+    </a>
+    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
+        <i class="far fa-list"></i>
+    </a>
 </div>
 
-<div class="row" style="margin-top: 20px;">
-    <h4 class="list-group-item-heading">Blutdruck</h4>
-    <table class="table table-responsive table-bordered">
+<div class="v-offset">
+    <h4>Blutdruck</h4>
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th>Minimum RR-Sys:</th><td>{{ minrrsys }} mm/Hg</td>
@@ -44,11 +41,9 @@
             </tr>
         </tbody>
     </table>
-</div>
 
-<div class="row">
     <h4>Puls</h4>
-    <table class="table table-responsive table-bordered">
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th>Minimum Puls:</th><td>{{ minpuls }} /min</td>
@@ -59,11 +54,9 @@
             </tr>
         </tbody>
     </table>
-</div>
 
-<div class="row">
     <h4>Temperatur</h4>
-    <table class="table table-responsive table-bordered">
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th>Minimum Temp.:</th><td>{{ mintemp|floatformat:1 }} &deg;C</td>
@@ -74,11 +67,9 @@
             </tr>
         </tbody>
     </table>
-</div>
 
-<div class="row">
     <h4>Gewicht</h4>
-    <table class="table table-responsive table-bordered">
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th>Minimum Gewicht:</th><td>{{ mingew|floatformat:1 }} Kg</td>

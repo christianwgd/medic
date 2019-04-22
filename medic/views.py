@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
@@ -44,14 +44,6 @@ def startpage(request):
         return HttpResponseRedirect(reverse_lazy('usrprofile:userprof'))
 
 
-def is_ascii(s):
-    try:
-        s.encode('ascii')
-    except UnicodeEncodeError:
-        return False
-    return True
-
-
 def log_off(request):
     user = request.user.username
     try:
@@ -59,4 +51,4 @@ def log_off(request):
         logger.info('User %s logged out' % user)
     except Exception as e:
         logger.exception('Fehler beim Logoff (User: %s)! (%s)' % (user, e))
-    return HttpResponseRedirect(reverse_lazy('kas_login'))
+    return HttpResponseRedirect(reverse_lazy('medic_login'))
