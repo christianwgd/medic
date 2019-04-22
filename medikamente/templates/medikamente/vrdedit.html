@@ -43,11 +43,11 @@ function calcdosis (tabl_id, dosis_id) {
 	if (med_id) {
         var url = "/medikamente/getmed/" + med_id + "/";
         $.get(url, function (data) {
-            med = data[0]['fields'];
-            medstaerke = med['staerke'];
-            medeinheit = med['einheit'];
+            var med = data[0]['fields'];
+            var medstaerke = med['staerke'];
+            var medeinheit = med['einheit'];
             var tabl = $(tabl_id).val();
-            if (tabl != "") {
+            if (tabl !== "") {
                 var dosis = medstaerke * parseFloat(tabl.replace(/,/g, '.'));
                 var strdosis = dosis.toFixed(2).toString().replace(/\./g, ',');
                 $(dosis_id).html('( = ' + strdosis + ' ' + medeinheit + ')');

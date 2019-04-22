@@ -1,16 +1,17 @@
 {% extends "base.html" %}
+{% load static i18 %}
 
 {% block extrastyle %}
 <style type="text/css">
 div.filter {  padding-left: 3px; padding-top: 3px;padding-bottom: 3px; }
 </style>
-<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.dataTables.css"></link>
-<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/zebra_dialog.css"></link>
-<script language="javascript" type="text/javascript" src="{{MEDIA_URL}}js/jquery.js"></script>
-<script language="javascript" type="text/javascript" src="{{MEDIA_URL}}js/jquery.dataTables.js"></script>
-<script language="javascript" type="text/javascript" src="{{MEDIA_URL}}js/dataTables.date-dd-mm-yyyy_hh_mm.js"></script>
-<script language="javascript" type="text/javascript" src="{{MEDIA_URL}}js/zebra_dialog.js"></script>
-<script language="javascript" type="text/javascript" src="{{MEDIA_URL}}js/medic.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/zebra_dialog.css' %}"/>
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.dataTables.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/dataTables.date-dd-mm-yyyy_hh_mm.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/zebra_dialog.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/medic.js' %}"></script>
 
 <script type="text/javascript">
 document.addEventListener("touchstart", function() {},false);
@@ -60,7 +61,7 @@ $(document).ready(function(){
 	            "sInfo": "_TOTAL_ Änderungen",
 	            "sInfoThousands": ".",
 	            "sInfoEmpty": "Keine Änderungen",
-	            "sProcessing": "aktualisiere...",
+	            "sProcessing": "aktualisiere..."
 	        }
 	};
 	
@@ -129,7 +130,7 @@ function delvrdfut () {
 			} // end function 
 		}); // end Zebra_dialog
 	} // end if idx
-}; // end delvrdfut
+} // end delvrdfut
 </script>
 {% endblock %}
 

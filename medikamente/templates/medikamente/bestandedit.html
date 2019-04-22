@@ -13,11 +13,11 @@
 {{ block.super }}
 <script type="text/javascript">
 $(document).ready(function(){
-    var menge = "{{ defmenge }}"
+    var menge = "{{ defmenge }}";
     $("#id_grund").change(function () {
-        var packung = {{ medikament.packung|safe }}
+        var packung = {{ medikament.packung|safe }};
         var grund = $(this).children(":selected").val();
-        if (grund != '') {
+        if (grund !== '') {
             switch(grund)
             {
             case "01": // neue Packung
