@@ -47,7 +47,7 @@ def log_off(request):
     user = request.user.username
     try:
         logout(request)
-        logger.info('User %s logged out' % user)
+        # logger.info('User %s logged out' % user)
     except Exception as e:
         logger.exception('Fehler beim Logoff (User: %s)! (%s)' % (user, e))
     return redirect(reverse_lazy('medic_login'))
