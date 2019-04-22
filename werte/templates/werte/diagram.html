@@ -219,35 +219,28 @@ $(function() {
 
 {% block content %}
 
-<div class="row">
-    <div class="list-group">
-        <div class="list-group-item active">
-            <h4 class="list-group-item-heading">Messwerte als Diagramm</h4>
-            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-        </div>
+<div class="list-group user-header">
+    <div class="list-group-item active">
+        <h4 class="list-group-item-heading">Messwerte als Diagramm</h4>
+        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
     </div>
 </div>
 
-<div class="row">
-    <div class="btn-group" role="group" >
-        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
-            <i class="far fa-home"></i>
-        </a>
-        <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
-            <i class="far fa-list"></i>
-        </a>
-    </div>
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
+        <i class="far fa-home"></i>
+    </a>
+    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
+        <i class="far fa-list"></i>
+    </a>
 </div>
 
-<div class="row"></div>
-    <div class="demo-container container">
-        <div id="placeholder" class="demo-placeholder" style="width: 100%;"></div>
-    </div>
+<div class="demo-container container">
+    <div id="placeholder" class="demo-placeholder" style="width: 100%;"></div>
 </div>
 
-<div class="row">
-    <div class="col-md-12 centered">
-        <div id="choices"></div>
-    </div>
+<div class="col-md-12 centered">
+    <div id="choices"></div>
 </div>
+
 {% endblock %}
