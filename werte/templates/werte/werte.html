@@ -1,21 +1,16 @@
 {% extends "base.html" %}
-{% load bootstrap4 static %}
+{% load bootstrap4 static usrprofile_tags %}
 
 {% block bootstrap4_extra_script %}
 {{ block.super }}
 {{ form.media }}
 {% endblock %}
 
-{% block title %}Messwerte{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block content %}
 
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h4 class="list-group-item-heading">Messwerte</h4>
-        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-    </div>
-</div>
+{% user_header 'Messwerte' user %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">

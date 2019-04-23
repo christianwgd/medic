@@ -34,6 +34,7 @@
 <meta name="theme-color" content="#ffffff">
 {% endblock %}
 
+{% block title %}medic{% endblock %}
 
 {% block bootstrap4_content %}
 
@@ -106,15 +107,13 @@
 <!-- Content -->
 <div class="container">
 
-<div class="row">
-    <div class="col-12">
-
-    <h3 style="text-align: center;">{% block title %}(no content){% endblock %}</h3>
-    {% bootstrap_messages %}
-
-    {% block content %}(no content){% endblock %}
+    <div class="row">
+        <div class="col-12">
+        <h3 style="text-align: center;">{% block page_title %}(no content){% endblock %}</h3>
+        {% bootstrap_messages %}
+        {% block content %}(no content){% endblock %}
+        </div>
     </div>
-</div>
 
 </div>
 <!-- END Content -->

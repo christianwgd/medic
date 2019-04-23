@@ -1,18 +1,13 @@
 {% extends "base.html" %}
-{% load bootstrap4 l10n %}
+{% load bootstrap4 l10n medi_tags %}
 
-{% block title %}Bestandsverlauf{% endblock %}
+{% block page_title %}Bestandsverlauf{% endblock %}
 
 {% block content %}
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h4 class="list-group-item-heading"><b>Medikament:</b> {{ medikament.name }} {{ medikament.staerke }} {{ medikament.einheit }}</h4>
-        <p class="list-group-item-text"><b>Bestand:</b> {{ medikament.bestand }} Tabletten</p>
-    </div>
-</div>
+{% medi_header medikament.id %}
 
 <div class="btn-group" role="group" >
-    <a href="{% url 'index' %}" class="btn btn-primary" role="button" title="Startseite">
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
         <i class="far fa-home"></i>
     </a>
     <a href="{% url 'medikamente:medikamente' %}" class="btn btn-primary" role="button" title="Medikamente">

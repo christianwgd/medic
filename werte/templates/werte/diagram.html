@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 static i18n %}
+{% load bootstrap4 static i18n usrprofile_tags %}
 
 {% block bootstrap4_extra_script %}
 {{ block.super }}
@@ -214,17 +214,12 @@ $(function() {
 </script>
 {% endblock %}
 
-{% block title %}Diagramm{% endblock %}
+{% block page_title %}Diagramm{% endblock %}
 
 
 {% block content %}
 
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h4 class="list-group-item-heading">Messwerte als Diagramm</h4>
-        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-    </div>
-</div>
+{% user_header 'Messwerte als Diagramm' user %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">

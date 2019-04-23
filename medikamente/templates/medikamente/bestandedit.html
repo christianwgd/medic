@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static bootstrap4 l10n %}
+{% load static bootstrap4 l10n medi_tags %}
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
@@ -38,16 +38,11 @@ $(document).ready(function(){
 </script>
 {% endblock %}
 
-{% block title %}Bestandsänderung{% endblock %}
+{% block page_title %}Bestands&auml;nderung{% endblock %}
 
 {% block content %}
 
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h4 class="list-group-item-heading"><b>Medikament:</b> {{ medikament.name }} {{ medikament.staerke }} {{ medikament.einheit }}</h4>
-        <p class="list-group-item-text"><b>Bestand:</b> {{ medikament.bestand }} Tabletten</p>
-    </div>
-</div>
+{% medi_header medikament.id %}
 
 <form method="post" action="" novalidate>
     {% csrf_token %}

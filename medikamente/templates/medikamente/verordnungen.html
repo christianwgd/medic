@@ -1,15 +1,12 @@
 {% extends "base.html" %}
-{% load bootstrap4 medi_tags %}
+{% load bootstrap4 medi_tags usrprofile_tags %}
 
-{% block title %}Medikamenten-Plan{% endblock %}
+
+{% block page_title %}{% endblock %}
 
 {% block content %}
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h5 class="list-group-item-heading">Verordnungen für</h5>
-        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-    </div>
-</div>
+
+{% user_header 'Medikamentenplan f&uuml;r' user %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
@@ -49,19 +46,19 @@
                 </td>
                 <td>
                     {% if vo.morgen %}
-                        {{ vo.morgen|floatformat:2 }} Tbl.<br/>
-                        <small>{% calc_dosis vo.morgen vo.id %}</small>
+                        {{ vo.morgen|floatformat:2 }} Tbl.
+                        <small>({% calc_dosis vo.morgen vo.id %})</small>
                     {% endif %}
                 </td>
                 <td>
                     {% if vo.mittag %}
-                        {{ vo.mittag|floatformat:2 }} Tbl.<br/>
-                       <small>{% calc_dosis vo.mittag vo.id %}</small>
+                        {{ vo.mittag|floatformat:2 }} Tbl.
+                       <small>({% calc_dosis vo.mittag vo.id %})</small>
                     {% endif %}
                 </td>
                 <td>
                     {% if vo.abend %}
-                        {{ vo.abend|floatformat:2 }} Tbl.<br/>
+                        {{ vo.abend|floatformat:2 }} Tbl.
                         <small>{% calc_dosis vo.abend vo.id %}</small>
                     {% endif %}
                 </td>
@@ -75,22 +72,15 @@
                 {% if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so %}
                     <span>alle</span>
                 {% else %}
-                    {{ vo.mo|yesno:"Mo ," }}{{ vo.di|yesno:"Di ," }}{{ vo.mi|yesno:"Mi ," }}{{ vo.do|yesno:"Do ," }}{{ vo.fr|yesno:"Fr ," }}{{ vo.sa|yesno:"Sa ," }}{{ vo.so|yesno:"So ," }}</td>
+                    {{ vo.mo|yesno:"Mo," }}
+                    {{ vo.di|yesno:"Di," }}
+                    {{ vo.mi|yesno:"Mi," }}
+                    {{ vo.do|yesno:"Do," }}
+                    {{ vo.fr|yesno:"Fr," }}
+                    {{ vo.sa|yesno:"Sa," }}
+                    {{ vo.so|yesno:"So," }}
+                </td>
                 {% endif %}
-                <!--<td style="text-align: right;">{{ vo.bestand|floatformat:2 }} Tabl.</td>-->
-                <!--{% if vo.zeitraum == 'Tage' %}-->
-                    <!--{% if vo.days < mindays %}-->
-                        <!--<td style="text-align: right; color: red;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
-                    <!--{% else %}-->
-                        <!--<td style="text-align: right;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
-                    <!--{% endif %}-->
-                <!--{% else %}-->
-                    <!--{% if vo.days <= minweeks %}-->
-                        <!--<td style="text-align: right; color: red;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
-                    <!--{% else %}-->
-                        <!--<td style="text-align: right;">{{ vo.days|stringformat:"d" }} {{ vo.zeitraum }}</td>-->
-                    <!--{% endif %}-->
-                <!--{% endif %}-->
             </tr>
             {% endfor %}
         </tbody>

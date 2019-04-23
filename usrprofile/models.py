@@ -59,7 +59,7 @@ class UserProfile(models.Model):
             )
         else:
             return '{}, {} - {}'.format(
-                                    self.ref_usr.last_name,
-                                    self.ref_usr.first_name,
-                                    self.gebdat.strftime("geb. %d.%m.%Y")
-                                 )
+                self.ref_usr.last_name,
+                self.ref_usr.first_name,
+                self.gebdat.strftime("geb. %d.%m.%Y")
+            )

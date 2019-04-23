@@ -1,57 +1,50 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load bootstrap4 usrprofile_tags %}
 
-{% block title %}Medikamente{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block content %}
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h4 class="list-group-item-heading">Medikamente</h4>
-        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-    </div>
-</div>
+
+{% user_header 'Medikamente' user %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'medikamente:mednew' %}" class="btn btn-primary" role="button" title="Neues Medikament hinzufügen">
+    <a href="{% url 'medikamente:mednew' %}" class="btn btn-primary" role="button" title="Neues Medikament hinzuf&uuml;gen">
         <i class="far fa-plus"></i>
     </a>
 </div>
-
 
 <div class="v-offset">
     <table id="wertelist" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th>Bestand</th>
-                <th>Verlauf</th>
                 <th>Medikament</th>
                 <th>Packungsgr&ouml;&szlig;e</th>
                 <th style="text-align: right;">Dosis</th>
                 <th></th>
-                <th style="text-align: right; padding-right: 40px;">Bestand</th>
+                <th style="text-align: right; padding-right: 4rem;">Bestand</th>
             </tr>
         </thead>
         <tbody>
             {% for med in medikamente %}
             <tr>
-                <td>
-                    <a href="{% url 'medikamente:bestandedit' med.id %}" class="btn btn-sm btn-primary" role="button" title="Bestandsveränderung">
-                        <i class="far fa-edit"></i>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'medikamente:besthistory' med.id %}" class="btn btn-sm btn-primary" role="button" title="Bestandshistorie">
-                        <i class="far fa-history"></i>
-                    </a>
-                </td>
                 <td><a href="{% url 'medikamente:mededit' med.id %}">{{ med.name }}</a></td>
                 <td>{{ med.packung }} Tabl.</td>
                 <td style="text-align: right;">{{ med.staerke|floatformat:2 }}</td>
                 <td>{{ med.einheit }}</td>
-                <td style="text-align: right;">{{ med.bestand|floatformat:2 }} Tabl.</td>
+                <td style="text-align: right;">
+                    {{ med.bestand|floatformat:2 }} Tabl.
+                    &nbsp;
+                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="Bestandsver&auml;nderung">
+                        <i class="far fa-sm fa-edit"></i>
+                    </a>
+                    &nbsp;
+                    <a href="{% url 'medikamente:besthistory' med.id %}" title="Bestandshistorie">
+                        <i class="far fa-sm fa-history"></i>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

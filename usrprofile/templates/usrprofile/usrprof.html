@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static bootstrap4 l10n %}
+{% load static bootstrap4 l10n usrprofile_tags %}
 
 {% block bootstrap4_extra_script %}
 {{ block.super }}
@@ -9,16 +9,11 @@
 <script src="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
-{% block title %}Einstellungen{% endblock %}
+{% block page_title %}Einstellungen{% endblock %}
 
 {% block content %}
 
-<div class="list-group user-header">
-    <div class="list-group-item active">
-        <h4 class="list-group-item-heading">Einstellungen für</h4>
-        <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-    </div>
-</div>
+{% user_header 'Einstellungen für' user %}
 
 <div class="v-offset">
     <form role="form" class="form-horizontal" method="post" novalidate>
