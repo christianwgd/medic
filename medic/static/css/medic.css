@@ -1,3 +1,7 @@
+body {
+    font-size: 0.8rem;
+}
+
 .centered {
     text-align: center;
 }
@@ -17,5 +21,5 @@
 .bootstrap-growl { width: 300px !important; }
 
 .table td, .table th {
-    padding: 0.5rem;
+    padding: 0.2rem 0.3rem;
 }
