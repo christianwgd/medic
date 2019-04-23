@@ -2,8 +2,8 @@
 
 from __future__ import unicode_literals
 
-from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -11,7 +11,6 @@ from django.contrib.messages.constants import SUCCESS, ERROR, INFO
 from usrprofile.forms import UsrProfForm
 from usrprofile.models import UserProfile
 from logging import getLogger
-from django.http.response import HttpResponseRedirect
 
 logger = getLogger('medic')
 
@@ -20,7 +19,7 @@ logger = getLogger('medic')
 def userprof(request):
     if 'cancel' in request.POST:
         messages.info(request, 'Änderung abgebrochen.')
-        return HttpResponseRedirect(reverse_lazy('startpage'))
+        return redirect(reverse_lazy('startpage'))
 
     try:
         usr = User.objects.get(username=request.user.username)
@@ -28,7 +27,7 @@ def userprof(request):
     except User.DoesNotExist:
         message = 'Benutzer existiert nicht.'
         messages.error(request, message)
-        return HttpResponseRedirect(reverse_lazy('startpage'))
+        return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
         message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(usr)
         messages.error(request, message)
@@ -45,7 +44,7 @@ def userprof(request):
                 messages.success(request,
                     'Einstellungen für Benutzer {} gespeichert.'.format(usrProf.ref_usr.username)
                 )
-                return HttpResponseRedirect(reverse_lazy('startpage'))
+                return redirect(reverse_lazy('startpage'))
             except Exception as e:
                 logger.exception('Fehler beim Speichern der Einstellungen für Benutzer {}: {}'.format(usr.username, e))
                 messages.error(request,

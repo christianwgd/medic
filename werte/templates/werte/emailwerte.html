@@ -1,27 +1,23 @@
 {% extends "base.html" %}
-{% load bootstrap3 l10n %}
+{% load bootstrap4 l10n %}
 
-{% block title %}Messwerte versenden{% endblock %}
+{% block page_title %}Messwerte versenden{% endblock %}
 
 
 {% block content %}
 
-<div class="row v-offset">
-    <form method="POST" class="form" role="form" novalidate>
-        {% csrf_token %}
-        {% bootstrap_form_errors form %}
-        {% bootstrap_form form %}
-        {% buttons layout='inline'  %}
-            {% bootstrap_button "senden" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-send" %}
-            {% bootstrap_button "abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
-        {% endbuttons %}
-    </form>
-</div>
+<form method="POST" class="form" role="form" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+    {% buttons layout='inline'  %}
+        {% bootstrap_button "senden" button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button "abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+    {% endbuttons %}
+</form>
 
 
-
-
-<div class="row v-offset">
+<div class="v-offset">
     <h4>Werte vom {{von}} bis {{bis}}</h4>
     <table id="wertelist" class="table table-condensed table-striped table-responsive table-bordered">
         <thead>

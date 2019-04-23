@@ -10,6 +10,26 @@
     width: 80%;
 }
 
-.row { margin-left: 5px; margin-right: 5px; }
+.user-header {
+    margin-bottom: 3px;
+    background-color: #07689F;
+    color: white;
+    padding: .5rem;
+    border-radius: .25rem;
+}
+.user-header p {
+    margin-bottom: 0;
+    font-size: smaller;
+}
 
 .bootstrap-growl { width: 300px !important; }
+
+.table td, .table th {
+    padding: 0.5rem;
+}
+.table td svg {
+    margin-bottom: 1px;
+}
+.table-condensed {
+    font-size: .9rem;
+}

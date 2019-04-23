@@ -14,3 +14,7 @@
 a[href]::after {
     content: "" !important;
 }
+a:link, a:hover, a:visited {
+	text-decoration: none;
+	color: rgb(33, 37, 41);
+}

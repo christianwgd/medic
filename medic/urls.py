@@ -1,34 +1,34 @@
 # encoding: utf-8
 from __future__ import absolute_import
-from django.conf.urls import include, url
+from django.urls import path, include
 
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
+from django.utils.translation import ugettext_lazy as _
+from two_factor.urls import urlpatterns as tf_urls
 
 from .views import index, log_off, startpage
 
-admin.autodiscover()
+admin.site.site_header = _('medic')
 
 urlpatterns = [
+    path('', include(tf_urls)),
+    path('admin/', admin.site.urls),
+
     # Startseite
-    url(r'^index/$', index, name='index'),  # Inhaltsverzeichnis anzeigen
+    path('index/', index, name='index'),  # Inhaltsverzeichnis anzeigen
 
     # dynamische Startseite
-    url(r'^startpage/$', startpage, name='startpage'),
-    url(r'^$', startpage),  # Index auch bei leerer Adresse
+    path('startpage/', startpage, name='startpage'),
+    path('', startpage),  # Index auch bei leerer Adresse
 
-    # An- und Abmeldung
-    # url(r'^login/$', log_in, name='login'),
-    # url(r'^logon/$', log_in),
-    # url(r'^logoff/$', log_off, name='logoff'),
-    # url(r'^logout/$', log_off),
+    path('login/', RedirectView.as_view(url='/account/login/')),
+    path('login/', auth_views.LoginView.as_view(),
+         {'template_name': '/login.html'}, name='medic_login'),
+    path('logoff/', log_off, name='logoff'),
 
-    url(r'^login/$', auth_views.login,
-         {'template_name': 'login.html'}, name='kas_login'),
-    url(r'^logoff/$', log_off, name='logoff'),
-
-    url(r'^werte/', include('werte.urls')),
-    url(r'^medikamente/', include('medikamente.urls')),
-    url(r'^usrprofile/', include('usrprofile.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    path('werte/', include('werte.urls')),
+    path('medikamente/', include('medikamente.urls')),
+    path('usrprofile/', include('usrprofile.urls')),
 ]

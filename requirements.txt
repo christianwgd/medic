@@ -1,0 +1,17 @@
+Babel==2.6.0
+colorama==0.4.1
+Django==2.2
+django-bootstrap-datepicker-plus==3.0.5
+django-bootstrap4==0.0.8
+django-formtools==2.1
+django-mail-templated==2.6.5
+django-orderable==6.0.1
+django-otp==0.6.0
+django-phonenumber-field==1.3.0
+django-two-factor-auth==1.8.0
+future==0.17.1
+phonenumberslite==8.10.10
+pytz==2019.1
+qrcode==6.1
+six==1.12.0
+sqlparse==0.3.0

@@ -1,86 +1,50 @@
 {% extends "base.html" %}
-{% load bootstrap3 static %}
+{% load bootstrap4 static usrprofile_tags %}
 
-{% block bootstrap3_extra_script %}
+{% block bootstrap4_extra_script %}
 {{ block.super }}
 {{ form.media }}
-<link rel="stylesheet" href="{% static 'bootstrap3_datetime/bootstrap-datetimepicker.min.css' %}" type="text/css" />
-<script src="{% static 'bootstrap3_datetime/moment-with-locales.min.js' %}"></script>
-<script src="{% static 'bootstrap3_datetime/bootstrap-datetimepicker.min.js' %}"></script>
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-	var beforePrint = function() {
-		// prepare calendar for printing
-		var oTable = $('#wertelist').dataTable();
-		var oSettings = oTable.fnSettings();
-        oSettings.oScroll.sY = "";
-        oTable.fnDraw(false);
-	};
-	var afterPrint = function() {
-	    var oTable = $('#wertelist').dataTable();
-        calcTableSize($('#wertelist').dataTable());
-	};
-	if (window.matchMedia) {
-		var mediaQueryList = window.matchMedia('print');
-		mediaQueryList.addListener(function(mql) {
-			if (mql.matches) {
-				beforePrint();
-			} else {
-				afterPrint();
-			}
-		});
-	}
-});
-</script>
 {% endblock %}
 
-{% block title %}Messwerte{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block content %}
 
-<div class="row">
-    <div class="list-group">
-        <div class="list-group-item active">
-            <h4 class="list-group-item-heading">Messwerte</h4>
-            <p class="list-group-item-text">{{ user.profile.usrinf }}</p>
-        </div>
-    </div>
+{% user_header 'Messwerte' user %}
+
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+        <i class="far fa-home"></i>
+    </a>
+    <a href="{% url 'werte:neu' %}" class="btn btn-primary" role="button" title="Neuen Messwert erfassen">
+        <i class="far fa-plus"></i>
+    </a>
+    <a href="{% url 'werte:diagram' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Diagramm">
+        <i class="far fa-chart-area"></i>
+    </a>
+    <a href="{% url 'werte:minmax' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Statistik">
+        <i class="far fa-arrows-v"></i>
+    </a>
+    <a href="{% url 'werte:email' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Werte per email versenden">
+        <i class="far fa-envelope"></i>
+    </a>
 </div>
 
-
-<div class="row">
-    <div class="btn-group" role="group" >
-        <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
-            <i class="far fa-home"></i>
-        </a>
-        <a href="{% url 'werte:neu' %}" class="btn btn-primary" role="button" title="Neuen Messwert erfassen">
-            <i class="far fa-plus"></i>
-        </a>
-        <a href="{% url 'werte:diagram' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Diagramm">
-            <i class="far fa-chart-area"></i>
-        </a>
-        <a href="{% url 'werte:minmax' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Statistik">
-            <i class="far fa-arrows-v"></i>
-        </a>
-        <a href="{% url 'werte:email' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Werte per email versenden">
-            <i class="far fa-envelope"></i>
-        </a>
-    </div>
-</div>
-
-<div class="row v-offset">
+<div class="v-offset">
+    <h5>Zeitraum</h5>
     <form method="POST" class="form-inline" role="form">
         {% csrf_token %}
-        <h4>Zeitraum</h4>
         {% bootstrap_form_errors form %}
         {% bootstrap_form form layout='inline' %}
-        {% buttons submit='anzeigen' layout='inline' %}{% endbuttons %}
+        {% buttons %}
+            <button type="submit" class="btn btn-secondary">
+                anzeigen
+            </button>
+        {% endbuttons %}
     </form>
 </div>
 
-<div class="row v-offset">
+<div class="v-offset">
     <div class="table-responsive">
     <table id="wertelist" class="table table-condensed table-striped table-bordered">
         <thead>

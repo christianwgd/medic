@@ -1,3 +1,4 @@
+{% extends "mail_templated/base.tpl" %}
 {% block subject %}
 Werte für {{ user.last_name }}, {{ user.first_name }} vom {{ von }} bis {{ bis }}
 {% endblock %}

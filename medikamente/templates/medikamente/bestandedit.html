@@ -1,23 +1,23 @@
 {% extends "base.html" %}
-{% load static bootstrap3 l10n %}
+{% load static bootstrap4 l10n medi_tags %}
 
-{% block bootstrap3_extra_head %}
+{% block bootstrap4_extra_head %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'bootstrap3_datetime/bootstrap-datetimepicker.min.css' %}" type="text/css" />
-<script src="{% static 'bootstrap3_datetime/moment-with-locales.min.js' %}"></script>
-<script src="{% static 'bootstrap3_datetime/bootstrap-datetimepicker.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.css' %}" type="text/css" />
+<script src="{% static 'bootstrap4_datetime/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
-{% block bootstrap3_extra_script %}
+{% block bootstrap4_extra_script %}
 {{ form.media }}
 {{ block.super }}
 <script type="text/javascript">
 $(document).ready(function(){
-    var menge = "{{ defmenge }}"
+    var menge = "{{ defmenge }}";
     $("#id_grund").change(function () {
-        var packung = {{ medikament.packung|safe }}
+        var packung = {{ medikament.packung|safe }};
         var grund = $(this).children(":selected").val();
-        if (grund != '') {
+        if (grund !== '') {
             switch(grund)
             {
             case "01": // neue Packung
@@ -38,28 +38,19 @@ $(document).ready(function(){
 </script>
 {% endblock %}
 
-{% block title %}Bestandsänderung{% endblock %}
+{% block page_title %}Bestands&auml;nderung{% endblock %}
 
 {% block content %}
 
-<div class="row">
-    <div class="list-group">
-        <div class="list-group-item active">
-            <h4 class="list-group-item-heading"><b>Medikament:</b> {{ medikament.name }} {{ medikament.staerke }} {{ medikament.einheit }}</h4>
-            <p class="list-group-item-text"><b>Bestand:</b> {{ medikament.bestand }} Tabletten</p>
-        </div>
-    </div>
-</div>
+{% medi_header medikament.id %}
 
-<div class="row">
-    <form method="post" action="" novalidate>
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons layout='inline' %}
-            {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='Ok' %}
-            {% bootstrap_button "abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
-        {% endbuttons %}
-    </form>
-</div>
+<form method="post" action="" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons layout='inline' %}
+        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='Ok' %}
+        {% bootstrap_button "abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+    {% endbuttons %}
+</form>
 
 {% endblock %}

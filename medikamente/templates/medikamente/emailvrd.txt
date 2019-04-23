@@ -1,3 +1,4 @@
+{% extends "mail_templated/base.tpl" %}
 {% block subject %}
 Medikamentenplan für {{ user.last_name }}, {{ user.first_name }} vom {{ date }}
 {% endblock %}
@@ -7,13 +8,13 @@ Medikamentenplan für {{ user.last_name }}, {{ user.first_name }} vom {{ date }}
 <br>
 <table>
 <thead>
-        <tr>
-                <th>Medikament</th>
-                <th>Morgen</th>
-                <th>Mittag</th>
-                <th>Abend</th>
-                <th>Nacht</th>
-        </tr>
+    <tr>
+        <th>Medikament</th>
+        <th>Morgen</th>
+        <th>Mittag</th>
+        <th>Abend</th>
+        <th>Nacht</th>
+    </tr>
 </thead>
 <tbody>
 {% for vo in verordnungen %}

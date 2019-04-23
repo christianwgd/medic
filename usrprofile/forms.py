@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from builtins import object
-from bootstrap3_datetime.widgets import DateTimePicker
+from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
 from django.forms import EmailInput
 from django.forms.models import ModelForm
@@ -18,7 +18,7 @@ class UsrProfForm(ModelForm):
         widgets = {
             'warnenTageVorher': forms.TextInput(attrs={'pattern': '^[0-9]{3}$'}),
             'werteLetzteTage': forms.TextInput(attrs={'pattern': '^[0-9]{3}$'}),
-            'gebdat': DateTimePicker(options={
+            'gebdat': DatePickerInput(options={
                 "format": "DD.MM.YYYY",
                 "locale": "de"
             })

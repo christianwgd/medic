@@ -15,11 +15,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
 
-# Include BOOTSTRAP3_FOLDER in path
-# BOOTSTRAP3_FOLDER = os.path.abspath(os.path.join(BASE_DIR, '../../', 'bootstrap3'))
-# if BOOTSTRAP3_FOLDER not in sys.path:
-#     sys.path.insert(0, BOOTSTRAP3_FOLDER)
-
 ADMINS = (
     'cwiegand', 'cwiegand@wgdnet.de'
 )
@@ -71,6 +66,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '8f)e&xzykr-5&@21q9kkvh^35k1p0q#q^x%&z=xk8#-kt)bs*m'
 
+LOGIN_REDIRECT_URL = 'startpage'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -87,12 +85,13 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -110,21 +109,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    #'registration',
+    'mail_templated',
     'orderable',
     'medic',
     'usrprofile.apps.UsrProfileConfig',
     'werte.apps.WerteConfig',
     'medikamente.apps.MedikamenteConfig',
-    'bootstrap3',
-    'bootstrap3_datetime',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
+    'bootstrap4',
+    'bootstrap_datepicker_plus',
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
-BOOTSTRAP3 = {
-    'jquery_url': '/static/js/jquery-2.2.4.min.js',
+BOOTSTRAP4 = {
     'javascript_in_head': True,
+    'theme_url': '/static/css/bootstrap.min.css',
 }
 
 LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
