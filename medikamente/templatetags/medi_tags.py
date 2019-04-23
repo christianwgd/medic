@@ -14,8 +14,8 @@ register = template.Library()
 def calc_dosis(value, vo_id):
     vo = Verordnung.objects.get(pk=vo_id)
     dosis = vo.ref_medikament.staerke * value
-    locale.setlocale(locale.LC_ALL, '')
-    dose = locale.format('%.2f', dosis)
+    locale.setlocale(locale.LC_ALL, 'de_de')
+    dose = locale.format_string('%.2f', dosis)
     return "{}{}".format(dose, vo.ref_medikament.einheit)
 
 
@@ -28,8 +28,8 @@ def medi_header(med_id, *args, **kwargs):
             strength = med.staerke,
             unit = med.einheit,
         )
-        locale.setlocale(locale.LC_ALL, '')
-        in_stock = locale.format('%.2f', med.bestand)
+        locale.setlocale(locale.LC_ALL, 'de_de')
+        in_stock = locale.format_string('%.2f', med.bestand)
         med_stock = '{stock} Tabletten'.format(
             stock = in_stock
         )

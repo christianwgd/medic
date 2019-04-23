@@ -59,13 +59,13 @@
                 <td>
                     {% if vo.abend %}
                         {{ vo.abend|floatformat:2 }} Tbl.
-                        <small>{% calc_dosis vo.abend vo.id %}</small>
+                        <small>({% calc_dosis vo.abend vo.id %})</small>
                     {% endif %}
                 </td>
                 <td>
                     {% if vo.nacht %}
                         {{ vo.nacht|floatformat:2 }} Tbl.<br/>
-                        <small>{% calc_dosis vo.nacht vo.id %}</small>
+                        <small>({% calc_dosis vo.nacht vo.id %})</small>
                     {% endif %}
                 </td>
                 <td>

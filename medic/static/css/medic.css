@@ -25,7 +25,7 @@
 .bootstrap-growl { width: 300px !important; }
 
 .table td, .table th {
-    padding: 0.2rem 0.3rem;
+    padding: 0.5rem;
 }
 .table td svg {
     margin-bottom: 1px;
