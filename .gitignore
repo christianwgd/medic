@@ -10,3 +10,4 @@ db.*
 *.db
 .project
 _versions/
+json/
