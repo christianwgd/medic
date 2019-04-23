@@ -88,6 +88,13 @@
                         <i class="far fa-cog"></i>
                         Einstellungen
                     </a>
+                    {% if user.is_superuser %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'admin:index' %}">
+                        <i class="far fa-user-crown"></i>
+                        {% trans 'Admin' %}
+                    </a>
+                    {% endif %}
                 </div>
             </li>
             {% endif %}
