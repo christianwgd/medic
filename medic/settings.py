@@ -66,6 +66,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '8f)e&xzykr-5&@21q9kkvh^35k1p0q#q^x%&z=xk8#-kt)bs*m'
 
+LOGIN_REDIRECT_URL = 'startpage'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -88,6 +91,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -111,6 +115,10 @@ INSTALLED_APPS = [
     'usrprofile.apps.UsrProfileConfig',
     'werte.apps.WerteConfig',
     'medikamente.apps.MedikamenteConfig',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
     'bootstrap4',
     'bootstrap_datepicker_plus',
 ]
