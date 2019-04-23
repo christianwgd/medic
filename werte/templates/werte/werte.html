@@ -4,33 +4,6 @@
 {% block bootstrap4_extra_script %}
 {{ block.super }}
 {{ form.media }}
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-	var beforePrint = function() {
-		// prepare calendar for printing
-		var oTable = $('#wertelist').dataTable();
-		var oSettings = oTable.fnSettings();
-        oSettings.oScroll.sY = "";
-        oTable.fnDraw(false);
-	};
-	var afterPrint = function() {
-	    var oTable = $('#wertelist').dataTable();
-        calcTableSize($('#wertelist').dataTable());
-	};
-	if (window.matchMedia) {
-		var mediaQueryList = window.matchMedia('print');
-		mediaQueryList.addListener(function(mql) {
-			if (mql.matches) {
-				beforePrint();
-			} else {
-				afterPrint();
-			}
-		});
-	}
-});
-</script>
 {% endblock %}
 
 {% block title %}Messwerte{% endblock %}
