@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load i18n bootstrap4 %}
 
 {% block page_title %}Anmelden{% endblock %}
 
@@ -10,7 +10,8 @@
         {% bootstrap_form form %}
         {% buttons %}
             <button type="submit" class="btn btn-primary">
-                <i class="far fa-sign-in"></i> Anmelden
+                <i class="far fa-sign-in"></i>
+                {% trans 'Login' %}
             </button>
         {% endbuttons %}
     </form>

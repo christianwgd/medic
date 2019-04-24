@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import  views
 
 app_name = 'usrprofile'
 urlpatterns = [
-    url(r'^userprof/', views.userprof, name='userprof'),
+    path('userprof/', views.userprof, name='userprof'),
 ]

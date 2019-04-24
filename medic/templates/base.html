@@ -85,6 +85,10 @@
                         <i class="far fa-sign-out"></i>
                         {% trans 'Log out' %}
                     </a>
+                    <a class="dropdown-item" href="{% url 'pwd_change' %}">
+                        <i class="far fa-key"></i>
+                        {% trans 'Password change' %}
+                    </a>
                     <a class="dropdown-item" href="{% url 'usrprofile:userprof' %}">
                         <i class="far fa-cog"></i>
                         Einstellungen
