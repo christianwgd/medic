@@ -54,21 +54,21 @@
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url 'werte:werte' %}">
-                        Liste
+                        {% trans 'List' %}
                     </a>
                     <a class="dropdown-item" href="{% url 'werte:neu' %}">
-                        Neuer Messwert
+                        {% trans 'New measurement' %}
                     </a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'medikamente:medikamente' %}">
-                    Medikamente
+                    {% trans 'Medications ' %}
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'medikamente:verordnungen' %}">
-                    Verordnungen
+                    {% trans 'Prescriptions' %}
                 </a>
             </li>
             {% endif %}
@@ -91,7 +91,7 @@
                     </a>
                     <a class="dropdown-item" href="{% url 'usrprofile:userprof' %}">
                         <i class="far fa-cog"></i>
-                        Einstellungen
+                        {% trans 'Settings' %}
                     </a>
                     <a class="dropdown-item" href="{% url 'two_factor:profile' %}">
                         <!-- user-cog in fa5.0.6 nicht enthalten -->

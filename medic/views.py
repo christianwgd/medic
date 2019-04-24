@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.messages.constants import ERROR
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext_lazy as _
 
 from logging import getLogger
 
@@ -34,11 +35,11 @@ def startpage(request):
             startpage = 'index'
         return redirect(reverse_lazy(startpage))
     except User.DoesNotExist:
-        message = 'Benutzer existiert nicht.'
+        message = _('User does not exist.')
         messages.add_message(request, ERROR, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(usr)
+        message = _('User {} has no user profile.'.format(usr))
         messages.add_message(request, ERROR, message)
         return redirect(reverse_lazy('usrprofile:userprof'))
 
@@ -47,8 +48,7 @@ def log_off(request):
     user = request.user.username
     try:
         logout(request)
-        # logger.info('User %s logged out' % user)
-    except Exception as e:
-        logger.exception('Fehler beim Logoff (User: %s)! (%s)' % (user, e))
+    except Exception:
+        logger.exception(_('Error during logoff of user: {user})!'.format(user)))
     return redirect(reverse_lazy('medic_login'))
     
