@@ -29,7 +29,7 @@ class Medikament (models.Model):
     name = models.CharField(verbose_name="Bezeichnung", max_length=50)
     hersteller = models.CharField(verbose_name="Hersteller", max_length=50, null=True, blank=True)
     wirkstoff = models.CharField(verbose_name="Wirkstoff", max_length=50, null=True, blank=True)
-    packung = models.IntegerField(verbose_name="Packungsgröße", help_text=" Tabletten")
+    packung = models.PositiveIntegerField(verbose_name="Packungsgröße", help_text=" Tabletten")
     staerke = models.DecimalField(verbose_name="Dosis", max_digits=8, decimal_places=2)
     einheit = models.CharField(verbose_name="Einheit", max_length=2, choices=EINHEIT_CHOICES)
     bestand = models.DecimalField(verbose_name='Bestand', max_digits=5, decimal_places=2)
