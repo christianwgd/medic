@@ -1,16 +1,20 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load i18n bootstrap4 %}
 
 {% block page_title %}{% endblock %}
 
 {% block content %}
-
-<div class="row">
-    <div class="col-md-4 col-md-offset-4 centered">
-        <p>
-            Keine Startseite festgelegt
-        </p>
-    </div>
+<div class="col-md-4 offset-md-4">
+    <h4>{% trans 'No start page defined.' %}</h4>
+    <p>
+        {% trans 'You can define a start page by selecting it in your user settings.' %}
+    </p>
+    <a href="{% url 'startpage' %}">
+        <button class="btn btn-primary" type="button">
+            <i class='far fa-cog'></i>
+            {% trans 'Settings' %}
+        </button>
+    </a>
 </div>
 
 {% endblock %}
