@@ -20,8 +20,8 @@ class UsrProfForm(ModelForm):
         fields = ['warnenTageVorher', 'werteLetzteTage', 'zeigeArztWerte',
                   'zeigeArztMed', 'email_arzt', 'myStartPage', 'gebdat']
         widgets = {
-            'warnenTageVorher': forms.TextInput(attrs={'pattern': '^[0-9]{3}$'}),
-            'werteLetzteTage': forms.TextInput(attrs={'pattern': '^[0-9]{3}$'}),
+            'warnenTageVorher': forms.NumberInput(attrs={'step': 1.0, 'min': 0}),
+            'werteLetzteTage': forms.NumberInput(attrs={'step': 10.0, 'min': 0}),
             'gebdat': DatePickerInput(options={
                 "format": "DD.MM.YYYY",
                 "locale": "de"
