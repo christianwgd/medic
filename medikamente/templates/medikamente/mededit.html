@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load bootstrap4 i18n %}
 
 {% block page_title %}Medikament{% endblock %}
 
@@ -13,8 +13,8 @@
         {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok'%}
         {% bootstrap_button "Abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
         {% if med_id %}
-            <a href="{% url 'medikamente:deletemed' med_id %}" class="btn btn-secondary" role="button">
-                Löschen
+            <a href="{% url 'medikamente:deletemed' med_id %}" class="btn btn-danger" role="button">
+                {% trans 'Delete' %}
             </a>
         {% endif %}
     {% endbuttons %}
