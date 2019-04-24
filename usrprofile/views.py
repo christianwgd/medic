@@ -8,8 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages.constants import SUCCESS, ERROR, INFO
+from django.utils.translation import ugettext_lazy as _
+
 from usrprofile.forms import UsrProfForm
 from usrprofile.models import UserProfile
+
 from logging import getLogger
 
 logger = getLogger('medic')
