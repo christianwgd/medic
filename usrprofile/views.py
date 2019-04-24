@@ -18,18 +18,18 @@ logger = getLogger('medic')
 @login_required(login_url='/login/')
 def userprof(request):
     if 'cancel' in request.POST:
-        messages.info(request, 'Änderung abgebrochen.')
+        messages.info(request, _('Edit cancelled.'))
         return redirect(reverse_lazy('startpage'))
 
     try:
         usr = User.objects.get(username=request.user.username)
         usrProf = UserProfile.objects.get(ref_usr = usr)
     except User.DoesNotExist:
-        message = 'Benutzer existiert nicht.'
+        message = _('User does not exist.')
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(usr)
+        message = _('User {user} has no user profile.').format(user=usr)
         messages.error(request, message)
         usrProf = UserProfile.objects.create(ref_usr_id=usr.id)
     
@@ -42,14 +42,17 @@ def userprof(request):
                     usr.email = form.cleaned_data['email']
                     usr.save()
                 messages.success(request,
-                    'Einstellungen für Benutzer {} gespeichert.'.format(usrProf.ref_usr.username)
+                    _('Settings for user {user} saved.').format(
+                        user=usrProf.ref_usr.username
+                    )
                 )
                 return redirect(reverse_lazy('startpage'))
-            except Exception as e:
-                logger.exception('Fehler beim Speichern der Einstellungen für Benutzer {}: {}'.format(usr.username, e))
-                messages.error(request,
-                    'Fehler beim Speichern der Einstellungen: %s' % e
+            except Exception:
+                msg = _('Error saving settings for user {user}').format(
+                    user=usr.username
                 )
+                logger.exception(msg)
+                messages.error(request, msg)
     else:  # GET
         form = UsrProfForm(instance=usrProf, initial={'email': usr.email})
         

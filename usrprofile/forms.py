@@ -4,12 +4,16 @@ from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
 from django.forms import EmailInput
 from django.forms.models import ModelForm
+from django.utils.translation import ugettext_lazy as _
+
 from usrprofile.models import UserProfile
 
 
 class UsrProfForm(ModelForm):
-    email = forms.EmailField(label='eMail-Adresse', required=False,
-                             widget=EmailInput(attrs={"autofocus": "autofocus"}))
+    email = forms.EmailField(
+        label=_('email adress'), required=False,
+        widget=EmailInput(attrs={"autofocus": "autofocus"})
+    )
 
     class Meta(object):
         model = UserProfile
@@ -26,7 +30,9 @@ class UsrProfForm(ModelForm):
 
 
 class MailForm(forms.Form):
-    mailadr = forms.EmailField(label="an")
-    subject = forms.CharField(max_length=80, label="Betreff")
-    text = forms.CharField(max_length=500, required=False,
-                           label="Text", widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}))
+    mailadr = forms.EmailField(label=_("to"))
+    subject = forms.CharField(max_length=80, label=_("Subject"))
+    text = forms.CharField(
+        max_length=500, required=False,
+        label="Text", widget=forms.Textarea(attrs={'cols': 80, 'rows': 4})
+    )

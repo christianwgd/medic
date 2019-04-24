@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static bootstrap4 l10n usrprofile_tags %}
+{% load static bootstrap4 l10n i18n usrprofile_tags %}
 
 {% block bootstrap4_extra_script %}
 {{ block.super }}
@@ -9,11 +9,12 @@
 <script src="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
-{% block page_title %}Einstellungen{% endblock %}
+{% block page_title %}{% trans 'User settings' %}{% endblock %}
 
 {% block content %}
 
-{% user_header 'Einstellungen für' user %}
+{% trans 'Settings for' as user_title %}
+{% user_header user_title user %}
 
 <div class="v-offset">
     <form role="form" class="form-horizontal" method="post" novalidate>
@@ -21,25 +22,27 @@
 
         {% bootstrap_form_errors form type='non_fields' %}
 
-        <h4 class="v-offset">Persönliche Daten</h4>
+        <h4 class="v-offset">{% trans 'Personal data' %}</h4>
         {% bootstrap_field form.gebdat layout='horizontal' %}
         {% bootstrap_field form.email layout='horizontal' %}
         {% bootstrap_field form.myStartPage layout='horizontal' %}
 
-        <h4 class="v-offset">Zeiträume</h4>
+        <h4 class="v-offset">{% trans 'Periods' %}</h4>
         {% bootstrap_field form.warnenTageVorher layout='horizontal' %}
         {% bootstrap_field form.werteLetzteTage layout='horizontal' %}
 
-        <h4 class="v-offset">Sichtbarkeit der Daten für den Arzt</h4>
+        <h4 class="v-offset">{% trans 'Visibility of data for doctor' %}</h4>
         {% bootstrap_field form.zeigeArztWerte layout='horizontal' %}
         {% bootstrap_field form.zeigeArztMed layout='horizontal' %}
 
-        <h4 class="v-offset">Arzt</h4>
+        <h4 class="v-offset">{% trans 'Doctor' %}</h4>
         {% bootstrap_field form.email_arzt layout='horizontal' %}
 
+        {% trans 'Ok' as ok %}
+        {% trans 'Cancel' as cancel %}
         {% buttons layout='inline' %}
-            {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='Ok' %}
-            {% bootstrap_button "Abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+            {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='Ok' %}
+            {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
         {% endbuttons %}
     </form>
 </div>
