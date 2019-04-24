@@ -99,7 +99,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'medic.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'medic.wsgi.application'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
