@@ -265,8 +265,8 @@ def diagram(request, von, bis):
         messages.error(request, message)
     
     return render(request, 'werte/diagram.html', {
-        'vondate': vondate, 
-        'bisdate': bisdate, 
+        'vondate': von_date,
+        'bisdate': bis_date,
         'user': request.user,
         'sys': js_sys, 
         'dia': js_dia, 
