@@ -1,77 +1,61 @@
 {% extends "base.html" %}
-{% load bootstrap4 l10n usrprofile_tags %}
+{% load bootstrap4 l10n i18n usrprofile_tags %}
 
 {% block page_title %}{% endblock %}
 
 {% block content %}
 
-{% user_header 'Minimal-, Maximal- und Mittelwerte' user %}
+{% trans 'Minimum, maximum and average values' as user_title %}
+{% user_header user_title user %}
 
 <div class="btn-group" role="group" >
-    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
+    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="{% trans 'Measurements' %}">
         <i class="far fa-list"></i>
     </a>
 </div>
 
 <div class="v-offset">
-    <h4>Blutdruck</h4>
+    
     <table class="table table-bordered">
+        <thead>
+            <th></th>
+            <th><i class="far fa-arrow-to-bottom" title="{% trans 'Minimum' %}"></i></th>
+            <th><i class="far fa-arrow-to-top" title="{% trans 'Maximum' %}"></i></th>
+            <th><i class="far fa-arrows-v" title="{% trans 'Average' %}"></i></th>
+        </thead>
         <tbody>
             <tr>
-                <th>Minimum RR-Sys:</th><td>{{ minrrsys }} mm/Hg</td>
+                <th>{% trans 'RR sys' %}</th>
+                <td>{{ minrrsys }} mm/Hg</td>
+                <td>{{ maxrrsys }} mm/Hg</td>
+                <td>{{ medrrsys|floatformat:1 }} mm/Hg</td>
             </tr>
             <tr>
-                <th>Maximum RR-Sys:</th><td>{{ maxrrsys }} mm/Hg</td>
-                <th>Mittelwert:</th><td>{{ medrrsys|floatformat:1 }} mm/Hg</td>
+                <th>{% trans 'RR dia' %}</th>
+                <td>{{ minrrdia }} mm/Hg</td>
+                <td>{{ maxrrdia }} mm/Hg</td>
+                <td>{{ medrrdia|floatformat:1 }} mm/Hg</td>
             </tr>
             <tr>
-                <th>Minimum RR-Dia:</th><td>{{ minrrdia }} mm/Hg</td>
+                <th>{% trans 'Pulse' %}</th>
+                <td>{{ minpuls }} /min</td>
+                <td>{{ maxpuls }} /min</td>
+                <td>{{ medpuls|floatformat:1 }} /min</td>
             </tr>
             <tr>
-                <th>Maximum RR-Dia:</th><td>{{ maxrrdia }} mm/Hg</td>
-                <th>Mittelwert:</th><td>{{ medrrdia|floatformat:1 }} mm/Hg</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h4>Puls</h4>
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th>Minimum Puls:</th><td>{{ minpuls }} /min</td>
+                <th>{% trans 'Temperature' %}</th>
+                <td>{{ mintemp|default_if_none:'0'|floatformat:1 }} &deg;C</td>
+                <td>{{ maxtemp|default_if_none:'0'|floatformat:1 }} &deg;C</td>
+                <td>{{ medtemp|default_if_none:'0'|floatformat:1 }} &deg;C</td>
             </tr>
             <tr>
-                <th>Maximum Puls:</th><td>{{ maxpuls }} /min</td>
-                <th>Mittelwert:</th><td>{{ medpuls|floatformat:1 }} /min</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h4>Temperatur</h4>
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th>Minimum Temp.:</th><td>{{ mintemp|floatformat:1 }} &deg;C</td>
-            </tr>
-            <tr>
-                <th>Maximum Temp.:</th><td>{{ maxtemp|floatformat:1 }} &deg;C</td>
-                <th>Mittelwert:</th><td>{{ medtemp|floatformat:1 }} &deg;C</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h4>Gewicht</h4>
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th>Minimum Gewicht:</th><td>{{ mingew|floatformat:1 }} Kg</td>
-            </tr>
-            <tr>
-                <th>Maximum Gewicht:</th><td>{{ maxgew|floatformat:1 }} Kg</td>
-                <th>Mittelwert:</th><td>{{ medgew|floatformat:1 }} Kg</td>
+                <th>{% trans 'Weight' %}</th>
+                <td>{{ mingew|default_if_none:'0'|floatformat:1 }} Kg</td>
+                <td>{{ maxgew|default_if_none:'0'|floatformat:1 }} Kg</td>
+                <td>{{ medgew|default_if_none:'0'|floatformat:1 }} Kg</td>
             </tr>
         </tbody>
     </table>

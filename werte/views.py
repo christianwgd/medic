@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 
-import calendar
 import datetime
 import json
 from decimal import Decimal
@@ -16,23 +15,19 @@ from django.db.models import Avg, Max, Min
 from django.forms import ModelForm
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.utils import timezone
+from django.utils import timezone, formats, dateparse
+from django.utils.translation import ugettext_lazy as _
+
 from mail_templated import send_mail
 
 from usrprofile.models import UserProfile
+from usrprofile.forms import MailForm
+
 from werte.forms import TimeForm
 from werte.models import Wert
 
 
 logger = getLogger('medic')
-
-
-def utc_to_local(utc_dt):
-    # get integer timestamp to avoid precision lost
-    timestamp = calendar.timegm(utc_dt.timetuple())
-    local_dt = datetime.datetime.fromtimestamp(timestamp)
-    assert utc_dt.resolution >= datetime.timedelta(microseconds=1)
-    return local_dt.replace(microsecond=utc_dt.microsecond)
 
 
 @login_required(login_url='/login/')
@@ -44,48 +39,39 @@ def werte(request):
     try:
         up = UserProfile.objects.get(ref_usr=request.user)
         
-        t = datetime.timedelta(days=up.werteLetzteTage)  # default aus UserProfile
+        t = datetime.timedelta(days=up.werteLetzteTage)  # default from UserProfile
         bis = timezone.now()
         von = bis - t
-        von = von.replace(hour=23, minute=59)
 
         if request.method == 'POST':
             form = TimeForm(request.POST)
             if form.is_valid():
-                von = datetime.datetime.combine(form.cleaned_data['vonDate'],
-                                                datetime.time(00, 00))
-                von = timezone.make_aware(von)
-                bis = datetime.datetime.combine(form.cleaned_data['bisDate'],
-                                                datetime.time(23, 59))
-                bis = timezone.make_aware(bis)
+                von = form.cleaned_data['vonDate']
+                bis = form.cleaned_data['bisDate']
                 if von > bis:
-                    messages.error(request, 'von-Datum muss kleiner als bis-Datum sein!')
+                    messages.error(request, _('From date must be earlier than to date!'))
         else:
             form = TimeForm(initial={
-                'vonDate': von.strftime("%d.%m.%Y"),
-                'bisDate': bis.strftime("%d.%m.%Y")
+                'vonDate': von,
+                'bisDate': bis
             })
             
-        wertelist = Wert.objects.filter(date__gte=von, date__lte=bis, ref_usr=request.user).order_by('-date')
+        wertelist = Wert.objects.filter(
+            date__date__gte=von, 
+            date__date__lte=bis, 
+            ref_usr=request.user
+        ).order_by('-date')
     except UserProfile.DoesNotExist:
-        message = u'Der Benutzer %s hat kein Benutzerprofil.' % request.user
+        message = _('User {user} has no user profile.').format(user=request.user)
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except Exception as e:
-        message = 'Fehler beim Anzeigen der Messwerte: %s' % e
-    if message != '':
+        message =  _('Error in reading measurements.')
         logger.exception(message)
         messages.error(request, message)
     
     return render(request, 'werte/werte.html',
-                  {'wertelist': wertelist, 'form': form, 'user': request.user})
-
-
-class MailForm(forms.Form):
-    mailadr = forms.EmailField(label="an")
-    subject = forms.CharField(max_length=80, label="Betreff")
-    text = forms.CharField(max_length=500, required=False,
-                           label="Text", widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}))
+                  {'wertelist': wertelist, 'form': form, 'user': request.user, 'von': von, 'bis': bis})
 
 
 @login_required(login_url='/login/')
@@ -93,13 +79,20 @@ def emailwerte(request, von, bis):
     message = ''
 
     if 'cancel' in request.POST:
-        messages.info(request, 'Funktion abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('werte:werte'))
 
-    von_date = timezone.make_aware(datetime.datetime.strptime(von, "%d.%m.%Y"))
-    bis_date = timezone.make_aware(datetime.datetime.strptime(bis, "%d.%m.%Y"))
+    von = dateparse.parse_date(von)
+    bis = dateparse.parse_date(bis)
 
-    wertelist = Wert.objects.filter(date__gte=von_date, date__lte=bis_date, ref_usr=request.user).order_by('-date')
+    wertelist = Wert.objects.filter(
+        date__date__gte=von, 
+        date__date__lte=bis, 
+        ref_usr=request.user
+    ).order_by('-date')
+
+    min_date = wertelist.earliest('date').date
+    max_date = wertelist.latest('date').date
 
     try:
         user = request.user
@@ -112,40 +105,51 @@ def emailwerte(request, von, bis):
                     mail_to = []
                     if user.email is None or user.email == '':
                         messages.warning(request,
-                             'emails können nicht gesendet werden, da keine eigene email-Adresse angegeben wurde(s.a. Einstellungen).')
+                            _('Sending emails requires email address in user settings.')
+                        )
                     else:
                         mail_to.append(form.cleaned_data['mailadr'])
                         email_from = user.email
-                        send_mail('werte/emailwerte.txt',
-                                  {'user': user, 'text': form.cleaned_data['text'], 'wertelist': wertelist, 'von': von, 'bis': bis},
-                                  email_from, mail_to)
-                        messages.success(request, 'Email gesendet.')
+                        send_mail(
+                            'werte/emailwerte.txt',
+                            {
+                                'user': user, 'text': form.cleaned_data['text'], 
+                                'wertelist': wertelist, 'von': von, 'bis': bis
+                            },
+                            email_from, mail_to
+                        )
+                        messages.success(request, _('Email sent.'))
                         return redirect(reverse_lazy('werte:werte'))
                 except Exception as e:
-                    messages.error(request, 'Fehler beim Senden: {}.'.format(e))
+                    messages.error(request, _('Error sending email: {}.').format(e))
         else:
-            form = MailForm(initial={'mailadr': up.email_arzt,
-                            'subject': 'Werte %s %s vom %s bis %s' % (request.user.first_name,
-                                                                      request.user.last_name, von, bis)})
+            form = MailForm(initial={
+                'mailadr': up.email_arzt,
+                'subject': _('Measurements {name} from {von} to {bis}').format(
+                    name=request.user.get_full_name(),
+                    von=formats.date_format(min_date, 'SHORT_DATE_FORMAT'), 
+                    bis=formats.date_format(max_date, 'SHORT_DATE_FORMAT')
+                )}
+            )
 
     except UserProfile.DoesNotExist:
-        message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(request.user)
+        message = _('User {user} has no user profile.').format(user=request.user)
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
-    except Exception as e:
-        message = 'Fehler beim Anzeigen der Messwerte: {}'.format(e)
-    if message != '':
+    except Exception:
+        message = _('Error in reading measurements.')
         logger.exception(message)
         messages.error(request, message)
 
     return render(request, 'werte/emailwerte.html',
-                  {'wertelist': wertelist, 'form': form, 'von': von, 'bis': bis})
+                  {'wertelist': wertelist, 'form': form, 'von': min_date, 'bis': max_date})
 
 
 @login_required(login_url='/login/')
 def minmax(request, von, bis):
-    von_date = datetime.date.today()
-    bis_date = datetime.date.today()
+    von_date = dateparse.parse_date(von)
+    bis_date = dateparse.parse_date(bis)
+    
     minrrsys = maxrrsys = medrrsys = None
     minrrdia = maxrrdia = medrrdia = None
     minpuls  = maxpuls  = medpuls  = None
@@ -153,22 +157,18 @@ def minmax(request, von, bis):
     mingew   = maxgew   = medgew   = None
     
     try:
-        von_date = timezone.make_aware(
-            datetime.datetime.combine(datetime.datetime.strptime(von, "%d.%m.%Y"),
-                                             datetime.time(00, 00))
+        values = Wert.objects.filter(
+            date__date__gte=von_date, 
+            date__date__lte=bis_date,
+            ref_usr=request.user
+        ).exclude(rrsys=None
+        ).aggregate(
+            Avg('rrsys'), Max('rrsys'), Min('rrsys'),
+            Avg('rrdia'), Max('rrdia'), Min('rrdia'),
+            Avg('puls'), Max('puls'), Min('puls'),
+            Avg('temp'), Max('temp'), Min('temp'),
+            Avg('gew'), Max('gew'), Min('gew'),
         )
-        bis_date = timezone.make_aware(
-            datetime.datetime.combine(datetime.datetime.strptime(bis, "%d.%m.%Y"),
-                                             datetime.time(23, 59))
-        )
-        
-        values = (Wert.objects.filter(date__gte=von_date, date__lte=bis_date,
-                                      ref_usr=request.user).exclude(rrsys=None)
-                                        .aggregate(Avg('rrsys'), Max('rrsys'), Min('rrsys'),
-                                                   Avg('rrdia'), Max('rrdia'), Min('rrdia'),
-                                                   Avg('puls'), Max('puls'), Min('puls'),
-                                                   Avg('temp'), Max('temp'), Min('temp'),
-                                                   Avg('gew'), Max('gew'), Min('gew'),))
 
         minrrsys = values['rrsys__min']
         maxrrsys = values['rrsys__max']
@@ -189,18 +189,19 @@ def minmax(request, von, bis):
         mingew = values['gew__min']
         maxgew = values['gew__max']
         medgew = values['gew__avg']
-    except Exception as e:
-        message = 'Fehler beim Anzeigen der Statistik-Werte: %s' % e
+    except:
+        message = _('Error in calculating statistics')
         logger.exception(message)
         messages.error(request, message)
     
-    return render(request, 'werte/minmax.html',
-                  {'minrrsys': minrrsys, 'maxrrsys': maxrrsys, 'medrrsys': medrrsys,
-                   'minrrdia': minrrdia, 'maxrrdia': maxrrdia, 'medrrdia': medrrdia,
-                   'minpuls': minpuls, 'maxpuls': maxpuls, 'medpuls': medpuls,
-                   'mintemp': mintemp, 'maxtemp': maxtemp, 'medtemp': medtemp,
-                   'mingew': mingew, 'maxgew': maxgew, 'medgew': medgew,
-                   'vonDate': von_date, 'bisDate': bis_date, 'user': request.user})
+    return render(request, 'werte/minmax.html', {
+        'minrrsys': minrrsys, 'maxrrsys': maxrrsys, 'medrrsys': medrrsys,
+        'minrrdia': minrrdia, 'maxrrdia': maxrrdia, 'medrrdia': medrrdia,
+        'minpuls': minpuls, 'maxpuls': maxpuls, 'medpuls': medpuls,
+        'mintemp': mintemp, 'maxtemp': maxtemp, 'medtemp': medtemp,
+        'mingew': mingew, 'maxgew': maxgew, 'medgew': medgew,
+        'vonDate': von_date, 'bisDate': bis_date, 'user': request.user
+    })
 
 
 @login_required(login_url='/login/')
@@ -221,6 +222,9 @@ class DecimalEncoder(json.JSONEncoder):
 
 @login_required(login_url='/login/')
 def diagram(request, von, bis):
+    
+    von_date = dateparse.parse_date(von)
+    bis_date = dateparse.parse_date(bis)
 
     sys = []
     dia = []
@@ -229,29 +233,20 @@ def diagram(request, von, bis):
     gew = []
     
     try:
-        von_date = timezone.make_aware(
-            datetime.datetime.combine(datetime.datetime.strptime(von, "%d.%m.%Y"),
-                                      datetime.time(00, 00))
-        )
-        bis_date = timezone.make_aware(
-            datetime.datetime.combine(datetime.datetime.strptime(bis, "%d.%m.%Y"),
-                                      datetime.time(23, 59))
-        )
+        wertelist = Wert.objects.filter(
+            date__date__gte=von_date, 
+            date__date__lte=bis_date,
+            ref_usr=request.user
+        ).order_by('date')
 
-        werte_list = Wert.objects.filter(date__gte=von_date, date__lte=bis_date,
-                                         ref_usr=request.user).order_by('date')
-
-        if werte_list.count() == 0:
-            messages.error(request, 'Keine Werte in diesem Zeitraum.')
+        if wertelist.count() == 0:
+            messages.warning(request, _('No measurements found.'))
             return redirect(reverse_lazy('startpage'))
 
-        mindate = werte_list.aggregate(Min('date'))
-        maxdate = werte_list.aggregate(Max('date'))
+        vondate = wertelist.earliest('date').date
+        bisdate = wertelist.latest('date').date
         
-        vondate = mindate['date__min'].strftime('%Y-%m-%dT%H:%M:%S')
-        bisdate = maxdate['date__max'].strftime('%Y-%m-%dT%H:%M:%S')
-        
-        for wert in werte_list:
+        for wert in wertelist:
             date = wert.date.strftime('%Y-%m-%dT%H:%M:%S')
             sys.append([date, wert.rrsys])
             dia.append([date, wert.rrdia])
@@ -264,14 +259,21 @@ def diagram(request, von, bis):
         js_puls = json.dumps(puls, cls=DecimalEncoder)
         js_temp = json.dumps(temp, cls=DecimalEncoder)
         js_gew = json.dumps(gew, cls=DecimalEncoder)
-    except Exception as e:
-        message = u'Fehler beim Anzeigen der Messwerte: %s' % e
+    except:
+        message = _('Error in measurements')
         logger.exception(message)
         messages.error(request, message)
     
-    return render(request, 'werte/diagram.html',
-                  {'von': von, 'bis': bis, 'vondate': vondate, 'bisdate': bisdate, 'user': request.user,
-                   'sys': js_sys, 'dia': js_dia, 'puls': js_puls, 'tmp': js_temp, 'gew': js_gew})
+    return render(request, 'werte/diagram.html', {
+        'vondate': vondate, 
+        'bisdate': bisdate, 
+        'user': request.user,
+        'sys': js_sys, 
+        'dia': js_dia, 
+        'puls': js_puls, 
+        'tmp': js_temp, 
+        'gew': js_gew
+    })
 
 
 class MesswertForm(ModelForm):
@@ -297,13 +299,13 @@ class MesswertForm(ModelForm):
 def new(request):
 
     if 'cancel' in request.POST:
-        messages.info(request, u'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('werte:werte'))
 
     try:
         UserProfile.objects.get(ref_usr=request.user)
     except Exception as e:
-        message = 'Der Benutzer %s hat kein Benutzerprofil.' % request.user
+        message = _('User {user} has no user profile.').format(user=request.user)
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
 
@@ -311,48 +313,54 @@ def new(request):
         form = MesswertForm(request.POST)
         if form.is_valid():
             try:
-                new_wert = form.save(commit=False)
-                if (new_wert.rrsys is None and new_wert.rrdia is None and new_wert.puls is None
-                    and new_wert.temp is None and new_wert.gew is None):
-                    messages.warning(request, 'Keine Werte eingegeben.')
+                new_val = form.save(commit=False)
+                if (new_val.rrsys is None and new_val.rrdia is None and new_val.puls is None
+                    and new_val.temp is None and new_val.gew is None):
+                    messages.error(request, _('No values entered.'))
                 else:
-                    new_wert.ref_usr = request.user
-                    new_wert.save()
-                    loc_date = utc_to_local(new_wert.date)
-                    msg = 'Werte vom %s in die Datenbank übernommen.' % loc_date.strftime("%d.%m.%Y %H:%M")
+                    new_val.ref_usr = request.user
+                    new_val.save()
+                    local = timezone.localtime(new_val.date)
+                    msg = _('Measurements from {date} saved.').format(
+                        date=formats.date_format(local, 'SHORT_DATETIME_FORMAT'),
+                    )
                     messages.success(request, msg)
                     return redirect(reverse_lazy('werte:werte'))
-            except Exception as e:
-                logger.exception(u'Fehler beim Speichern der Werte für Benutzer %s: %s' % (request.user, e))
-                messages.error(request, u'Fehler beim Speichern der Werte: %s' % e)
+            except Exception:
+                msg = _('Error saving measurements.')
+                logger.exception(msg)
+                messages.error(request, msg)
     else:  # GET
         form = MesswertForm(initial={'ref_usr': request.user})
-    return render(request, 'werte/new.html', {'form': form})
+    return render(request, 'werte/edit.html', {'form': form})
 
 
 @login_required(login_url='/login/')
 def edit(request, wert_id):
 
     if 'cancel' in request.POST:
-        messages.info(request, u'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('werte:werte'))
 
-    wert = Wert.objects.get(id=wert_id)
+    val = Wert.objects.get(id=wert_id)
     
     if request.method == 'POST':
-        form = MesswertForm(request.POST, instance=wert)
+        form = MesswertForm(request.POST, instance=val)
         if form.is_valid():
             try:
-                wert.ref_usr = request.user
-                wert.save()
-                loc_date = utc_to_local(wert.date)
-                msg = 'Werte vom %s in die Datenbank übernommen.' % loc_date.strftime("%d.%m.%Y %H:%M")
+                val.ref_usr = request.user
+                val.save()
+                local = timezone.localtime(val.date)
+                msg = _('Measurements from {date} saved.').format(
+                    date=formats.date_format(local, 'SHORT_DATETIME_FORMAT'),
+                )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('werte:werte'))
-            except Exception as e:
-                logger.exception(u'Fehler beim Speichern der Werte für Benutzer %s: %s' % (request.user, e))
-                messages.error(request, u'Fehler beim Speichern der Werte: %s' % e)
+            except Exception:
+                msg = _('Error saving measurements.')
+                logger.exception(request, msg)
+                messages.error(request, msg)
     else:  # GET
-        form = MesswertForm(instance=wert)
+        form = MesswertForm(instance=val)
         
-    return render(request, 'werte/new.html', {'form': form})
+    return render(request, 'werte/edit.html', {'form': form})

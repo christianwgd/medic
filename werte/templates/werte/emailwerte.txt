@@ -1,6 +1,13 @@
 {% extends "mail_templated/base.tpl" %}
+{% load i18n %}
+
 {% block subject %}
-Werte für {{ user.last_name }}, {{ user.first_name }} vom {{ von }} bis {{ bis }}
+{% trans 'Measurements for' %}
+{{ user.usrinf }}
+{% trans 'from' %}
+{{ von }}
+{% trans 'to' %}
+{{ bis }}
 {% endblock %}
 
 {% block html %}
@@ -9,18 +16,19 @@ Werte für {{ user.last_name }}, {{ user.first_name }} vom {{ von }} bis {{ bis 
 <table>
 <thead>
         <tr>
-                <th>Datum</th>
-                <th>RR-Sys</th>
-                <th>RR-Dia</th>
-                <th>Puls</th>
-                <th>Temp.</th>
-                <th>Gewicht</th>
+                <th>{% trans 'Date' %}</th>
+                <th>{% trans 'RR sys' %}<br>(mm/Hg)</th>
+                <th>{% trans 'RR dia' %}<br>(mm/Hg)</th>
+                <th>{% trans 'Pulse' %}<br>(1/min)</th>
+                <th>{% trans 'Temp.' %}<br>(&deg;C)</th>
+                <th>{% trans 'Weight' %}<br>(Kg)</th>
+                <th>{% trans 'Peculiarity' %}</th>
         </tr>
 </thead>
 <tbody>
 {% for wert in wertelist %}
         <tr>
-                <td>{{ wert.date|date:_("d.m.Y H:i") }}</td>
+                <td>{{ wert.date|date:"d.m.Y H:i" }}</td>
                 <td>{{ wert.rrsys|default_if_none:"-" }}</td>
                 <td>{{ wert.rrdia|default_if_none:"-" }}</td>
                 <td>{{ wert.puls|default_if_none:"-" }}</td>

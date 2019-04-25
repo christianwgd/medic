@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load bootstrap4 i18n l10n %}
+
+{% block page_title %}{% trans 'Measurements' %}{% endblock %}
+
+{% block content %}
+
+<form method="post" action="" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+    {% trans 'Ok' as ok %}
+    {% trans 'Cancel' as cancel %}
+    {% buttons layout='inline' %}
+        {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
+    {% endbuttons %}
+</form>
+
+{% endblock %}

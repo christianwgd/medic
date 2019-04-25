@@ -12,7 +12,6 @@ class TimeForm(forms.Form):
         label='von',
         widget=DatePickerInput(options={
           "format": "DD.MM.YYYY",
-          #"minDate": get_min_date(),
           "locale": "de"
         })
     )
@@ -20,7 +19,6 @@ class TimeForm(forms.Form):
         label='bis',
         widget=DatePickerInput(options={
           "format": "DD.MM.YYYY",
-          "maxDate": timezone.now().strftime("%Y-%m-%d"),
           "locale": "de"
         })
     )

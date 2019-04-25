@@ -104,7 +104,6 @@ $(function() {
 	        	minTickSize: [1, "day"],
 	            min: (new Date("{{ vondate|safe }}")),
 	            max: (new Date("{{ bisdate|safe }}"))
-	            //panRange: [new Date("{{ von|safe }}"), new Date("{{ von|safe }}")]
 	          	},
 	        yaxis: {
 	        	mode: null,
@@ -169,8 +168,6 @@ $(function() {
 	
 	var placeholder = $("#placeholder");
 	
-	//$.plot("#placeholder", datasets, options); // jetzt ueber plotAccordingToChoices();
-	
 	var i = 0;
 	$.each(datasets, function(key, val) {
 		val.color = i;
@@ -222,10 +219,10 @@ $(function() {
 {% user_header 'Messwerte als Diagramm' user %}
 
 <div class="btn-group" role="group" >
-    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Verwalten von Messwerten">
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="Messwerte">
+    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="{% trans 'Measurements' %}">
         <i class="far fa-list"></i>
     </a>
 </div>

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 static usrprofile_tags %}
+{% load i18n bootstrap4 static usrprofile_tags %}
 
 {% block bootstrap4_extra_script %}
 {{ block.super }}
@@ -10,22 +10,26 @@
 
 {% block content %}
 
-{% user_header 'Messwerte' user %}
+{% trans 'Measurements' as user_title %}
+{% user_header user_title user %}
 
 <div class="btn-group" role="group" >
-    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'werte:neu' %}" class="btn btn-primary" role="button" title="Neuen Messwert erfassen">
+    <a href="{% url 'werte:neu' %}" class="btn btn-primary" role="button" title="{% trans 'New measurements' %}">
         <i class="far fa-plus"></i>
     </a>
-    <a href="{% url 'werte:diagram' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Diagramm">
+    <a href="{% url 'werte:diagram' von|date:'Y-m-d' bis|date:'Y-m-d' %}" 
+        class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}">
         <i class="far fa-chart-area"></i>
     </a>
-    <a href="{% url 'werte:minmax' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Statistik">
+    <a href="{% url 'werte:minmax' von|date:'Y-m-d' bis|date:'Y-m-d' %}" 
+        class="btn btn-primary" role="button" title="{% trans 'Statistics' %}">
         <i class="far fa-arrows-v"></i>
     </a>
-    <a href="{% url 'werte:email' form.vonDate.value form.bisDate.value %}" class="btn btn-primary" role="button" title="Werte per email versenden">
+    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}" 
+        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}">
         <i class="far fa-envelope"></i>
     </a>
 </div>
@@ -38,7 +42,8 @@
         {% bootstrap_form form layout='inline' %}
         {% buttons %}
             <button type="submit" class="btn btn-secondary">
-                anzeigen
+                <i class="far fa-sync"></i>
+                {% trans 'Refresh' %}
             </button>
         {% endbuttons %}
     </form>
@@ -49,19 +54,19 @@
     <table id="wertelist" class="table table-condensed table-striped table-bordered">
         <thead>
             <tr>
-                <th>Datum</th>
-                <th>RR-Sys<br>(mm/Hg)</th>
-                <th>RR-Dia<br>(mm/Hg)</th>
-                <th>Puls<br>(1/min)</th>
-                <th>Temp.<br>(&deg;C)</th>
-                <th>Gewicht<br>(Kg)</th>
-                <th>Besonderheiten</th>
+                <th>{% trans 'Date' %}</th>
+                <th>{% trans 'RR sys' %}<br>(mm/Hg)</th>
+                <th>{% trans 'RR dia' %}<br>(mm/Hg)</th>
+                <th>{% trans 'Pulse' %}<br>(1/min)</th>
+                <th>{% trans 'Temp.' %}<br>(&deg;C)</th>
+                <th>{% trans 'Weight' %}<br>(Kg)</th>
+                <th>{% trans 'Peculiarity' %}</th>
             </tr>
         </thead>
         <tbody>
             {% for wert in wertelist %}
             <tr>
-                <td><a href="{% url 'werte:edit' wert.id %}">{{ wert.date|date:_("d.m.Y H:i") }}</a></td>
+                <td><a href="{% url 'werte:edit' wert.id %}">{{ wert.date|date:"SHORT_DATETIME_FORMAT" }}</a></td>
                 <td>{{ wert.rrsys|default_if_none:"" }}</td>
                 <td>{{ wert.rrdia|default_if_none:"" }}</td>
                 <td>{{ wert.puls|default_if_none:"" }}</td>

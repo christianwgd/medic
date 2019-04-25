@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-{% load bootstrap4 l10n %}
+{% load bootstrap4 l10n i18n %}
 
-{% block page_title %}Messwerte versenden{% endblock %}
-
+{% block page_title %}{% trans 'Send measurements' %}{% endblock %}
 
 {% block content %}
 
@@ -11,30 +10,31 @@
     {% bootstrap_form_errors form %}
     {% bootstrap_form form %}
     {% buttons layout='inline'  %}
-        {% bootstrap_button "senden" button_class="btn-primary" button_type='submit' name='ok' %}
-        {% bootstrap_button "abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+    {% trans "<i class='far fa-paper-plane'></i> Send" as send %}
+    {% trans 'Cancel' as cancel %}
+    {% bootstrap_button send button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
     {% endbuttons %}
 </form>
 
-
 <div class="v-offset">
-    <h4>Werte vom {{von}} bis {{bis}}</h4>
+    <h4>Werte vom {{ von|date:'SHORT_DATE_FORMAT' }} bis {{ bis|date:'SHORT_DATE_FORMAT' }}</h4>
     <table id="wertelist" class="table table-condensed table-striped table-bordered">
         <thead>
             <tr>
-                <th>Datum</th>
-                <th>RR-Sys<br>(mm/Hg)</th>
-                <th>RR-Dia<br>(mm/Hg)</th>
-                <th>Puls<br>(1/min)</th>
-                <th>Temp.<br>(&deg;C)</th>
-                <th>Gewicht<br>(Kg)</th>
-                <th>Besonderheiten</th>
+                <th>{% trans 'Date' %}</th>
+                <th>{% trans 'RR sys' %}<br>(mm/Hg)</th>
+                <th>{% trans 'RR dia' %}<br>(mm/Hg)</th>
+                <th>{% trans 'Pulse' %}<br>(1/min)</th>
+                <th>{% trans 'Temp.' %}<br>(&deg;C)</th>
+                <th>{% trans 'Weight' %}<br>(Kg)</th>
+                <th>{% trans 'Peculiarity' %}</th>
             </tr>
         </thead>
         <tbody>
             {% for wert in wertelist %}
             <tr>
-                <td>{{ wert.date|date:_("d.m.Y H:i") }}</td>
+                <td>{{ wert.date|date:"d.m.Y H:i" }}</td>
                 <td>{{ wert.rrsys|default_if_none:"" }}</td>
                 <td>{{ wert.rrdia|default_if_none:"" }}</td>
                 <td>{{ wert.puls|default_if_none:"" }}</td>
