@@ -19,10 +19,11 @@ ADMINS = (
     'cwiegand', 'cwiegand@wgdnet.de'
 )
 
-EMAIL_HOST = 'smtp.strato.de'
-EMAIL_HOST_USER = 'wgdsrv@wgdnet.de'
-EMAIL_HOST_PASSWORD = 'mistral+99'
-EMAIL_USE_TLS = True
+# Move to localsettings...
+# EMAIL_HOST = 'smtp.strato.de'
+# EMAIL_HOST_USER = 'wgdsrv@wgdnet.de'
+# EMAIL_HOST_PASSWORD = 'mistral+99'
+# EMAIL_USE_TLS = True
 
 MANAGERS = ADMINS
 
