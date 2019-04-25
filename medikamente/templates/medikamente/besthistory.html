@@ -28,7 +28,7 @@
         <tbody>
             {% for change in bestchangelist %}
             <tr>
-                <td>{{ change.date|date:_("d.m.Y") }}</td>
+                <td>{{ change.date|date:"SHORT_DATE_FORMAT" }}</td>
                 <td style="text-align: right; padding-right: 10px;">{{ change.menge|floatformat:2 }} Tabl.</td>
                 <td>{{ change.get_grund_display }}</td>
                 <td>{{ change.text }}</td>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 16:37+0200\n"
+"POT-Creation-Date: 2019-04-25 16:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,12 +194,6 @@ msgstr "Bestandsveränderungen"
 msgid "Amount"
 msgstr "Menge"
 
-#: .\templates\medikamente\besthistory.html:31
-#: .\templates\medikamente\vrdfutchange.html:195
-#: .\templates\medikamente\vrdfuthistory.html:183
-msgid "d.m.Y"
-msgstr ""
-
 #: .\templates\medikamente\mededit.html:17
 msgid "Delete"
 msgstr "Löschen"
@@ -299,13 +293,13 @@ msgstr "Keine Menge angegeben."
 
 #: .\views.py:505
 #, python-brace-format
-msgid "Inventory change of {med} Ã¼bernommen ({amount})."
+msgid "Inventory change of {med} saved ({amount})."
 msgstr "Bestandsveränderung {med} übernommen ({amount})."
 
 #: .\views.py:512
 msgid "Error saving {}."
-msgstr ""
+msgstr "Fehler beim Speichern von {}."
 
 #: .\views.py:539
 msgid "Error reading inventory history."
-msgstr ""
+msgstr "Fehler beim Lesen der Bestandshistorie."

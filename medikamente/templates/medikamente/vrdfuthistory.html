@@ -180,7 +180,7 @@ function delvrdfut () {
     <td>{{ vrd.fr|yesno:"x,-" }}</td>
     <td>{{ vrd.sa|yesno:"x,-" }}</td>
     <td>{{ vrd.so|yesno:"x,-" }}</td>
-    <td>{{ vrd.gueltig_ab|date:_("d.m.Y") }}</td>
+    <td>{{ vrd.gueltig_ab|date:"SHORT_DATETIME_FORMAT" }}</td>
 </tr>
 {% endfor %}
 </tbody>
