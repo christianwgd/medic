@@ -227,7 +227,7 @@ def vrdedit(request, vrd_id):
             try:
                 form.save()
                 msg = _('{medication} saved.').format(
-                    medication=new_vrd.ref_medikament
+                    medication=vrd.ref_medikament
                 )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:verordnungen'))
@@ -352,7 +352,7 @@ class VerordnungDelete(DeleteView):
                 'medikamente:vrdedit',
                 kwargs = {'vrd_id': self.kwargs['pk']}
             ))
-        messages.success(request, _('Medication deleted.')
+        messages.success(request, _('Medication deleted.'))
         return super(VerordnungDelete, self).post(request, args, kwargs)
 
 
@@ -430,9 +430,9 @@ def mededit(request, med_id):
             try:
                 form.save()
                 msg = _('{med} {dose} {unit} saved.').format(
-                    med=new_med.name, 
-                    dose=new_med.staerke,
-                    unit=new_med.einheit
+                    med=med.name, 
+                    dose=med.staerke,
+                    unit=med.einheit
                 )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:medikamente'))
@@ -503,12 +503,13 @@ def bestandedit(request, med_id):
                     medikament.save()
                     delta.save()
                     msg = _('Inventory change of {med} übernommen ({amount}).').format(
-                        delta.ref_medikament, delta.menge
+                        med=delta.ref_medikament, 
+                        amount=delta.menge
                     )
                     messages.success(request, msg)
                     return redirect(reverse_lazy('medikamente:medikamente'))
             except:
-                message = _('Error saving {}.'.format(delta.ref_medikament)
+                message = _('Error saving {}.').format(delta.ref_medikament)
                 logger.exception(message)
                 messages.error(request, message)
     else:  # GET
