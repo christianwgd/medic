@@ -7,7 +7,6 @@
 
 <form method="post" action="" novalidate>
     {% csrf_token %}
-    {% bootstrap_form_errors form %}
     {% bootstrap_form form %}
     {% buttons layout='inline'  %}
         {% bootstrap_button "<i class='far fa-paper-plane'></i> senden" button_class="btn-primary" button_type='submit' name='ok' %}
