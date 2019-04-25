@@ -1,17 +1,25 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load bootstrap4 i18n %}
 
-{% block page_title %}Medikament löschen{% endblock %}
+{% block page_title %}{% Delete medicine %}{% endblock %}
 
 {% block content %}
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
-    <p>Soll das Medikament "{{ object }}" wirklich gelöscht werden?</p>
-    <p>Achtung: Alle Verordnungen des Medikaments werden mit gelöscht!</p>
+    <p>
+        {% blocktrans trimmed %}Really delete "{{ object }}"?{% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans trimmed %}
+           Please note: All medications of medicine will be deleted!
+        {% endblocktrans %}
+    </p>
     {% buttons layout='inline' %}
-        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' %}
-        {% bootstrap_button "Abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+        {% trans 'Ok' as ok %}
+        {% trans 'Cancel' as cancel %}
+        {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
     {% endbuttons %}
 </form>
 

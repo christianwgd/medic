@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load i18n bootstrap4 %}
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
@@ -13,9 +13,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
   	calcdosis("#id_morgen", "#modosis");
-	calcdosis("#id_mittag", "#midosis");
-	calcdosis("#id_abend", "#abdosis");
-	calcdosis("#id_nacht", "#nadosis");
+	calcdosis("#id_mittag", "#nndosis");
+	calcdosis("#id_abend", "#evdosis");
+	calcdosis("#id_nacht", "#ngdosis");
 });
 
 function checkall() {
@@ -60,24 +60,24 @@ $("#id_morgen").change(function () {
 	calcdosis("#id_morgen", "#modosis");
 });
 $("#id_mittag").change(function () {
-	calcdosis("#id_mittag", "#midosis");
+	calcdosis("#id_mittag", "#nndosis");
 });
 $("#id_abend").change(function () {
-	calcdosis("#id_abend", "#abdosis");
+	calcdosis("#id_abend", "#evdosis");
 });
 $("#id_nacht").change(function () {
-	calcdosis("#id_nacht", "#nadosis");
+	calcdosis("#id_nacht", "#ngdosis");
 });
 $("#id_ref_medikament").change(function () {
 	calcdosis("#id_morgen", "#modosis");
-	calcdosis("#id_mittag", "#midosis");
-	calcdosis("#id_abend", "#abdosis");
-	calcdosis("#id_nacht", "#nadosis");
+	calcdosis("#id_mittag", "#nndosis");
+	calcdosis("#id_abend", "#evdosis");
+	calcdosis("#id_nacht", "#ngdosis");
 });
 </script>
 {% endblock %}
 
-{% block page_title %}Verordnung{% endblock %}
+{% block page_title %}{% trans 'Medication' %}{% endblock %}
 
 {% block content %}
 
@@ -87,18 +87,22 @@ $("#id_ref_medikament").change(function () {
 
     {% bootstrap_field form.ref_medikament %}
 
-    {% bootstrap_field form.morgen addon_after='Tabl. <span id="modosis"></span>' %}
-    {% bootstrap_field form.mittag addon_after='Tabl. <span id="midosis"></span>' %}
-    {% bootstrap_field form.abend addon_after='Tabl. <span id="abdosis"></span>' %}
-    {% bootstrap_field form.nacht addon_after='Tabl. <span id="nadosis"></span>' %}
+    {% trans 'Tabl. <span id="modosis"></span>' as modose %}
+    {% trans 'Tabl. <span id="nndosis"></span>' as nndose %}
+    {% trans 'Tabl. <span id="evdosis"></span>' as evdose %}
+    {% trans 'Tabl. <span id="ngdosis"></span>' as ngdose %}
+    {% bootstrap_field form.morgen addon_after=modose %}
+    {% bootstrap_field form.mittag addon_after=nndose %}
+    {% bootstrap_field form.abend addon_after=evdose %}
+    {% bootstrap_field form.nacht addon_after=ngdose %}
 
     <h4>Wochentage</h4>
     <div class="btn-group" role="group" >
         <button type="button" class="btn btn-sm btn-default" onclick="checkall();">
-            <i class="far fa-check-square"></i> alle
+            <i class="far fa-check-square"></i> {% trans 'All' %}
         </button>
         <button type="button" class="btn btn-sm btn-default" onclick="checknone();">
-            <i class="far fa-square"></i> keine
+            <i class="far fa-square"></i> {% trans 'None' %}
         </button>
     </div>
     <table class="table table-bordered">
@@ -127,8 +131,10 @@ $("#id_ref_medikament").change(function () {
     </table>
 
     {% buttons layout='inline' %}
-        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' %}
-        {% bootstrap_button "Abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+        {% trans 'Ok' as ok %}
+        {% trans 'Cancel' as cancel %}
+        {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
         {% if vrd %}
             <a href="{% url 'medikamente:deletevrd' vrd.id %}" class="btn btn-danger" role="button">
                 Löschen

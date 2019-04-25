@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-{% load bootstrap4 usrprofile_tags %}
+{% load i18n bootstrap4 usrprofile_tags %}
 
 {% block page_title %}{% endblock %}
 
 {% block content %}
 
-{% user_header 'Medikamente' user %}
+{% trans 'Medicines' as user_title %}
+{% user_header user_title user %}
 
 <div class="btn-group" role="group" >
-    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'medikamente:mednew' %}" class="btn btn-primary" role="button" title="Neues Medikament hinzuf&uuml;gen">
+    <a href="{% url 'medikamente:mednew' %}" class="btn btn-primary" role="button" title="{% trans 'New medicine' %}">
         <i class="far fa-plus"></i>
     </a>
 </div>
@@ -20,28 +21,28 @@
     <table id="wertelist" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th>Medikament</th>
-                <th>Packungsgr&ouml;&szlig;e</th>
-                <th style="text-align: right;">Dosis</th>
+                <th>{% trans 'Medicine' %}</th>
+                <th>{% trans 'Package size' %}</th>
+                <th style="text-align: right;">{% trans 'Dose' %}</th>
                 <th></th>
-                <th style="text-align: right; padding-right: 4rem;">Bestand</th>
+                <th style="text-align: right; padding-right: 4rem;">{% trans 'Inventory' %}</th>
             </tr>
         </thead>
         <tbody>
             {% for med in medikamente %}
             <tr>
                 <td><a href="{% url 'medikamente:mededit' med.id %}">{{ med.name }}</a></td>
-                <td>{{ med.packung }} Tabl.</td>
+                <td>{{ med.packung }} {% trans 'Tabl.' %}</td>
                 <td style="text-align: right;">{{ med.staerke|floatformat:2 }}</td>
                 <td>{{ med.einheit }}</td>
                 <td style="text-align: right;">
-                    {{ med.bestand|floatformat:2 }} Tabl.
+                    {{ med.bestand|floatformat:2 }} {% trans 'Tabl.' %}
                     &nbsp;
-                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="Bestandsver&auml;nderung">
+                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="{% trans 'Inventory change' %}">
                         <i class="far fa-sm fa-edit"></i>
                     </a>
                     &nbsp;
-                    <a href="{% url 'medikamente:besthistory' med.id %}" title="Bestandshistorie">
+                    <a href="{% url 'medikamente:besthistory' med.id %}" title="{% trans 'Inventory history' %}">
                         <i class="far fa-sm fa-history"></i>
                     </a>
                 </td>

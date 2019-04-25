@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load bootstrap4 l10n %}
+{% load bootstrap4 i18n l10n %}
 
-{% block page_title %}Medikamentenplan versenden{% endblock %}
+{% block page_title %}{% trans 'Send medication' %}{% endblock %}
 
 {% block content %}
 
@@ -18,12 +18,12 @@
     <table id="wertelist" class="table table-striped table-condensed table-bordered">
         <thead>
             <tr>
-                <th>Medikament</th>
-                <th>Morgen</th>
-                <th>Mittag</th>
-                <th>Abend</th>
-                <th>Nacht</th>
-                <th>Wochentage</th>
+                <th>{% trans 'Medicine' %}</th>
+                <th>{% trans 'Morning' %}</th>
+                <th>{% trans 'Noon' %}</th>
+                <th>{% trans 'Evening' %}</th>
+                <th>{% trans 'Night' %}</th>
+                <th>{% trans 'Weekdays' %}</th>
             </tr>
         </thead>
         <tbody>
@@ -40,9 +40,23 @@
                 <td>{% if vo.nacht %}{{ vo.nacht|floatformat:2 }} Tbl.{% endif %}</td>
                 <td>
                 {% if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so %}
-                    <span>alle</span>
+                    <span>{% trans 'All' %}</span>
                 {% else %}
-                    {{ vo.mo|yesno:"Mo ," }}{{ vo.di|yesno:"Di ," }}{{ vo.mi|yesno:"Mi ," }}{{ vo.do|yesno:"Do ," }}{{ vo.fr|yesno:"Fr ," }}{{ vo.sa|yesno:"Sa ," }}{{ vo.so|yesno:"So ," }}</td>
+                    {% trans 'Mo ,' as mo  %}
+                    {% trans 'Tu ,' as tu  %}
+                    {% trans 'We ,' as we  %}
+                    {% trans 'Th ,' as th  %}
+                    {% trans 'Fr ,' as fr  %}
+                    {% trans 'Sa ,' as sa  %}
+                    {% trans 'Su ,' as su  %}
+                    {{ vo.mo|yesno:mo }}
+                    {{ vo.di|yesno:tu }}
+                    {{ vo.mi|yesno:we }}
+                    {{ vo.do|yesno:th }}
+                    {{ vo.fr|yesno:fr }}
+                    {{ vo.sa|yesno:sa }}
+                    {{ vo.so|yesno:su }}
+                </td>
                 {% endif %}
 
             </tr>

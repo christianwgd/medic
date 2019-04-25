@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load bootstrap4 l10n medi_tags %}
+{% load bootstrap4 l10n i18n medi_tags %}
 
-{% block page_title %}Bestandsverlauf{% endblock %}
+{% block page_title %}{% trans 'Inventory history ' %}{% endblock %}
 
 {% block content %}
 {% medi_header medikament.id %}
@@ -19,10 +19,10 @@
     <table id="wertelist" class="table table-striped table-condensed table-bordered">
         <thead>
             <tr>
-                <th>Datum</th>
-                <th style="text-align: right; padding-right: 10px;">Menge</th>
-                <th>Grund</th>
-                <th>Text</th>
+                <th>{% trans 'Date' %}</th>
+                <th style="text-align: right; padding-right: 10px;">{% trans 'Amount' %}</th>
+                <th>{% trans 'Reason' %}</th>
+                <th>{% trans 'Note' %}</th>
             </tr>
         </thead>
         <tbody>

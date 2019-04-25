@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load bootstrap4 i18n %}
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
@@ -7,16 +7,20 @@
 </style>
 {% endblock %}
 
-{% block page_title %}Verordnung löschen{% endblock %}
+{% block page_title %}{% trans 'Delete medication' %}{% endblock %}
 
 {% block content %}
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
-    <p>Soll die Verordnung für das Medikament "{{ object }}" wirklich gelöscht werden?</p>
+    <p>
+        {% blocktrans trimmed %}Really delete medicine "{{ object }}"?{% endblocktrans %}
+    </p>
     {% buttons layout='inline' %}
-        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok' icon="glyphicon glyphicon-ok" %}
-        {% bootstrap_button "Abbrechen" button_class="btn-default" button_type='submit' name='cancel' %}
+        {% trans 'Ok' as ok %}
+        {% trans 'Cancel' as cancel %}
+        {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok' %}
+        {% bootstrap_button cancel button_class="btn-default" button_type='submit' name='cancel' %}
     {% endbuttons %}
 </form>
 

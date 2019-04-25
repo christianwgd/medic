@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load bootstrap4 i18n %}
 
-{% block page_title %}Medikament{% endblock %}
+{% block page_title %}{% trans 'Medicine' %}{% endblock %}
 
 {% block content %}
 
@@ -10,8 +10,10 @@
     {% bootstrap_form_errors form %}
     {% bootstrap_form form %}
     {% buttons layout='inline'  %}
-        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='ok'%}
-        {% bootstrap_button "Abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
+        {% trans 'Ok' as ok %}
+        {% trans 'Cancel' as cancel %}
+        {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok'%}
+        {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
         {% if med_id %}
             <a href="{% url 'medikamente:deletemed' med_id %}" class="btn btn-danger" role="button">
                 {% trans 'Delete' %}

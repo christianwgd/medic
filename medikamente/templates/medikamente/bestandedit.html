@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static bootstrap4 l10n medi_tags %}
+{% load static bootstrap4 l10n i18n medi_tags %}
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
@@ -38,7 +38,7 @@ $(document).ready(function(){
 </script>
 {% endblock %}
 
-{% block page_title %}Bestands&auml;nderung{% endblock %}
+{% block page_title %}{% trans 'Inventory change' %}{% endblock %}
 
 {% block content %}
 
