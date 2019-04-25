@@ -1,26 +1,31 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from __future__ import division
-
 from past.utils import old_div
+
+import datetime
+import logging
+
+from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.views.generic.edit import DeleteView
-from mail_templated import send_mail
-from medikamente.models import Verordnung, Medikament, Bestandsveraenderung, VrdFuture
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils import timezone
-from usrprofile.models import UserProfile
-import datetime
-import logging
 from django.core import serializers
-from .forms import vrdForm, vrdFutForm, medForm, bestEditForm
+
+from mail_templated import send_mail
+
+from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
+from medikamente.models import Verordnung, Medikament, Bestandsveraenderung, VrdFuture
+
+from .forms import vrdForm, vrdFutForm, medForm, bestEditForm
+
 
 logger = logging.getLogger('medic')
 
@@ -37,9 +42,9 @@ def berechne_tpt(vo):
         tpt += float(vo.nacht)
 
     if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so:
-        zeitraum = 'Tage'
+        zeitraum = _('Days')
     else:
-        zeitraum = 'Woche(n)'
+        zeitraum = _('Week(s)')
         # tage = 0
         tpw = 0.0
         if vo.mo:
@@ -71,17 +76,18 @@ def verordnungen(request):
         user = User.objects.get(username=request.user.username)
         up = UserProfile.objects.get(ref_usr=request.user)
     except User.DoesNotExist:
-        message = 'Benutzer existiert nicht.'
+        message = _('User does not exist.')
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = 'Der Benutzer %s hat kein Benutzerprofil.' % request.user
+        message = _('User {} has no user profile.'.format(usr))
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
 
     try:
-        volist = Verordnung.objects.filter(ref_usr=request.user).order_by('ref_medikament__name',
-                                                                          'ref_medikament__staerke')
+        volist = Verordnung.objects.filter(
+            ref_usr=request.user
+        ).order_by('ref_medikament__name', 'ref_medikament__staerke')
 
         mintg = up.warnenTageVorher
         minw = old_div(mintg, 7)
@@ -93,13 +99,17 @@ def verordnungen(request):
                 vo.days = old_div(float(m.bestand), float(tpt))
             else:
                 vo.days = 0.0
-    except Exception as e:
-        message = "Fehler beim Anzeigen der Verordnungsliste: {}.".format(e)
+    except:
+        message = _('Error in medication list')
         messages.error(request, message)
         logger.exception(message)
 
-    return render(request, 'medikamente/verordnungen.html',
-                  {'verordnungen': volist, 'user': user, 'mindays': mintg, 'minweeks': minw})
+    return render(request, 'medikamente/verordnungen.html', {
+        'verordnungen': volist,
+        'user': user,
+        'mindays': mintg,
+        'minweeks': minw
+    })
 
 
 @login_required(login_url='/login/')
@@ -107,7 +117,7 @@ def emailverordnungen(request):
     message = ''
 
     if 'cancel' in request.POST:
-        messages.info(request, 'Funktion abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('medikamente:verordnungen'))
 
     try:
@@ -121,44 +131,51 @@ def emailverordnungen(request):
                 try:
                     mail_to = []
                     if user.email is None or user.email == '':
-                        messages.warning(
-                            request,
-                            'emails können nicht gesendet werden, da keine eigene email-Adresse \
-                            angegeben wurde(s.a. Einstellungen).'
+                        messages.warning(request,
+                            _('Sending emails requires email address in user settings.')
                         )
                     else:
                         mail_to.append(form.cleaned_data['mailadr'])
                         email_from = user.email
-                        send_mail('medikamente/emailvrd.txt',
-                                  {'user': user, 'text': form.cleaned_data['text'],
-                                   'verordnungen': volist, 'date': datetime.date.today()},
-                                  email_from, mail_to)
-                        messages.success(request, 'Email gesendet.')
+                        send_mail(
+                            'medikamente/emailvrd.txt',
+                            {
+                                'user': user, 'text': form.cleaned_data['text'],
+                                'verordnungen': volist, 'date': datetime.date.today()
+                            },
+                            email_from, mail_to
+                        )
+                        messages.success(request, _('Email sent.'))
                         return redirect(reverse_lazy('medikamente:verordnungen'))
                 except Exception as e:
-                    messages.error(request, 'Fehler beim Senden: {}.'.format(e))
+                    messages.error(request, _('Error sending email: {}.').format(e))
         else:
-            form = MailForm(initial={'mailadr': up.email_arzt,
-                                     'subject': 'Medikamentenplan für {} {}'.format(request.user.first_name,
-                                                                                    request.user.last_name)
-                                     })
+            form = MailForm(initial={
+                'mailadr': up.email_arzt,
+                'subject': 'Medikamentenplan für {} {}'.format(
+                    request.user.first_name,
+                    request.user.last_name
+                )
+            })
 
     except UserProfile.DoesNotExist:
-        message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(request.user)
-    except Exception as e:
-        message = 'Fehler beim Anzeigen des Medikamentenplans: {}'.format(e)
-    if message:
+        message = _('User {} has no user profile.'.format(usr))
+    except:
+        message = _('Error in display of medication')
         logger.exception(message)
         messages.error(request, message)
 
-    return render(request, 'medikamente/emailvrd.html',
-                  {'verordnungen': volist, 'form': form, 'date': datetime.date.today()})
+    return render(request, 'medikamente/emailvrd.html', {
+        'verordnungen': volist,
+        'form': form,
+        'date': datetime.date.today()
+    })
 
 
 @login_required(login_url='/login/')
 def vrdnew(request):
     if 'cancel' in request.POST:
-        messages.info(request, 'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('medikamente:verordnungen'))
 
     if request.method == 'POST':
@@ -167,25 +184,26 @@ def vrdnew(request):
             try:
                 new_vrd = form.save(commit=False)
                 if new_vrd.morgen == None and new_vrd.mittag == None and new_vrd.abend == None and new_vrd.nacht == None:
-                    messages.warning(request, 'Die Verordnung enthält keine Werte.')
+                    messages.error(request, _('No values entered.'))
                 else:
                     med = Medikament.objects.get(id=new_vrd.ref_medikament.id)
                     med.bestand_vom = datetime.date.today()
                     med.save()
                     new_vrd.ref_usr = request.user
                     new_vrd.save()
-                    msg = u'%s gespeichert.' % new_vrd.ref_medikament
+                    msg = _('{medication} saved.').format(medication=new_vrd.ref_medikament)
                     messages.success(request, msg)
                     return redirect(reverse_lazy('medikamente:verordnungen'))
-            except Exception as e:
-                logger.exception('Fehler beim Speichern von Verordnung {} für Benutzer {} ({})'.format(
-                                 new_vrd.ref_medikament, request.user.username, e))
-                messages.error(request,
-                    'Fehler beim Speichern der Verordnung %s: %s' % (new_vrd.ref_medikament, e)
-                )
+            except:
+                msg = _('Error saving medication.')
+                logger.exception(msg)
+                messages.error(request, msg)
     else:  # GET
-        form = vrdForm(initial={'ref_usr': request.user, 'mo': True, 'di': True, 'mi': True,
-                                'do': True, 'fr': True, 'sa': True, 'so': True})
+        form = vrdForm(initial={
+            'ref_usr': request.user,
+            'mo': True, 'di': True, 'mi': True,
+            'do': True, 'fr': True, 'sa': True, 'so': True
+        })
 
     return render(request, 'medikamente/vrdedit.html', {'form': form})
 
@@ -193,13 +211,13 @@ def vrdnew(request):
 @login_required(login_url='/login/')
 def vrdedit(request, vrd_id):
     if 'cancel' in request.POST:
-        messages.info(request, 'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('medikamente:verordnungen'))
 
     try:
         vrd = Verordnung.objects.get(id=vrd_id, ref_usr=request.user)
-    except Exception as e:
-        message = 'Lesen Verordnung {} für Benutzer {} fehlgeschlagen: {}'.format(id, request.user, e)
+    except:
+        message = _('Error in reading medication')
         messages.error(request, message)
         logger.exception(message)
 
@@ -208,13 +226,15 @@ def vrdedit(request, vrd_id):
         if form.is_valid():
             try:
                 form.save()
-                msg = '{} gespeichert.'.format(vrd.ref_medikament)
+                msg = _('{medication} saved.').format(
+                    medication=new_vrd.ref_medikament
+                )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:verordnungen'))
-            except Exception as e:
-                logger.exception('Fehler beim Speichern von Verordnung {} für Benutzer {} ({})'.format(
-                                 vrd.ref_medikament, request.user.username, e))
-                messages.error(request, 'Fehler beim Speichern der Verordnung {}: {}'.format(vrd.ref_medikament, e))
+            except:
+                msg = _('Error saving medication.')
+                logger.exception(msg)
+                messages.error(request, msg)
     else:  # GET
         form = vrdForm(instance=vrd)
 
@@ -328,43 +348,46 @@ class VerordnungDelete(DeleteView):
 
     def post(self, request, *args, **kwargs):
         if 'cancel' in request.POST:
-            return redirect(reverse_lazy('medikamente:vrdedit',
-                                                     kwargs = {'vrd_id': self.kwargs['pk']}))
-        messages.success(request, "Verordnung gelöscht.")
+            return redirect(reverse_lazy(
+                'medikamente:vrdedit',
+                kwargs = {'vrd_id': self.kwargs['pk']}
+            ))
+        messages.success(request, _('Medication deleted.')
         return super(VerordnungDelete, self).post(request, args, kwargs)
 
 
 @login_required(login_url='/login/')
 def medikamente(request):
-    message = ''
 
     try:
         user = User.objects.get(username=request.user.username)
         up = UserProfile.objects.get(ref_usr=user)
         mintg = up.warnenTageVorher
-        medikamente = Medikament.objects.filter(ref_usr=request.user).order_by('name', 'staerke')
+        medikamente = Medikament.objects.filter(
+            ref_usr=request.user).order_by('name', 'staerke')
     except User.DoesNotExist:
-        message = 'Benutzer existiert nicht.'
+        message = _('User does not exist.')
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = 'Der Benutzer {} hat kein Benutzerprofil.'.format(user)
+        message = _('User {} has no user profile.'.format(usr))
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
-    except Exception as e:
-        message = 'Fehler beim Anzeigen der Medikantenliste: {}'.format(e)
-    if message != '':
+    except:
+        message = _('Error showing medication list.')
         logger.exception(message)
         messages.error(request, message)
 
-    return render(request, 'medikamente/medikamente.html',
-                  {'medikamente': medikamente, 'user': user, 'min': mintg})
+    return render(request, 'medikamente/medikamente.html', {
+        'medikamente': medikamente, 
+        'user': user, 'min': mintg
+    })
 
 
 @login_required(login_url='/login/')
 def mednew(request):
     if 'cancel' in request.POST:
-        messages.info(request, u'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('medikamente:medikamente'))
 
     if request.method == 'POST':
@@ -376,11 +399,15 @@ def mednew(request):
                 new_med.bestand = 0
                 new_med.bestand_vom = datetime.date.today()
                 new_med.save()
-                msg = '{} {} {} gespeichert.'.format(new_med.name, new_med.staerke, new_med.einheit)
+                msg = _('{med} {dose} {unit} saved.').format(
+                    med=new_med.name, 
+                    dose=new_med.staerke,
+                    unit=new_med.einheit
+                )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:medikamente'))
-            except Exception as e:
-                message = 'Fehler beim Speichern von {}: {}'.format(new_med.name, e)
+            except:
+                message = _('Error saving {med}.').format(med=new_med.name)
                 logger.exception(message)
                 messages.error(request, message)
     else:  # GET
@@ -392,7 +419,7 @@ def mednew(request):
 @login_required(login_url='/login/')
 def mededit(request, med_id):
     if 'cancel' in request.POST:
-        messages.info(request, 'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('medikamente:medikamente'))
 
     med = Medikament.objects.get(id=med_id)
@@ -402,17 +429,24 @@ def mededit(request, med_id):
         if form.is_valid():
             try:
                 form.save()
-                msg = '{} {} {} gespeichert.'.format(med.name, med.staerke, med.einheit)
+                msg = _('{med} {dose} {unit} saved.').format(
+                    med=new_med.name, 
+                    dose=new_med.staerke,
+                    unit=new_med.einheit
+                )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:medikamente'))
-            except Exception as e:
-                message = 'Fehler beim Speichern von {}: {}'.fomat(med.name, e)
+            except:
+                message = _('Error saving {med}.').format(med=new_med.name)
                 logger.exception(message)
                 messages.error(request, message)
     else:  # GET
         form = medForm(instance=med)
 
-    return render(request, 'medikamente/mededit.html', {'form': form, 'med_id': med_id})
+    return render(request, 'medikamente/mededit.html', {
+        'form': form, 
+        'med_id': med_id
+    })
 
 
 class MedDelete(DeleteView):
@@ -424,14 +458,14 @@ class MedDelete(DeleteView):
         if 'cancel' in request.POST:
             return redirect(reverse_lazy('medikamente:mededit',
                                                      kwargs = {'med_id': self.kwargs['pk']}))
-        messages.success(request, "Medikament gelöscht.")
+        messages.success(request, _('Medicine deleted'))
         return super(MedDelete, self).post(request, args, kwargs)
 
 
 @login_required(login_url='/login/')
 def bestandedit(request, med_id):
     if 'cancel' in request.POST:
-        messages.info(request, u'Änderung abgebrochen.')
+        messages.info(request, _('Function canceled.'))
         return redirect(reverse_lazy('medikamente:medikamente'))
 
     try:
@@ -458,7 +492,7 @@ def bestandedit(request, med_id):
             try:
                 delta = form.save(commit=False)
                 if delta.menge == 0:
-                    messages.error(request, 'Keine Menge angegeben!')
+                    messages.error(request, _('No amount provided.'))
                 else:
                     delta.ref_medikament = medikament
                     delta.ref_usr = request.user
@@ -468,31 +502,44 @@ def bestandedit(request, med_id):
                     medikament.bestand += delta.menge
                     medikament.save()
                     delta.save()
-                    msg = 'Bestand von {} übernommen ({}).'.format(delta.ref_medikament, delta.menge)
+                    msg = _('Inventory change of {med} übernommen ({amount}).').format(
+                        delta.ref_medikament, delta.menge
+                    )
                     messages.success(request, msg)
                     return redirect(reverse_lazy('medikamente:medikamente'))
-            except Exception as e:
-                message = 'Fehler beim Speichern von {}: {}'.format(delta.ref_medikament, e)
+            except:
+                message = _('Error saving {}.'.format(delta.ref_medikament)
                 logger.exception(message)
                 messages.error(request, message)
     else:  # GET
         now = timezone.localtime()
-        form = bestEditForm(initial={'ref_usr': request.user, 'ref_medikament': medikament, 'date': now})
+        form = bestEditForm(initial={
+            'ref_usr': request.user,
+            'ref_medikament': medikament,
+            'date': now
+        })
 
-    return render(request, 'medikamente/bestandedit.html',
-                  {'form': form, 'medikament': medikament, 'defmenge': defmenge})
+    return render(request, 'medikamente/bestandedit.html', {
+        'form': form,
+        'medikament': medikament,
+        'defmenge': defmenge
+    })
 
 
 @login_required(login_url='/login/')
 def besthistory(request, med_id):
     try:
         medikament = Medikament.objects.get(id=med_id)
-        bestchangelist = Bestandsveraenderung.objects.filter(ref_usr=request.user,
-                                                             ref_medikament=medikament).order_by('-date')
-    except Exception as e:
-        message = 'Fehler beim Anhzeigen der Bestandshistorie für Benutzer {}: {}'.format(request.user, e)
+        bestchangelist = Bestandsveraenderung.objects.filter(
+            ref_usr=request.user,
+            ref_medikament=medikament
+        ).order_by('-date')
+    except:
+        message = _('Error reading inventory history.')
         logger.exception(message)
         messages.error(request, message)
 
-    return render(request, 'medikamente/besthistory.html',
-                  {'bestchangelist': bestchangelist, 'medikament': medikament})
+    return render(request, 'medikamente/besthistory.html', {
+        'bestchangelist': bestchangelist,
+        'medikament': medikament
+    })

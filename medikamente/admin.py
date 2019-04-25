@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
+
 from medikamente.models import Medikament, Verordnung, Bestandsveraenderung
 
 
@@ -15,9 +17,11 @@ class VerordnungAdmin (admin.ModelAdmin):
     list_display = ['ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so']
     list_filter = ['ref_usr']
     fieldsets = (
-        ('Verbindung',
-            {'fields': (('ref_usr', 'ref_medikament'),)}),
-        ('Dosierung', {
+        (_('User'),
+            {'fields': (('ref_usr',),)}),
+        (_('Medicine'),
+            {'fields': (('ref_medikament',),)}),
+        (_('Dosage'), {
             'fields': (('morgen', 'mittag', 'abend', 'nacht'), ('mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'))
         }),
     )

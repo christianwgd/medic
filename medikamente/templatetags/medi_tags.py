@@ -16,7 +16,10 @@ def calc_dosis(value, vo_id):
     dosis = vo.ref_medikament.staerke * value
     locale.setlocale(locale.LC_ALL, '')
     dose = locale.format_string('%.2f', dosis)
-    return "{}{}".format(dose, vo.ref_medikament.einheit)
+    return "{dose}{unit}".format(
+        dose=dose, 
+        unit=vo.ref_medikament.einheit
+    )
 
 
 @register.inclusion_tag('medikamente/includes/mediheader.html')
@@ -30,7 +33,7 @@ def medi_header(med_id, *args, **kwargs):
         )
         locale.setlocale(locale.LC_ALL, '')
         in_stock = locale.format_string('%.2f', med.bestand)
-        med_stock = '{stock} Tabletten'.format(
+        med_stock = _('{stock} Tablets').format(
             stock = in_stock
         )
     except Medikament.DoesNotExist:

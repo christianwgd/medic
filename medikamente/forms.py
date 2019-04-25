@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from builtins import object
 from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 
 from .models import Verordnung, VrdFuture, Medikament, Bestandsveraenderung, GRUND_CHOICES
@@ -17,7 +18,10 @@ class vrdForm(forms.ModelForm):
 
     class Meta(object):
         model = Verordnung
-        fields = ['ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so']
+        fields = [
+            'ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 
+            'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'
+        ]
 
 
 class vrdFutForm(forms.ModelForm):
@@ -31,8 +35,11 @@ class vrdFutForm(forms.ModelForm):
 
     class Meta(object):
         model = VrdFuture
-        fields = ['ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so',
-                  'gueltig_ab']
+        fields = [
+            'ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 
+            'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so',
+            'gueltig_ab'
+        ]
 
 
 class medForm(forms.ModelForm):
@@ -50,11 +57,13 @@ class bestEditForm(forms.ModelForm):
         model = Bestandsveraenderung
         fields = ['date', 'grund', 'menge', 'text', ]
 
-    date = forms.DateField(label='Datum',
-                           widget=DatePickerInput(options={
-                               "format": "DD.MM.YYYY",
-                                "locale": "de"
-                           }))
-    menge = forms.DecimalField(help_text=" Tablette(n)")
+    date = forms.DateField(
+        label=_('Date'),
+        widget=DatePickerInput(options={
+            "format": "DD.MM.YYYY",
+            "locale": "de"
+        })
+    )
+    menge = forms.DecimalField(help_text=" Tablet(s)")
     grund = forms.ChoiceField(choices=GRUND_CHOICES)
-    text = forms.CharField(max_length=50, required=False, label="Anmerkung")
+    text = forms.CharField(max_length=50, required=False, label=_("Note"))

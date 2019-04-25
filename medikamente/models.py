@@ -2,16 +2,19 @@
 
 from __future__ import unicode_literals
 
+import locale
+
 from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
 
 EINHEIT_CHOICES = (
-        ('mg', 'Milligramm'),
-        ('µg', 'Microgramm'),
-        ('g', 'Gramm'),
-        ('IE', 'Intern. Einheiten')
+        ('mg', _('Milligram')),
+        ('µg', _('Microgram')),
+        ('g', _('Gram')),
+        ('IE', _('Intern. units')),
     )
 
 
@@ -19,21 +22,45 @@ EINHEIT_CHOICES = (
 class Medikament (models.Model):
     
     class Meta(object):
-        verbose_name = "Medikament"
-        verbose_name_plural = "Medikamente"
+        verbose_name = _('Medicine')
+        verbose_name_plural = _('Medicine')
         ordering = ['name', 'staerke']
         
     def __str__(self):
-        return ('{} {:8.2f} {}'.format(self.name, self.staerke, self.einheit)).replace('.', ',')
+        locale.setlocale(locale.LC_ALL, '')
+        dose = locale.format_string('%.2f', self.staerke)
+        return '{name} {dose} {unit}'.format(
+                name=self.name, 
+                dose=dose,
+                unit=self.einheit
+        )
         
-    name = models.CharField(verbose_name="Bezeichnung", max_length=50)
-    hersteller = models.CharField(verbose_name="Hersteller", max_length=50, null=True, blank=True)
-    wirkstoff = models.CharField(verbose_name="Wirkstoff", max_length=50, null=True, blank=True)
-    packung = models.PositiveIntegerField(verbose_name="Packungsgröße", help_text=" Tabletten")
-    staerke = models.DecimalField(verbose_name="Dosis", max_digits=8, decimal_places=2)
-    einheit = models.CharField(verbose_name="Einheit", max_length=2, choices=EINHEIT_CHOICES)
-    bestand = models.DecimalField(verbose_name='Bestand', max_digits=5, decimal_places=2)
-    bestand_vom = models.DateField(verbose_name='Bestandsänderung vom', auto_now_add=True)
+    name = models.CharField(
+        verbose_name=_('Denomination'), max_length=50
+    )
+    hersteller = models.CharField(
+        verbose_name=_('Manufacturer'), max_length=50, 
+        null=True, blank=True
+    )
+    wirkstoff = models.CharField(
+        verbose_name=_('Active ingredient'), max_length=50, 
+        null=True, blank=True
+    )
+    packung = models.PositiveIntegerField(
+        verbose_name=_('Package size'), help_text=_(' Tablets')
+    )
+    staerke = models.DecimalField(
+        verbose_name=_('Dose'), max_digits=8, decimal_places=2
+    )
+    einheit = models.CharField(
+        verbose_name=_('Unit'), max_length=2, choices=EINHEIT_CHOICES
+    )
+    bestand = models.DecimalField(
+        verbose_name=_('Inventory'), max_digits=5, decimal_places=2
+    )
+    bestand_vom = models.DateField(
+        verbose_name=_('Inventory change'), auto_now_add=True
+    )
     ref_usr = models.ForeignKey(User, on_delete=models.PROTECT)
 
 
@@ -41,37 +68,58 @@ class Medikament (models.Model):
 class Verordnung (models.Model):
     
     class Meta(object):
-        verbose_name = "Verordnung"
-        verbose_name_plural = "Verordnungen"
+        verbose_name = _('Medication')
+        verbose_name_plural = _('Medications')
         
     def __str__(self):
         return '{}'.format(self.ref_medikament)
         
-    ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament', on_delete=models.PROTECT)
-    morgen = models.DecimalField(verbose_name='Morgen', max_digits=3, decimal_places=2, null=True, blank=True)
-    mittag = models.DecimalField(verbose_name='Mittag', max_digits=3, decimal_places=2, null=True, blank=True)
-    abend = models.DecimalField(verbose_name='Abend', max_digits=3, decimal_places=2, null=True, blank=True)
-    nacht = models.DecimalField(verbose_name='Nacht', max_digits=3, decimal_places=2, null=True, blank=True)
-    mo = models.BooleanField(verbose_name='Mo', default=False)
-    di = models.BooleanField(verbose_name='Di', default=False)
-    mi = models.BooleanField(verbose_name='Mi', default=False)
-    do = models.BooleanField(verbose_name='Do', default=False)
-    fr = models.BooleanField(verbose_name='Fr', default=False)
-    sa = models.BooleanField(verbose_name='Sa', default=False)
-    so = models.BooleanField(verbose_name='So', default=False)
-    ref_usr = models.ForeignKey(User, verbose_name='Benutzer', on_delete=models.PROTECT)
+    ref_medikament = models.ForeignKey(
+        Medikament, verbose_name=_('Medication'), on_delete=models.PROTECT
+    )
+    morgen = models.DecimalField(
+        verbose_name=_('Morning'), max_digits=3, 
+        decimal_places=2, null=True, blank=True
+    )
+    mittag = models.DecimalField(
+        verbose_name=_('Noon'), max_digits=3, 
+        decimal_places=2, null=True, blank=True
+    )
+    abend = models.DecimalField(
+        verbose_name=_('Evening'), max_digits=3, 
+        decimal_places=2, null=True, blank=True
+    )
+    nacht = models.DecimalField(
+        verbose_name=_('Night'), max_digits=3, 
+        decimal_places=2, null=True, blank=True
+    )
+    mo = models.BooleanField(verbose_name=_('Mo'), default=False)
+    di = models.BooleanField(verbose_name=_('Tu'), default=False)
+    mi = models.BooleanField(verbose_name=_('We'), default=False)
+    do = models.BooleanField(verbose_name=_('Th'), default=False)
+    fr = models.BooleanField(verbose_name=_('Fr'), default=False)
+    sa = models.BooleanField(verbose_name=_('Sa'), default=False)
+    so = models.BooleanField(verbose_name=_('Su'), default=False)
+    ref_usr = models.ForeignKey(
+        User, verbose_name='Benutzer', on_delete=models.PROTECT
+    )
 
 
 @python_2_unicode_compatible
 class VrdFuture (models.Model):
 
     class Meta(object):
-        verbose_name = "Terminierte Verordnung"
-        verbose_name_plural = "Terminierte Verordnungen"
+        verbose_name = _('Scheduled medication')
+        verbose_name_plural = _('Scheduled medications')
 
     def __str__(self):
-        return ('{}-{}-{}-{}-{}'.format(self.ref_medikament, self.morgen, self.mittag,
-                                        self.abend, self.nacht))
+        return '{}-{}-{}-{}-{}'.format(
+            self.ref_medikament, 
+            self.morgen, 
+            self.mittag,
+            self.abend, 
+            self.nacht
+        )
 
     ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament', on_delete=models.PROTECT)
     ref_usr = models.ForeignKey(User, verbose_name='Benutzer', on_delete=models.PROTECT)
@@ -95,30 +143,40 @@ class VrdFuture (models.Model):
 
 
 GRUND_CHOICES = (
-        ('', u'wählen...'),
-        ('01', u'Neue Packung (+)'),
-        ('02', u'Einnhame vergessen (+)'),
-        ('03', u'Einnahme ausgesetzt (+)'),
-        ('04', u'Verfallsdatum erreicht (-)'),
-        ('05', u'Dosis erhöht (-)'),
-        ('98', u'Sonstige Korrektur (+)'),
-        ('99', u'Sonstige Korrektur (-)'),
-    )
+    ('', _('choose ...')),
+    ('01', _('New Package (+)')),
+    ('02', _('Intake missed (+)')),
+    ('03', _('Intake skipped (+)')),
+    ('04', _('Expiry date reached (-)')),
+    ('05', _('Dose increased (-)')),
+    ('98', _('Other (+)')),
+    ('99', _('Other (-)')),
+)
 
 
 @python_2_unicode_compatible
 class Bestandsveraenderung(models.Model):
     
     class Meta(object):
-        verbose_name = "Bestandsveränderung"
-        verbose_name_plural = "Bestandsveränderungen"
+        verbose_name = _('Change of inventory')
+        verbose_name_plural = _('Changes of inventory')
         
     def __str__(self):
         return self.ref_medikament
 
-    ref_medikament = models.ForeignKey(Medikament, on_delete=models.PROTECT)
-    date = models.DateTimeField(verbose_name='Datum', auto_now_add=False)
-    menge = models.DecimalField(verbose_name='Menge', max_digits=5, decimal_places=2)
-    grund = models.CharField(verbose_name="Einheit", max_length=2, choices=GRUND_CHOICES)
-    text = models.CharField(verbose_name='Anmerkung', max_length=50, null=True, blank=True)
-    ref_usr = models.ForeignKey(User, on_delete=models.PROTECT)
+    ref_medikament = models.ForeignKey(
+        Medikament, on_delete=models.PROTECT, verbose_name=_('Medicine'), 
+    )
+    date = models.DateTimeField(verbose_name=_('Date'), auto_now_add=False)
+    menge = models.DecimalField(
+        verbose_name=_('Amount'), max_digits=5, decimal_places=2
+    )
+    grund = models.CharField(
+        verbose_name=_('Unit'), max_length=2, choices=GRUND_CHOICES
+    )
+    text = models.CharField(
+        verbose_name=_('Note'), max_length=50, null=True, blank=True
+    )
+    ref_usr = models.ForeignKey(
+        User, on_delete=models.PROTECT, verbose_name=_('User'), 
+    )
