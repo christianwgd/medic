@@ -30,7 +30,7 @@ class UsrProfForm(ModelForm):
 
 
 class MailForm(forms.Form):
-    mailadr = forms.EmailField(label=_("to"))
+    mailadr = forms.EmailField(label=_("Recipient"))
     subject = forms.CharField(max_length=80, label=_("Subject"))
     text = forms.CharField(
         max_length=500, required=False,

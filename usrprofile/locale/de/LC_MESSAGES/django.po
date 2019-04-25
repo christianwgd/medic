@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 15:56+0200\n"
+"POT-Creation-Date: 2019-04-25 15:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,8 @@ msgid "email adress"
 msgstr "Email Adresse"
 
 #: .\forms.py:33
-msgid "to"
-msgstr "an"
+msgid "Recipient"
+msgstr "Empfänger"
 
 #: .\forms.py:34
 msgid "Subject"
@@ -54,7 +54,7 @@ msgstr "URL-Pattern"
 msgid "User setting"
 msgstr "Benutzereinstellung"
 
-#: .\models.py:35 .\templates\usrprofile\usrprof.html:12
+#: .\models.py:35
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
@@ -130,25 +130,28 @@ msgstr "Abbrechen"
 msgid "unknown"
 msgstr "unbekannt"
 
-#: .\views.py:21
+#: .\views.py:24
 msgid "Edit cancelled."
 msgstr "Bearbeitung abgebrochen"
 
-#: .\views.py:28
+#: .\views.py:31
 msgid "User does not exist."
 msgstr "Der Benutzer ist nicht bekannt."
 
-#: .\views.py:32
+#: .\views.py:35
 #, python-brace-format
 msgid "User {user} has no user profile."
 msgstr "Der Benutzer {user} hat kein Profil."
 
-#: .\views.py:45
+#: .\views.py:48
 #, python-brace-format
 msgid "Settings for user {user} saved."
 msgstr "Einstellungen für Benutzer {user} gespeichert."
 
-#: .\views.py:51
+#: .\views.py:54
 #, python-brace-format
 msgid "Error saving settings for user {user}"
 msgstr "Fehler beim Speichern der Einstellungen für Benutzer {user}"
+
+#~ msgid "to"
+#~ msgstr "an"
