@@ -198,7 +198,7 @@ msgstr "Keine Werte eingegeben."
 #: .\views.py:324 .\views.py:354
 #, python-brace-format
 msgid "Measurements from {date} saved."
-msgstr "Messwerte vom {date} Ã¼bernommen."
+msgstr "Messwerte vom {date} übernommen."
 
 #: .\views.py:330 .\views.py:360
 msgid "Error saving measurements."
