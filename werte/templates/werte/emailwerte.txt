@@ -1,14 +1,7 @@
 {% extends "mail_templated/base.tpl" %}
 {% load i18n %}
 
-{% block subject %}
-{% trans 'Measurements for' %}
-{{ user.usrinf }}
-{% trans 'from' %}
-{{ von }}
-{% trans 'to' %}
-{{ bis }}
-{% endblock %}
+{% block subject %}{% trans 'Measurements for' %} {{ user.usrinf }} {% trans 'from' %} {{ von }} {% trans 'to ' %} {{ bis }}{% endblock %}
 
 {% block html %}
 <p>{{ text }}</p>
