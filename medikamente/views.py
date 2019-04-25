@@ -502,7 +502,7 @@ def bestandedit(request, med_id):
                     medikament.bestand += delta.menge
                     medikament.save()
                     delta.save()
-                    msg = _('Inventory change of {med} übernommen ({amount}).').format(
+                    msg = _('Inventory change of {med} saved ({amount}).').format(
                         med=delta.ref_medikament, 
                         amount=delta.menge
                     )
