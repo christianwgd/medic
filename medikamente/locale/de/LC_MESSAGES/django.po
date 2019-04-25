@@ -72,7 +72,7 @@ msgstr "Wirkstoff"
 
 #: .\models.py:50
 msgid "Package size"
-msgstr "Packungsgrösse"
+msgstr "PackungsgrÃ¶ÃŸe"
 
 #: .\models.py:50
 msgid " Tablets"
@@ -92,7 +92,7 @@ msgstr "Bestand"
 
 #: .\models.py:62
 msgid "Inventory change"
-msgstr "Bestandsveränderung"
+msgstr "BestandsverÃ¤nderung"
 
 #: .\models.py:72
 msgid "Medications"
@@ -152,7 +152,7 @@ msgstr "Terminierte Verordnungen"
 
 #: .\models.py:146
 msgid "choose ..."
-msgstr "wählen ..."
+msgstr "wÃ¤hlen ..."
 
 #: .\models.py:147
 msgid "New Package (+)"
@@ -172,7 +172,7 @@ msgstr "Verfallsdatum erreicht (-)"
 
 #: .\models.py:151
 msgid "Dose increased (-)"
-msgstr "Dosis erhöht (-)"
+msgstr "Dosis erhÃ¶ht (-)"
 
 #: .\models.py:152
 msgid "Other (+)"
@@ -184,11 +184,11 @@ msgstr "Sonstiges (-)"
 
 #: .\models.py:161
 msgid "Change of inventory"
-msgstr "Bestandsveränderung"
+msgstr "BestandsverÃ¤nderung"
 
 #: .\models.py:162
 msgid "Changes of inventory"
-msgstr "Bestandsveränderungen"
+msgstr "BestandsverÃ¤nderungen"
 
 #: .\models.py:172
 msgid "Amount"
@@ -202,7 +202,7 @@ msgstr ""
 
 #: .\templates\medikamente\mededit.html:17
 msgid "Delete"
-msgstr "Löschen"
+msgstr "LÃ¶schen"
 
 #: .\templatetags\medi_tags.py:36
 #, python-brace-format
@@ -273,7 +273,7 @@ msgstr "Fehler beim Lesen der Verordnung."
 
 #: .\views.py:355
 msgid "Medication deleted."
-msgstr "Verordnung gelöscht."
+msgstr "Verordnung gelÃ¶scht."
 
 #: .\views.py:377
 msgid "Error showing medication list."
@@ -291,7 +291,7 @@ msgstr "Fehler beim Speichern von {med}."
 
 #: .\views.py:461
 msgid "Medicine deleted"
-msgstr "Medikament gelöscht."
+msgstr "Medikament gelÃ¶scht."
 
 #: .\views.py:495
 msgid "No amount provided."
@@ -299,8 +299,8 @@ msgstr "Keine Menge angegeben."
 
 #: .\views.py:505
 #, python-brace-format
-msgid "Inventory change of {med} Ã¼bernommen ({amount})."
-msgstr "Bestandsveränderung {med} übernommen ({amount})."
+msgid "Inventory change of {med} ÃƒÂ¼bernommen ({amount})."
+msgstr "BestandsverÃ¤nderung {med} Ã¼bernommen ({amount})."
 
 #: .\views.py:512
 msgid "Error saving {}."
