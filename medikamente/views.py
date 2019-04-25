@@ -268,7 +268,7 @@ def vrdfutnew(request):
                     messages.warning(request, 'Die Verordnung enthält keine Werte.')
                 else:
                     med = Medikament.objects.get(id=new_vrdfut.ref_medikament.id)
-                    med.bestand_vom = datetime.date.today()
+                    med.bestand_vom = timezone.now().date()
                     med.save()
                     new_vrdfut.ref_usr = request.user
                     new_vrdfut.erledigt = False
