@@ -7,7 +7,6 @@
 
 <form method="POST" class="form" role="form" novalidate>
     {% csrf_token %}
-    {% bootstrap_form_errors form %}
     {% bootstrap_form form %}
     {% buttons layout='inline'  %}
     {% trans "<i class='far fa-paper-plane'></i> Send" as send %}
