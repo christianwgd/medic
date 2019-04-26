@@ -38,7 +38,6 @@
     <h5>Zeitraum</h5>
     <form method="POST" class="form-inline" role="form">
         {% csrf_token %}
-        {% bootstrap_form_errors form %}
         {% bootstrap_form form layout='inline' %}
         {% buttons %}
             <button type="submit" class="btn btn-secondary">

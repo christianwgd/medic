@@ -7,7 +7,6 @@
 
 <form method="post" action="" novalidate>
     {% csrf_token %}
-    {% bootstrap_form_errors form %}
     {% bootstrap_form form %}
     {% buttons layout='inline'  %}
         {% trans 'Ok' as ok %}

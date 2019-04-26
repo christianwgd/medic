@@ -83,7 +83,7 @@ $("#id_ref_medikament").change(function () {
 
 <form method="post" action="" novalidate>
     {% csrf_token %}
-    {% bootstrap_form_errors form %}
+    {% bootstrap_form_errors form type='non_fields' %}
 
     {% bootstrap_field form.ref_medikament %}
 
