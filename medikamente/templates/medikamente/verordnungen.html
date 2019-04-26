@@ -6,17 +6,17 @@
 
 {% block content %}
 
-{% trans 'Medication for' as user_title %}
+{% trans 'Prescription for' as user_title %}
 {% user_header user_title user %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'medikamente:vrdnew' %}" class="btn btn-primary" role="button" title="{% trans 'New medication' %}">
+    <a href="{% url 'medikamente:vrdnew' %}" class="btn btn-primary" role="button" title="{% trans 'New prescription' %}">
         <i class="far fa-plus"></i>
     </a>
-    <a href="{% url 'medikamente:emailverordnungen' %}" class="btn btn-primary" role="button" title="{% trans 'Send medication' %}">
+    <a href="{% url 'medikamente:emailverordnungen' %}" class="btn btn-primary" role="button" title="{% trans 'Send prescription' %}">
         <i class="far fa-envelope"></i>
     </a>
 </div>
@@ -25,7 +25,7 @@
     <table id="wertelist" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th>{% trans 'Medicine' %}</th>
+                <th>{% trans 'Medicament' %}</th>
                 <th>{% trans 'Morning' %}</th>
                 <th>{% trans 'Noon' %}</th>
                 <th>{% trans 'Evening' %}</th>

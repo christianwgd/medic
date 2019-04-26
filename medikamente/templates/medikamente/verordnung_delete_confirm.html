@@ -7,14 +7,14 @@
 </style>
 {% endblock %}
 
-{% block page_title %}{% trans 'Delete medication' %}{% endblock %}
+{% block page_title %}{% trans 'Delete prescription' %}{% endblock %}
 
 {% block content %}
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
     <p>
-        {% blocktrans trimmed %}Really delete medicine "{{ object }}"?{% endblocktrans %}
+        {% blocktrans trimmed %}Really delete medicament "{{ object }}"?{% endblocktrans %}
     </p>
     {% buttons layout='inline' %}
         {% trans 'Ok' as ok %}

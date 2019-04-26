@@ -100,7 +100,7 @@ def verordnungen(request):
             else:
                 vo.days = 0.0
     except:
-        message = _('Error in medication list')
+        message = _('Error in prescription list')
         messages.error(request, message)
         logger.exception(message)
 
@@ -161,7 +161,7 @@ def emailverordnungen(request):
     except UserProfile.DoesNotExist:
         message = _('User {} has no user profile.'.format(usr))
     except:
-        message = _('Error in display of medication')
+        message = _('Error in display of prescription')
         logger.exception(message)
         messages.error(request, message)
 
@@ -191,11 +191,11 @@ def vrdnew(request):
                     med.save()
                     new_vrd.ref_usr = request.user
                     new_vrd.save()
-                    msg = _('{medication} saved.').format(medication=new_vrd.ref_medikament)
+                    msg = _('{med} saved.').format(med=new_vrd.ref_medikament)
                     messages.success(request, msg)
                     return redirect(reverse_lazy('medikamente:verordnungen'))
             except:
-                msg = _('Error saving medication.')
+                msg = _('Error saving prescription.')
                 logger.exception(msg)
                 messages.error(request, msg)
     else:  # GET
@@ -217,7 +217,7 @@ def vrdedit(request, vrd_id):
     try:
         vrd = Verordnung.objects.get(id=vrd_id, ref_usr=request.user)
     except:
-        message = _('Error in reading medication')
+        message = _('Error in reading prescription')
         messages.error(request, message)
         logger.exception(message)
 
@@ -226,13 +226,13 @@ def vrdedit(request, vrd_id):
         if form.is_valid():
             try:
                 form.save()
-                msg = _('{medication} saved.').format(
-                    medication=vrd.ref_medikament
+                msg = _('{med} saved.').format(
+                    med=vrd.ref_medikament
                 )
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:verordnungen'))
             except:
-                msg = _('Error saving medication.')
+                msg = _('Error saving prescription.')
                 logger.exception(msg)
                 messages.error(request, msg)
     else:  # GET
@@ -352,7 +352,7 @@ class VerordnungDelete(DeleteView):
                 'medikamente:vrdedit',
                 kwargs = {'vrd_id': self.kwargs['pk']}
             ))
-        messages.success(request, _('Medication deleted.'))
+        messages.success(request, _('Prescription deleted.'))
         return super(VerordnungDelete, self).post(request, args, kwargs)
 
 
@@ -370,11 +370,11 @@ def medikamente(request):
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = _('User {} has no user profile.'.format(usr))
+        message = _('User {user} has no user profile.'.format(user=usr))
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except:
-        message = _('Error showing medication list.')
+        message = _('Error showing medicaments list.')
         logger.exception(message)
         messages.error(request, message)
 
@@ -458,7 +458,7 @@ class MedDelete(DeleteView):
         if 'cancel' in request.POST:
             return redirect(reverse_lazy('medikamente:mededit',
                                                      kwargs = {'med_id': self.kwargs['pk']}))
-        messages.success(request, _('Medicine deleted'))
+        messages.success(request, _('Medicament deleted'))
         return super(MedDelete, self).post(request, args, kwargs)
 
 

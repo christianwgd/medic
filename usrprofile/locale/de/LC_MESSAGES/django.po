@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 15:04+0200\n"
+"POT-Creation-Date: 2019-04-26 09:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,7 +63,7 @@ msgid "Date of birth"
 msgstr "Geburtsdatum"
 
 #: .\models.py:44
-msgid "Hold medications for at least"
+msgid "Hold medicaments inventory for at least"
 msgstr "Medikamente vorhalten für mindestens"
 
 #: .\models.py:46 .\models.py:51
@@ -75,11 +75,11 @@ msgid "Show readings for"
 msgstr "Standart Zeitraum Messwerte anzeigen"
 
 #: .\models.py:54
-msgid "Doctor is allowed to see readings"
+msgid "Doctor is allowed to see measurements"
 msgstr "Arzt darf Messwerte sehen"
 
 #: .\models.py:57
-msgid "Doctor is allowed to see medications"
+msgid "Doctor is allowed to see prescription"
 msgstr "Arzt darf Medikamente sehen"
 
 #: .\models.py:61
@@ -152,6 +152,3 @@ msgstr "Einstellungen für Benutzer {user} gespeichert."
 #, python-brace-format
 msgid "Error saving settings for user {user}"
 msgstr "Fehler beim Speichern der Einstellungen für Benutzer {user}"
-
-#~ msgid "to"
-#~ msgstr "an"

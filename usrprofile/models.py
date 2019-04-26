@@ -41,7 +41,7 @@ class UserProfile(models.Model):
         verbose_name=_("Date of birth"), null=True, blank=True
     )
     warnenTageVorher = models.IntegerField(
-        default=20, verbose_name=_("Hold medications for at least"),
+        default=20, verbose_name=_("Hold medicaments inventory for at least"),
         validators=[MinValueValidator(2), MaxValueValidator(30)],
         help_text=_('days')
     )
@@ -51,10 +51,10 @@ class UserProfile(models.Model):
         help_text=_('days')
     )
     zeigeArztWerte = models.BooleanField(
-        default=False, verbose_name=_("Doctor is allowed to see readings")
+        default=False, verbose_name=_("Doctor is allowed to see measurements")
     )
     zeigeArztMed = models.BooleanField(
-        default=False, verbose_name=_("Doctor is allowed to see medications")
+        default=False, verbose_name=_("Doctor is allowed to see prescription")
     )
     ref_usr = models.OneToOneField(
         User, on_delete=models.CASCADE, 

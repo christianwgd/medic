@@ -50,7 +50,7 @@
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="appDropdown" data-toggle="dropdown" href="">
-                    Messwerte
+                    {% trans 'Measurement' %}
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url 'werte:werte' %}">
@@ -63,7 +63,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'medikamente:medikamente' %}">
-                    {% trans 'Medications ' %}
+                    {% trans 'Medicaments' %}
                 </a>
             </li>
             <li class="nav-item">

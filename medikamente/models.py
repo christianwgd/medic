@@ -22,8 +22,8 @@ EINHEIT_CHOICES = (
 class Medikament (models.Model):
     
     class Meta(object):
-        verbose_name = _('Medicine')
-        verbose_name_plural = _('Medicine')
+        verbose_name = _('Medicament')
+        verbose_name_plural = _('Medicaments')
         ordering = ['name', 'staerke']
         
     def __str__(self):
@@ -68,14 +68,14 @@ class Medikament (models.Model):
 class Verordnung (models.Model):
     
     class Meta(object):
-        verbose_name = _('Medication')
-        verbose_name_plural = _('Medications')
+        verbose_name = _('Prescription')
+        verbose_name_plural = _('Prescriptions')
         
     def __str__(self):
         return '{}'.format(self.ref_medikament)
         
     ref_medikament = models.ForeignKey(
-        Medikament, verbose_name=_('Medication'), on_delete=models.PROTECT
+        Medikament, verbose_name=_('Medicament'), on_delete=models.PROTECT
     )
     morgen = models.DecimalField(
         verbose_name=_('Morning'), max_digits=3, 
@@ -109,8 +109,8 @@ class Verordnung (models.Model):
 class VrdFuture (models.Model):
 
     class Meta(object):
-        verbose_name = _('Scheduled medication')
-        verbose_name_plural = _('Scheduled medications')
+        verbose_name = _('Scheduled prescription')
+        verbose_name_plural = _('Scheduled prescriptions')
 
     def __str__(self):
         return '{}-{}-{}-{}-{}'.format(
@@ -165,7 +165,7 @@ class Bestandsveraenderung(models.Model):
         return self.ref_medikament
 
     ref_medikament = models.ForeignKey(
-        Medikament, on_delete=models.PROTECT, verbose_name=_('Medicine'), 
+        Medikament, on_delete=models.PROTECT, verbose_name=_('Medicament'), 
     )
     date = models.DateTimeField(verbose_name=_('Date'), auto_now_add=False)
     menge = models.DecimalField(

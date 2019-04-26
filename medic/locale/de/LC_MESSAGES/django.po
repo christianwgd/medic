@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 13:56+0200\n"
+"POT-Creation-Date: 2019-04-26 09:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\base.html:53
+msgid "Measurement"
+msgstr "Messwert"
 
 #: .\templates\base.html:57
 msgid "List"
@@ -27,7 +31,7 @@ msgid "New measurement"
 msgstr "Neuer Messwert"
 
 #: .\templates\base.html:66
-msgid "Medications "
+msgid "Medicaments"
 msgstr "Medikamente"
 
 #: .\templates\base.html:71
@@ -360,7 +364,7 @@ msgstr "Löschen"
 
 #: .\templates\two_factor\profile\profile.html:53
 msgid "Backup Tokens"
-msgstr ""
+msgstr "Ersatz-Codes"
 
 #: .\templates\two_factor\profile\profile.html:55
 msgid ""
@@ -398,11 +402,11 @@ msgstr ""
 
 #: .\views.py:38
 msgid "User does not exist."
-msgstr ""
+msgstr "Der Benutzer existiert nicht."
 
 #: .\views.py:42
 msgid "User {} has no user profile."
-msgstr ""
+msgstr "Der Benutzer {} hat kein Profil."
 
 #: .\views.py:52
 #, python-brace-format

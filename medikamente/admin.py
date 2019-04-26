@@ -19,7 +19,7 @@ class VerordnungAdmin (admin.ModelAdmin):
     fieldsets = (
         (_('User'),
             {'fields': (('ref_usr',),)}),
-        (_('Medicine'),
+        (_('Medicament'),
             {'fields': (('ref_medikament',),)}),
         (_('Dosage'), {
             'fields': (('morgen', 'mittag', 'abend', 'nacht'), ('mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'))
