@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 09:21+0200\n"
+"POT-Creation-Date: 2019-04-26 10:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,11 +38,11 @@ msgstr "Dosierung"
 msgid "Medicaments"
 msgstr "Medikamente"
 
-#: .\forms.py:61 .\models.py:170 .\templates\medikamente\besthistory.html:22
+#: .\forms.py:66 .\models.py:170 .\templates\medikamente\besthistory.html:22
 msgid "Date"
 msgstr "Datum"
 
-#: .\forms.py:69 .\models.py:178 .\templates\medikamente\besthistory.html:25
+#: .\forms.py:74 .\models.py:178 .\templates\medikamente\besthistory.html:25
 msgid "Note"
 msgstr "Anmerkung"
 
@@ -365,6 +365,7 @@ msgid "Tabl. <span id=\"ngdosis\"></span>"
 msgstr ""
 
 #: .\templates\medikamente\vrdedit.html:105
+msgctxt "medic"
 msgid "None"
 msgstr "Keine"
 
