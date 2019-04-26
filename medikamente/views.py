@@ -80,7 +80,7 @@ def verordnungen(request):
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = _('User {} has no user profile.'.format(usr))
+        message = _('User {} has no user profile.'.format(user))
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
 
@@ -159,7 +159,7 @@ def emailverordnungen(request):
             })
 
     except UserProfile.DoesNotExist:
-        message = _('User {} has no user profile.'.format(usr))
+        message = _('User {} has no user profile.'.format(user))
     except:
         message = _('Error in display of prescription')
         logger.exception(message)
@@ -370,7 +370,7 @@ def medikamente(request):
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
-        message = _('User {user} has no user profile.'.format(user=usr))
+        message = _('User {} has no user profile.'.format(user))
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except:
@@ -437,7 +437,7 @@ def mededit(request, med_id):
                 messages.success(request, msg)
                 return redirect(reverse_lazy('medikamente:medikamente'))
             except:
-                message = _('Error saving {med}.').format(med=new_med.name)
+                message = _('Error saving {med}.').format(med=med.name)
                 logger.exception(message)
                 messages.error(request, message)
     else:  # GET
