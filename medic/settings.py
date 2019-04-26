@@ -129,6 +129,9 @@ ACCOUNT_ACTIVATION_DAYS = 3
 BOOTSTRAP4 = {
     'javascript_in_head': True,
     'theme_url': '/static/css/bootstrap.min.css',
+    'form_renderers': {
+        'default': 'medic.bootstrap4_form_renderer.FormRenderer',
+    },
 }
 
 LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
