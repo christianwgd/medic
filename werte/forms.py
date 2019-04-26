@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
-from django.db.models import Min
-from django.utils import timezone
 from django.conf import settings
-
-from werte.models import Wert
 
 
 lang = getattr(settings, "LANGUAGE_CODE", 'en')

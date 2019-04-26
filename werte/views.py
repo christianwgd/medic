@@ -21,6 +21,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from mail_templated import send_mail
 
+from medic.utils import getLocaleMonthNames
+
 from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
 
@@ -244,11 +246,8 @@ def diagram(request, von, bis):
             messages.warning(request, _('No measurements found.'))
             return redirect(reverse_lazy('startpage'))
 
-        vondate = wertelist.earliest('date').date
-        bisdate = wertelist.latest('date').date
-        
         for wert in wertelist:
-            date = formats.date_format(wert.date, 'Y-m-d H:i:s')
+            date = formats.date_format(wert.date, 'c')
             sys.append([date, wert.rrsys])
             dia.append([date, wert.rrdia])
             puls.append([date, wert.puls])
@@ -264,8 +263,8 @@ def diagram(request, von, bis):
         message = _('Error in measurements')
         logger.exception(message)
         messages.error(request, message)
-    
-    #lang = getattr(settings, "LANGUAGE_CODE", 'en')
+
+    loc_months = getLocaleMonthNames()
     return render(request, 'werte/diagram.html', {
         'user': request.user,
         'sys': js_sys, 
@@ -273,7 +272,7 @@ def diagram(request, von, bis):
         'puls': js_puls, 
         'tmp': js_temp, 
         'gew': js_gew,
-        #'locale': lang,
+        'loc_months': loc_months,
     })
 
 

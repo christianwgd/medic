@@ -8,7 +8,6 @@
 <script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.time.min.js" %}"></script>
 <script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.resize.min.js" %}"></script>
 <script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.navigate.min.js" %}"></script>
-<script language="javascript" type="text/javascript" src="{% static "js/locale/de-DE.js" %}"></script>
 
 <style type="text/css">
 #id_kennung { width: 5em; }
@@ -22,7 +21,9 @@ $(function() {
 	var puls = {{ puls|safe }};
 	var tmp = {{ tmp|safe }};
 	var gew = {{ gew|safe }};
-	
+
+	var monthNames = {{ loc_months|safe }};
+
 	var d_sys = new Array(sys.length);
 	for (i=0; i < sys.length; i++) {
 		var wert = new Array(2);
@@ -91,7 +92,7 @@ $(function() {
         	"gew": {label: "Gewicht", data: d_gew, xaxis: 1, yaxis: 3 },
         	"tmp": {label: "Temperatur", data: d_tmp, xaxis: 1, yaxis: 2 }
 	};
-	
+
 	options = {
 	        series: {
 	        	lines: { show: true },
@@ -100,7 +101,7 @@ $(function() {
 			xaxis: { 
 				mode: "time",
 				monthNames: monthNames,
-			    timeformat: timeFormat,
+			    timeformat: null,
 			    timezone: 'browser',
 	        	minTickSize: [1, "day"]
 	        },
