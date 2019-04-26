@@ -216,7 +216,8 @@ $(function() {
 
 {% block content %}
 
-{% user_header 'Messwerte als Diagramm' user %}
+{% trans 'Measurements diagramm' as user_title %}
+{% user_header user_title user %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">

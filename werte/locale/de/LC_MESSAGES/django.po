@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 09:28+0200\n"
+"POT-Creation-Date: 2019-04-26 09:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\apps.py:6 .\models.py:16 .\templates\werte\diagram.html:225
+#: .\apps.py:6 .\models.py:16 .\templates\werte\diagram.html:226
 #: .\templates\werte\edit.html:4 .\templates\werte\minmax.html:15
 #: .\templates\werte\werte.html:13
 msgid "Measurements"
@@ -72,7 +72,11 @@ msgstr "Besonderheiten"
 msgid "user"
 msgstr "Benutzer"
 
-#: .\templates\werte\diagram.html:222 .\templates\werte\minmax.html:12
+#: .\templates\werte\diagram.html:219
+msgid "Measurements diagramm"
+msgstr "Messwerte Diagramm"
+
+#: .\templates\werte\diagram.html:223 .\templates\werte\minmax.html:12
 #: .\templates\werte\werte.html:17
 msgid "Home page"
 msgstr "Startseite"
