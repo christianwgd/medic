@@ -167,7 +167,7 @@ class Bestandsveraenderung(models.Model):
     ref_medikament = models.ForeignKey(
         Medikament, on_delete=models.PROTECT, verbose_name=_('Medicament'), 
     )
-    date = models.DateTimeField(verbose_name=_('Date'), auto_now_add=False)
+    date = models.DateField(verbose_name=_('Date'), auto_now_add=False)
     menge = models.DecimalField(
         verbose_name=_('Amount'), max_digits=5, decimal_places=2
     )
