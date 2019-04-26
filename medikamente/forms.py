@@ -3,9 +3,14 @@ from builtins import object
 from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 
 from .models import Verordnung, VrdFuture, Medikament, Bestandsveraenderung, GRUND_CHOICES
+
+
+lang = getattr(settings, "LANGUAGE_CODE", 'en')
+date_format = getattr(settings, "MOMENT_DATE_FORMAT", 'MM/DD/YYYY')
 
 
 class vrdForm(forms.ModelForm):
@@ -60,8 +65,8 @@ class bestEditForm(forms.ModelForm):
     date = forms.DateField(
         label=_('Date'),
         widget=DatePickerInput(options={
-            "format": "DD.MM.YYYY",
-            "locale": "de"
+            "format": date_format,
+            "locale": lang
         })
     )
     menge = forms.DecimalField(help_text=" Tablet(s)")

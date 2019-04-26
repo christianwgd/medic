@@ -43,7 +43,8 @@ TIME_ZONE = 'Europe/Berlin'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-US'
+LANGUAGE_CODE = 'de-DE'
+# LANGUAGE_CODE = 'en-US'
 
 SITE_ID = 1
 
@@ -57,6 +58,9 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+
+MOMENT_DATE_FORMAT = 'DD.MM.YYYY'
+# MOMENT_DATE_FORMAT = 'MM/DD/YYYY'
 
 DECIMAL_SEPARATOR = ','
 THOUSAND_SEPARATOR = '.'
