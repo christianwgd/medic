@@ -68,11 +68,7 @@ THOUSAND_SEPARATOR = '.'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '8f)e&xzykr-5&@21q9kkvh^35k1p0q#q^x%&z=xk8#-kt)bs*m'
-
 LOGIN_REDIRECT_URL = 'startpage'
-
 
 TEMPLATES = [
     {
