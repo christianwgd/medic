@@ -8,6 +8,7 @@ from decimal import Decimal
 from logging import getLogger
 
 from django import forms
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -247,7 +248,7 @@ def diagram(request, von, bis):
         bisdate = wertelist.latest('date').date
         
         for wert in wertelist:
-            date = wert.date.strftime('%Y-%m-%dT%H:%M:%S')
+            date = formats.date_format(wert.date, 'Y-m-d H:i:s')
             sys.append([date, wert.rrsys])
             dia.append([date, wert.rrdia])
             puls.append([date, wert.puls])
@@ -264,15 +265,15 @@ def diagram(request, von, bis):
         logger.exception(message)
         messages.error(request, message)
     
+    #lang = getattr(settings, "LANGUAGE_CODE", 'en')
     return render(request, 'werte/diagram.html', {
-        'vondate': von_date,
-        'bisdate': bis_date,
         'user': request.user,
         'sys': js_sys, 
         'dia': js_dia, 
         'puls': js_puls, 
         'tmp': js_temp, 
-        'gew': js_gew
+        'gew': js_gew,
+        #'locale': lang,
     })
 
 

@@ -4,10 +4,11 @@
 {% block bootstrap4_extra_script %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static "css/flot.css" %}">
-<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.js" %}"></script>
-<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.time.js" %}"></script>
-<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.resize.js" %}"></script>
-<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.navigate.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.min.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.time.min.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.resize.min.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "js/jquery.flot.navigate.min.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "js/locale/de-DE.js" %}"></script>
 
 <style type="text/css">
 #id_kennung { width: 5em; }
@@ -98,60 +99,43 @@ $(function() {
 			},
 			xaxis: { 
 				mode: "time",
-				monthNames: ["Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-			    timeformat: "%d. %b<br>%Y",
+				monthNames: monthNames,
+			    timeformat: timeFormat,
 			    timezone: 'browser',
-	        	minTickSize: [1, "day"],
-	            min: (new Date("{{ vondate|safe }}")),
-	            max: (new Date("{{ bisdate|safe }}"))
-	          	},
+	        	minTickSize: [1, "day"]
+	        },
 	        yaxis: {
 	        	mode: null,
 	    		panRange: false,
-	    		zoomRange: false,
+				zoomRange: false,
+				ticks: 10,
+				tickDecimals: 0,
+				tickFormatter: labelFormatter
 	    	},
 			yaxes: [
 				{
-	        		ticks: 10,
 	        		min: 30,
-	        		max: 150,
-	        		tickDecimals: 0,
-	        		tickFormatter: labelFormatter
+					max: 150,
+					position: "left"
 	        	},
 	         	{
-	         		ticks: 10,
 	         		min: 34,
 	         		max: 39,
-	        		tickDecimals: 0,
-	        		position: "right",
-	        		tickFormatter: labelFormatter
+	        		position: "right"
 	         	},
 	        	{
-	         		ticks: 10,
 	         		min: 70,
 	         		max: 90,
-	        		tickDecimals: 0,
-	        		position: "right",
-	        		tickFormatter: labelFormatter
+	        		position: "right"
 	         	},
 	         	{
-	         		ticks: 10,
 	         		min: 40,
 	         		max: 120,
-	        		tickDecimals: 0,
-	        		position: "left",
-	        		tickFormatter: labelFormatter
+	        		position: "left"
 	         	}
 			],
 	        grid: {
-	        	backgroundColor: { colors: [ "#fff", "#eee" ] },
-	          	borderWidth: {
-	          		top: 1,
-	          		right: 1,
-	          		bottom: 2,
-	          		left: 2
-	          		
-	          	}
+	          	borderWidth: .5
 	        },
 	        pan: {
 				interactive: true
