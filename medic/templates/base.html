@@ -95,7 +95,7 @@
                     </a>
                     <a class="dropdown-item" href="{% url 'two_factor:profile' %}">
                         <!-- user-cog in fa5.0.6 nicht enthalten -->
-                        <i class="far fa-user-cog"></i>
+                        <i class="far fa-user-lock"></i>
                         {% trans 'Two factor authentication' %}
                     </a>
                     {% if user.is_superuser %}
