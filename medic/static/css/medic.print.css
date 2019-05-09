@@ -18,3 +18,11 @@ a:link, a:hover, a:visited {
 	text-decoration: none;
 	color: rgb(33, 37, 41);
 }
+
+.user-header {
+	border-color: #999;
+}
+.user-header .card-header,
+.user-header .card-text {
+	color: #666;
+}
