@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n bootstrap4 %}
+{% load i18n bootstrap4 usrprofile_tags %}
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
@@ -77,9 +77,12 @@ $("#id_ref_medikament").change(function () {
 </script>
 {% endblock %}
 
-{% block page_title %}{% trans 'Prescription' %}{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block content %}
+
+{% trans 'Prescription' as user_title %}
+{% user_header user_title user %}
 
 <form method="post" action="" novalidate>
     {% csrf_token %}

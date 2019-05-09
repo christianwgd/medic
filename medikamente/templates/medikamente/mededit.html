@@ -1,9 +1,12 @@
 {% extends "base.html" %}
-{% load bootstrap4 i18n %}
+{% load bootstrap4 i18n usrprofile_tags %}
 
-{% block page_title %}{% trans 'Medicament' %}{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block content %}
+
+{% trans 'Medicament' as user_title %}
+{% user_header user_title user %}
 
 <form method="post" action="" novalidate>
     {% csrf_token %}

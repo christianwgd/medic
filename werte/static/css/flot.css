@@ -2,12 +2,6 @@
 a {	color: #069; }
 a:hover { color: #28b; }
 
-
-p {
-	margin-top: 10px;
-}
-
-
 input[type=checkbox] {
 	margin: 7px;
 }
