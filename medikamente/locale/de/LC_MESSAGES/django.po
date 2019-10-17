@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-17 15:11+0200\n"
+"POT-Creation-Date: 2019-10-17 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,465 +18,459 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\admin.py:20 .\models.py:181
+#: admin.py:22 models.py:181
 msgid "User"
 msgstr "Benutzer"
 
-#: .\admin.py:22 .\models.py:25 .\models.py:78 .\models.py:168
-#: .\templates\medikamente\emailvrd.html:21
-#: .\templates\medikamente\mededit.html:8
-#: .\templates\medikamente\medikamente.html:24
-#: .\templates\medikamente\verordnungen.html:28
+#: admin.py:24 models.py:25 models.py:78 models.py:168
+#: templates/medikamente/emailvrd.html:21 templates/medikamente/mededit.html:8
+#: templates/medikamente/medikamente.html:24
+#: templates/medikamente/verordnungen.html:28
 msgid "Medicament"
 msgstr "Medikament"
 
-#: .\admin.py:24
+#: admin.py:26
 msgid "Dosage"
 msgstr "Dosierung"
 
-#: .\apps.py:6 .\models.py:26 .\templates\medikamente\medikamente.html:8
+#: apps.py:6 models.py:26 templates/medikamente/medikamente.html:8
 msgid "Medicaments"
 msgstr "Medikamente"
 
-#: .\forms.py:66 .\models.py:170 .\templates\medikamente\besthistory.html:22
+#: forms.py:66 models.py:170 templates/medikamente/besthistory.html:22
 msgid "Date"
 msgstr "Datum"
 
-#: .\forms.py:74 .\models.py:178 .\templates\medikamente\besthistory.html:25
+#: forms.py:74 models.py:178 templates/medikamente/besthistory.html:25
 msgid "Note"
 msgstr "Anmerkung"
 
-#: .\models.py:14
+#: models.py:14
 msgid "Milligram"
 msgstr "Milligramm"
 
-#: .\models.py:15
+#: models.py:15
 msgid "Microgram"
 msgstr "Microgramm"
 
-#: .\models.py:16
+#: models.py:16
 msgid "Gram"
 msgstr "Gramm"
 
-#: .\models.py:17
+#: models.py:17
 msgid "Intern. units"
 msgstr "Intern. Einheiten"
 
-#: .\models.py:39
+#: models.py:39
 msgid "Denomination"
 msgstr "Bezeichnung"
 
-#: .\models.py:42
+#: models.py:42
 msgid "Manufacturer"
 msgstr "Hersteller"
 
-#: .\models.py:46
+#: models.py:46
 msgid "Active ingredient"
 msgstr "Wirkstoff"
 
-#: .\models.py:50 .\templates\medikamente\medikamente.html:25
+#: models.py:50 templates/medikamente/medikamente.html:25
 msgid "Package size"
 msgstr "Packungsgröße"
 
-#: .\models.py:50
+#: models.py:50
 msgid " Tablets"
 msgstr " Tablette(n)"
 
-#: .\models.py:53 .\templates\medikamente\medikamente.html:26
+#: models.py:53 templates/medikamente/medikamente.html:26
 msgid "Dose"
 msgstr "Dosis"
 
-#: .\models.py:56 .\models.py:175
+#: models.py:56 models.py:175
 msgid "Unit"
 msgstr "Einheit"
 
-#: .\models.py:59 .\templates\medikamente\medikamente.html:28
+#: models.py:59 templates/medikamente/medikamente.html:28
 msgid "Inventory"
 msgstr "Bestand"
 
-#: .\models.py:62 .\templates\medikamente\bestandedit.html:41
-#: .\templates\medikamente\medikamente.html:41
+#: models.py:62 templates/medikamente/bestandedit.html:41
+#: templates/medikamente/medikamente.html:41
 msgid "Inventory change"
 msgstr "Bestandsveränderung"
 
-#: .\models.py:71 .\templates\medikamente\vrdedit.html:84
+#: models.py:71 templates/medikamente/vrdedit.html:84
 msgid "Prescription"
 msgstr "Verordnung"
 
-#: .\models.py:72 .\templates\medikamente\verordnungen.html:9
+#: models.py:72 templates/medikamente/verordnungen.html:9
 msgid "Prescriptions"
 msgstr "Verordnungen"
 
-#: .\models.py:81 .\templates\medikamente\emailvrd.html:22
-#: .\templates\medikamente\emailvrd.txt:13
-#: .\templates\medikamente\verordnungen.html:29
+#: models.py:81 templates/medikamente/emailvrd.html:22
+#: templates/medikamente/emailvrd.txt:13
+#: templates/medikamente/verordnungen.html:29
 msgid "Morning"
 msgstr "Morgen"
 
-#: .\models.py:85 .\templates\medikamente\emailvrd.html:23
-#: .\templates\medikamente\emailvrd.txt:14
-#: .\templates\medikamente\verordnungen.html:30
+#: models.py:85 templates/medikamente/emailvrd.html:23
+#: templates/medikamente/emailvrd.txt:14
+#: templates/medikamente/verordnungen.html:30
 msgid "Noon"
 msgstr "Mittag"
 
-#: .\models.py:89 .\templates\medikamente\emailvrd.html:24
-#: .\templates\medikamente\emailvrd.txt:15
-#: .\templates\medikamente\verordnungen.html:31
+#: models.py:89 templates/medikamente/emailvrd.html:24
+#: templates/medikamente/emailvrd.txt:15
+#: templates/medikamente/verordnungen.html:31
 msgid "Evening"
 msgstr "Abend"
 
-#: .\models.py:93 .\templates\medikamente\emailvrd.html:25
-#: .\templates\medikamente\emailvrd.txt:16
-#: .\templates\medikamente\verordnungen.html:32
+#: models.py:93 templates/medikamente/emailvrd.html:25
+#: templates/medikamente/emailvrd.txt:16
+#: templates/medikamente/verordnungen.html:32
 msgid "Night"
 msgstr "Nacht"
 
-#: .\models.py:96
+#: models.py:96
 msgid "Mo"
 msgstr "Mo"
 
-#: .\models.py:97
+#: models.py:97
 msgid "Tu"
 msgstr "Di"
 
-#: .\models.py:98
+#: models.py:98
 msgid "We"
 msgstr "Mi"
 
-#: .\models.py:99
+#: models.py:99
 msgid "Th"
 msgstr "Do"
 
-#: .\models.py:100
+#: models.py:100
 msgid "Fr"
 msgstr "Fr"
 
-#: .\models.py:101
+#: models.py:101
 msgid "Sa"
 msgstr "Sa"
 
-#: .\models.py:102
+#: models.py:102
 msgid "Su"
 msgstr "So"
 
-#: .\models.py:112
+#: models.py:112
 msgid "Scheduled prescription"
 msgstr "Terminierte Verordnung"
 
-#: .\models.py:113
+#: models.py:113
 msgid "Scheduled prescriptions"
 msgstr "Terminierte Verordnungen"
 
-#: .\models.py:146
+#: models.py:146
 msgid "choose ..."
 msgstr "wählen ..."
 
-#: .\models.py:147
+#: models.py:147
 msgid "New Package (+)"
 msgstr "Neue Packung (+)"
 
-#: .\models.py:148
+#: models.py:148
 msgid "Intake missed (+)"
 msgstr "Einnahme vergessen (+)"
 
-#: .\models.py:149
+#: models.py:149
 msgid "Intake skipped (+)"
 msgstr "Einnahme ausgesetzt (+)"
 
-#: .\models.py:150
+#: models.py:150
 msgid "Expiry date reached (-)"
 msgstr "Verfallsdatum erreicht (-)"
 
-#: .\models.py:151
+#: models.py:151
 msgid "Dose increased (-)"
 msgstr "Dosis erhöht (-)"
 
-#: .\models.py:152
+#: models.py:152
 msgid "Other (+)"
 msgstr "Sonstiges (+)"
 
-#: .\models.py:153
+#: models.py:153
 msgid "Other (-)"
 msgstr "Sonstiges (-)"
 
-#: .\models.py:161
+#: models.py:161
 msgid "Change of inventory"
 msgstr "Bestandsveränderung"
 
-#: .\models.py:162
+#: models.py:162
 msgid "Changes of inventory"
 msgstr "Bestandsveränderungen"
 
-#: .\models.py:172 .\templates\medikamente\besthistory.html:23
+#: models.py:172 templates/medikamente/besthistory.html:23
 msgid "Amount"
 msgstr "Menge"
 
-#: .\templates\medikamente\besthistory.html:4
+#: templates/medikamente/besthistory.html:4
 msgid "Inventory history "
 msgstr "Bestandverlauf"
 
-#: .\templates\medikamente\besthistory.html:24
+#: templates/medikamente/besthistory.html:24
 msgid "Reason"
 msgstr "Grund"
 
-#: .\templates\medikamente\emailvrd.html:4
-#: .\templates\medikamente\verordnungen.html:19
+#: templates/medikamente/emailvrd.html:4
+#: templates/medikamente/verordnungen.html:19
 msgid "Send prescription"
 msgstr "Verordnung senden"
 
-#: .\templates\medikamente\emailvrd.html:26
-#: .\templates\medikamente\emailvrd.txt:17
-#: .\templates\medikamente\verordnungen.html:33
+#: templates/medikamente/emailvrd.html:26 templates/medikamente/emailvrd.txt:17
+#: templates/medikamente/verordnungen.html:33
 msgid "Weekdays"
 msgstr "Wochetage"
 
-#: .\templates\medikamente\emailvrd.html:43
-#: .\templates\medikamente\vrdedit.html:105
+#: templates/medikamente/emailvrd.html:43
+#: templates/medikamente/vrdedit.html:105
 msgid "All"
 msgstr "Alle"
 
-#: .\templates\medikamente\emailvrd.html:45
-#: .\templates\medikamente\verordnungen.html:76
+#: templates/medikamente/emailvrd.html:45
+#: templates/medikamente/verordnungen.html:76
 msgid "Mo ,"
 msgstr "Mo ,"
 
-#: .\templates\medikamente\emailvrd.html:46
-#: .\templates\medikamente\verordnungen.html:77
+#: templates/medikamente/emailvrd.html:46
+#: templates/medikamente/verordnungen.html:77
 msgid "Tu ,"
 msgstr "Di ,"
 
-#: .\templates\medikamente\emailvrd.html:47
-#: .\templates\medikamente\verordnungen.html:78
+#: templates/medikamente/emailvrd.html:47
+#: templates/medikamente/verordnungen.html:78
 msgid "We ,"
 msgstr "Mi ,"
 
-#: .\templates\medikamente\emailvrd.html:48
-#: .\templates\medikamente\verordnungen.html:79
+#: templates/medikamente/emailvrd.html:48
+#: templates/medikamente/verordnungen.html:79
 msgid "Th ,"
 msgstr "Do ,"
 
-#: .\templates\medikamente\emailvrd.html:49
-#: .\templates\medikamente\verordnungen.html:80
+#: templates/medikamente/emailvrd.html:49
+#: templates/medikamente/verordnungen.html:80
 msgid "Fr ,"
 msgstr "Fr ,"
 
-#: .\templates\medikamente\emailvrd.html:50
-#: .\templates\medikamente\verordnungen.html:81
+#: templates/medikamente/emailvrd.html:50
+#: templates/medikamente/verordnungen.html:81
 msgid "Sa ,"
 msgstr "Sa ,"
 
-#: .\templates\medikamente\emailvrd.html:51
-#: .\templates\medikamente\verordnungen.html:82
+#: templates/medikamente/emailvrd.html:51
+#: templates/medikamente/verordnungen.html:82
 msgid "Su ,"
 msgstr "So ,"
 
-#: .\templates\medikamente\emailvrd.txt:3
+#: templates/medikamente/emailvrd.txt:3
 msgid "Medication for"
 msgstr "Verordnung für"
 
-#: .\templates\medikamente\emailvrd.txt:12
+#: templates/medikamente/emailvrd.txt:12
 msgid "Medicine"
 msgstr "Medikament"
 
-#: .\templates\medikamente\emailvrd.txt:24
-#: .\templates\medikamente\emailvrd.txt:25
-#: .\templates\medikamente\emailvrd.txt:26
-#: .\templates\medikamente\emailvrd.txt:27
-#: .\templates\medikamente\medikamente.html:35
-#: .\templates\medikamente\medikamente.html:39
-#: .\templates\medikamente\verordnungen.html:50
-#: .\templates\medikamente\verordnungen.html:56
-#: .\templates\medikamente\verordnungen.html:62
-#: .\templates\medikamente\verordnungen.html:68
+#: templates/medikamente/emailvrd.txt:24 templates/medikamente/emailvrd.txt:25
+#: templates/medikamente/emailvrd.txt:26 templates/medikamente/emailvrd.txt:27
+#: templates/medikamente/medikamente.html:35
+#: templates/medikamente/medikamente.html:39
+#: templates/medikamente/verordnungen.html:50
+#: templates/medikamente/verordnungen.html:56
+#: templates/medikamente/verordnungen.html:62
+#: templates/medikamente/verordnungen.html:68
 msgid "Tabl."
 msgstr "Tabl."
 
-#: .\templates\medikamente\med_delete_confirm.html:4
+#: templates/medikamente/med_delete_confirm.html:4
 msgid "Delete medicament"
 msgstr "Medikament löschen"
 
-#: .\templates\medikamente\med_delete_confirm.html:11
+#: templates/medikamente/med_delete_confirm.html:11
 #, python-format
 msgid "Really delete \"%(object)s\"?"
 msgstr "\"%(object)s\" wirklich löschen?"
 
-#: .\templates\medikamente\med_delete_confirm.html:14
+#: templates/medikamente/med_delete_confirm.html:14
 msgid "Please note: All prescriptions of this medicament will be deleted!"
 msgstr "Achtung: Alle Verordnungen des Medikaments werden mit gelöscht!"
 
-#: .\templates\medikamente\med_delete_confirm.html:19
-#: .\templates\medikamente\mededit.html:15
-#: .\templates\medikamente\verordnung_delete_confirm.html:20
-#: .\templates\medikamente\vrdedit.html:137
+#: templates/medikamente/med_delete_confirm.html:19
+#: templates/medikamente/mededit.html:15
+#: templates/medikamente/verordnung_delete_confirm.html:20
+#: templates/medikamente/vrdedit.html:137
 msgid "Ok"
 msgstr "Ok"
 
-#: .\templates\medikamente\med_delete_confirm.html:20
-#: .\templates\medikamente\mededit.html:16
-#: .\templates\medikamente\verordnung_delete_confirm.html:21
-#: .\templates\medikamente\vrdedit.html:138
+#: templates/medikamente/med_delete_confirm.html:20
+#: templates/medikamente/mededit.html:16
+#: templates/medikamente/verordnung_delete_confirm.html:21
+#: templates/medikamente/vrdedit.html:138
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: .\templates\medikamente\mededit.html:21
+#: templates/medikamente/mededit.html:21
 msgid "Delete"
 msgstr "Löschen"
 
-#: .\templates\medikamente\medikamente.html:12
-#: .\templates\medikamente\verordnungen.html:13
+#: templates/medikamente/medikamente.html:12
+#: templates/medikamente/verordnungen.html:13
 msgid "Home page"
 msgstr "Startseite"
 
-#: .\templates\medikamente\medikamente.html:15
+#: templates/medikamente/medikamente.html:15
 msgid "New medicament"
 msgstr "Neues Medikament"
 
-#: .\templates\medikamente\medikamente.html:45
+#: templates/medikamente/medikamente.html:45
 msgid "Inventory history"
 msgstr "Bestandsverlauf"
 
-#: .\templates\medikamente\verordnung_delete_confirm.html:10
+#: templates/medikamente/verordnung_delete_confirm.html:10
 msgid "Delete prescription"
 msgstr "Verordnung löschen"
 
-#: .\templates\medikamente\verordnung_delete_confirm.html:17
+#: templates/medikamente/verordnung_delete_confirm.html:17
 #, python-format
 msgid "Really delete medicament \"%(object)s\"?"
 msgstr "Medikament \"%(object)s\" wirklich löschen?"
 
-#: .\templates\medikamente\verordnungen.html:16
+#: templates/medikamente/verordnungen.html:16
 msgid "New prescription"
 msgstr "Neue Verordnung"
 
-#: .\templates\medikamente\vrdedit.html:93
+#: templates/medikamente/vrdedit.html:93
 msgid "Tabl. <span id=\"modosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:94
+#: templates/medikamente/vrdedit.html:94
 msgid "Tabl. <span id=\"nndosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:95
+#: templates/medikamente/vrdedit.html:95
 msgid "Tabl. <span id=\"evdosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:96
+#: templates/medikamente/vrdedit.html:96
 msgid "Tabl. <span id=\"ngdosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:108
+#: templates/medikamente/vrdedit.html:108
 msgctxt "medic"
 msgid "None"
 msgstr "Keine"
 
-#: .\templatetags\medi_tags.py:36
+#: templatetags/medi_tags.py:36
 #, python-brace-format
 msgid "{stock} Tablets"
 msgstr "{stock} Tabletten"
 
-#: .\templatetags\medi_tags.py:40 .\templatetags\medi_tags.py:41
+#: templatetags/medi_tags.py:40 templatetags/medi_tags.py:41
 msgid "unknown"
 msgstr "unbekannt"
 
-#: .\views.py:45
+#: views.py:46
 msgid "Days"
 msgstr "Tage"
 
-#: .\views.py:47
+#: views.py:48
 msgid "Week(s)"
 msgstr "Woche(n)"
 
-#: .\views.py:79 .\views.py:369
+#: views.py:80 views.py:370
 msgid "User does not exist."
 msgstr "Der Benutzer existiert nicht."
 
-#: .\views.py:83 .\views.py:162 .\views.py:373
+#: views.py:84 views.py:163 views.py:374
 msgid "User {} has no user profile."
 msgstr "Der Benutzer {} hat kein Profil."
 
-#: .\views.py:103
+#: views.py:104
 msgid "Error in prescription list"
 msgstr "Fehler in Verordnungsliste"
 
-#: .\views.py:120 .\views.py:178 .\views.py:214 .\views.py:390 .\views.py:422
-#: .\views.py:468
+#: views.py:121 views.py:179 views.py:215 views.py:391 views.py:423
+#: views.py:481
 msgid "Function canceled."
 msgstr "Funktion abgebrochen."
 
-#: .\views.py:135
+#: views.py:136
 msgid "Sending emails requires email address in user settings."
 msgstr "Um Emails zu senden, ist eine Emailadresse erforderlich."
 
-#: .\views.py:148
+#: views.py:149
 msgid "Email sent."
 msgstr "Email versendet."
 
-#: .\views.py:151
+#: views.py:152
 msgid "Error sending email: {}."
 msgstr "Fehler beim Senden der Email: {}."
 
-#: .\views.py:164
+#: views.py:165
 msgid "Error in display of prescription"
 msgstr "Fehler bei der Anzeige der Verordnung"
 
-#: .\views.py:187
+#: views.py:188
 msgid "No values entered."
 msgstr "Keine Werte eingegeben."
 
-#: .\views.py:194 .\views.py:229
+#: views.py:195 views.py:230
 #, python-brace-format
 msgid "{med} saved."
 msgstr "{med} gespeichert."
 
-#: .\views.py:198 .\views.py:235
+#: views.py:199 views.py:236
 msgid "Error saving prescription."
 msgstr "Fehler beim Speicher der Verordnung."
 
-#: .\views.py:220
+#: views.py:221
 msgid "Error in reading prescription"
 msgstr "Fehler beim Lesen der Verordnung."
 
-#: .\views.py:355
+#: views.py:356
 msgid "Prescription deleted."
 msgstr "Verordnung gelöscht."
 
-#: .\views.py:377
+#: views.py:378
 msgid "Error showing medicaments list."
 msgstr "Fehler beim Anzeigen der Medikamentenliste."
 
-#: .\views.py:402 .\views.py:432
+#: views.py:403 views.py:433
 #, python-brace-format
 msgid "{med} {dose} {unit} saved."
 msgstr "{med} {dose} {unit} gespeichert."
 
-#: .\views.py:410 .\views.py:440
+#: views.py:411 views.py:441
 #, python-brace-format
 msgid "Error saving {med}."
 msgstr "Fehler beim Speichern von {med}."
 
-#: .\views.py:461
+#: views.py:467
 msgid "Medicament deleted"
 msgstr "Medikament gelöscht."
 
-#: .\views.py:495
+#: views.py:470
+msgid "Could not delete medicament due to existing prescription."
+msgstr "Medikament konnte nicht gelöscht werden, es gibt noch eine Verschreibung zum Medikament."
+
+#: views.py:508
 msgid "No amount provided."
 msgstr "Keine Menge angegeben."
 
-#: .\views.py:505
+#: views.py:518
 #, python-brace-format
 msgid "Inventory change of {med} saved ({amount})."
 msgstr "Bestandsveränderung {med} übernommen ({amount})."
 
-#: .\views.py:512
+#: views.py:525
 msgid "Error saving {}."
 msgstr "Fehler beim Speichern von {}."
 
-#: .\views.py:539
+#: views.py:552
 msgid "Error reading inventory history."
 msgstr "Fehler beim Lesen der Bestandsverlauf."
-
-#~ msgid "Prescription for"
-#~ msgstr "Verordnung für"
-
-#~ msgid "User {user} has no user profile."
-#~ msgstr "Der Benutzer {user} hat kein Profil."
