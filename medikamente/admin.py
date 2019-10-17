@@ -10,12 +10,14 @@ class MedikamentAdmin(admin.ModelAdmin):
     
     list_display = ['name', 'staerke', 'einheit', 'packung', 'bestand', 'bestand_vom']
     list_filter = ['ref_usr']
+    search_fields = ['name']
 
 
 class VerordnungAdmin (admin.ModelAdmin):
     
     list_display = ['ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so']
     list_filter = ['ref_usr']
+    autocomplete_fields = ['ref_medikament', 'ref_usr']
     fieldsets = (
         (_('User'),
             {'fields': (('ref_usr',),)}),
