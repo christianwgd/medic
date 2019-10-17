@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 10:06+0200\n"
+"POT-Creation-Date: 2019-10-17 15:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr "Benutzer"
 
 #: .\admin.py:22 .\models.py:25 .\models.py:78 .\models.py:168
 #: .\templates\medikamente\emailvrd.html:21
-#: .\templates\medikamente\mededit.html:4
+#: .\templates\medikamente\mededit.html:8
 #: .\templates\medikamente\medikamente.html:24
 #: .\templates\medikamente\verordnungen.html:28
 msgid "Medicament"
@@ -99,11 +99,11 @@ msgstr "Bestand"
 msgid "Inventory change"
 msgstr "Bestandsveränderung"
 
-#: .\models.py:71 .\templates\medikamente\vrdedit.html:80
+#: .\models.py:71 .\templates\medikamente\vrdedit.html:84
 msgid "Prescription"
 msgstr "Verordnung"
 
-#: .\models.py:72
+#: .\models.py:72 .\templates\medikamente\verordnungen.html:9
 msgid "Prescriptions"
 msgstr "Verordnungen"
 
@@ -231,7 +231,7 @@ msgid "Weekdays"
 msgstr "Wochetage"
 
 #: .\templates\medikamente\emailvrd.html:43
-#: .\templates\medikamente\vrdedit.html:102
+#: .\templates\medikamente\vrdedit.html:105
 msgid "All"
 msgstr "Alle"
 
@@ -291,6 +291,10 @@ msgstr "Medikament"
 msgid "Tabl."
 msgstr "Tabl."
 
+#: .\templates\medikamente\med_delete_confirm.html:4
+msgid "Delete medicament"
+msgstr "Medikament löschen"
+
 #: .\templates\medikamente\med_delete_confirm.html:11
 #, python-format
 msgid "Really delete \"%(object)s\"?"
@@ -301,20 +305,20 @@ msgid "Please note: All prescriptions of this medicament will be deleted!"
 msgstr "Achtung: Alle Verordnungen des Medikaments werden mit gelöscht!"
 
 #: .\templates\medikamente\med_delete_confirm.html:19
-#: .\templates\medikamente\mededit.html:13
+#: .\templates\medikamente\mededit.html:15
 #: .\templates\medikamente\verordnung_delete_confirm.html:20
-#: .\templates\medikamente\vrdedit.html:134
+#: .\templates\medikamente\vrdedit.html:137
 msgid "Ok"
 msgstr "Ok"
 
 #: .\templates\medikamente\med_delete_confirm.html:20
-#: .\templates\medikamente\mededit.html:14
+#: .\templates\medikamente\mededit.html:16
 #: .\templates\medikamente\verordnung_delete_confirm.html:21
-#: .\templates\medikamente\vrdedit.html:135
+#: .\templates\medikamente\vrdedit.html:138
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: .\templates\medikamente\mededit.html:19
+#: .\templates\medikamente\mededit.html:21
 msgid "Delete"
 msgstr "Löschen"
 
@@ -340,31 +344,27 @@ msgstr "Verordnung löschen"
 msgid "Really delete medicament \"%(object)s\"?"
 msgstr "Medikament \"%(object)s\" wirklich löschen?"
 
-#: .\templates\medikamente\verordnungen.html:9
-msgid "Prescription for"
-msgstr "Verordnung für"
-
 #: .\templates\medikamente\verordnungen.html:16
 msgid "New prescription"
 msgstr "Neue Verordnung"
 
-#: .\templates\medikamente\vrdedit.html:90
+#: .\templates\medikamente\vrdedit.html:93
 msgid "Tabl. <span id=\"modosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:91
+#: .\templates\medikamente\vrdedit.html:94
 msgid "Tabl. <span id=\"nndosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:92
+#: .\templates\medikamente\vrdedit.html:95
 msgid "Tabl. <span id=\"evdosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:93
+#: .\templates\medikamente\vrdedit.html:96
 msgid "Tabl. <span id=\"ngdosis\"></span>"
 msgstr ""
 
-#: .\templates\medikamente\vrdedit.html:105
+#: .\templates\medikamente\vrdedit.html:108
 msgctxt "medic"
 msgid "None"
 msgstr "Keine"
@@ -390,7 +390,7 @@ msgstr "Woche(n)"
 msgid "User does not exist."
 msgstr "Der Benutzer existiert nicht."
 
-#: .\views.py:83 .\views.py:162
+#: .\views.py:83 .\views.py:162 .\views.py:373
 msgid "User {} has no user profile."
 msgstr "Der Benutzer {} hat kein Profil."
 
@@ -440,11 +440,6 @@ msgstr "Fehler beim Lesen der Verordnung."
 msgid "Prescription deleted."
 msgstr "Verordnung gelöscht."
 
-#: .\views.py:373
-#, python-brace-format
-msgid "User {user} has no user profile."
-msgstr "Der Benutzer {user} hat kein Profil."
-
 #: .\views.py:377
 msgid "Error showing medicaments list."
 msgstr "Fehler beim Anzeigen der Medikamentenliste."
@@ -479,3 +474,9 @@ msgstr "Fehler beim Speichern von {}."
 #: .\views.py:539
 msgid "Error reading inventory history."
 msgstr "Fehler beim Lesen der Bestandsverlauf."
+
+#~ msgid "Prescription for"
+#~ msgstr "Verordnung für"
+
+#~ msgid "User {user} has no user profile."
+#~ msgstr "Der Benutzer {user} hat kein Profil."

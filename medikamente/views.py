@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils import timezone
 from django.core import serializers
+from django.db.models import ProtectedError
 
 from mail_templated import send_mail
 
@@ -456,10 +457,22 @@ class MedDelete(DeleteView):
 
     def post(self, request, *args, **kwargs):
         if 'cancel' in request.POST:
-            return redirect(reverse_lazy('medikamente:mededit',
-                                                     kwargs = {'med_id': self.kwargs['pk']}))
-        messages.success(request, _('Medicament deleted'))
-        return super(MedDelete, self).post(request, args, kwargs)
+            return redirect(reverse_lazy(
+                'medikamente:mededit',
+                 kwargs = {'med_id': self.kwargs['pk']})
+            )
+
+        try:
+            response = super(MedDelete, self).post(request, args, kwargs)
+            messages.success(request, _('Medicament deleted'))
+            return response
+        except ProtectedError:
+            messages.error(request, _('Could not delete medicament due to existing prescription.'))
+
+        return redirect(reverse_lazy(
+            'medikamente:mededit',
+                kwargs = {'med_id': self.kwargs['pk']})
+        )
 
 
 @login_required(login_url='/login/')
