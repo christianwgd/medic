@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
-from __future__ import division
-from past.utils import old_div
-
 import datetime
 import logging
 
@@ -91,13 +86,13 @@ def verordnungen(request):
         ).order_by('ref_medikament__name', 'ref_medikament__staerke')
 
         mintg = up.warnenTageVorher
-        minw = old_div(mintg, 7)
+        minw = mintg // 7
 
         for vo in volist:
             m = vo.ref_medikament
             tpt, zeitraum = berechne_tpt(vo)
             if tpt > 0:
-                vo.days = old_div(float(m.bestand), float(tpt))
+                vo.days = float(m.bestand) // float(tpt)
             else:
                 vo.days = 0.0
     except:

@@ -7,7 +7,6 @@ import locale
 from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 EINHEIT_CHOICES = (
@@ -18,7 +17,6 @@ EINHEIT_CHOICES = (
     )
 
 
-@python_2_unicode_compatible
 class Medikament (models.Model):
     
     class Meta(object):
@@ -64,7 +62,6 @@ class Medikament (models.Model):
     ref_usr = models.ForeignKey(User, on_delete=models.PROTECT)
 
 
-@python_2_unicode_compatible
 class Verordnung (models.Model):
     
     class Meta(object):
@@ -105,7 +102,6 @@ class Verordnung (models.Model):
     )
 
 
-@python_2_unicode_compatible
 class VrdFuture (models.Model):
 
     class Meta(object):
@@ -154,7 +150,6 @@ GRUND_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
 class Bestandsveraenderung(models.Model):
     
     class Meta(object):

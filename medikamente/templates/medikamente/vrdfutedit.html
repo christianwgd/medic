@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block extrastyle %}
+{% block bootstrap4_extra_head %}
 <style type="text/css">
 #id_morgen { width: 3.5em; }
 #id_mittag { width: 3.5em; }
@@ -8,6 +8,9 @@
 #id_nacht { width: 3.5em; }
 </style>
 <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/zebra_datepickr.css"></link>
+{% endblock %}
+
+{% block bootstrap4_extra_script %}
 <script language="javascript" type="text/javascript" src="{{MEDIA_URL}}js/jquery.js"></script>
 <script type="text/javascript" src="{{MEDIA_URL}}js/zebra_datepickr.js" charset="utf-8"></script>
 

@@ -2,21 +2,18 @@
 
 from __future__ import unicode_literals
 
-from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import formats, dateparse
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from orderable.models import Orderable
 
 
-@python_2_unicode_compatible
 class StartUrl(Orderable):
 
-    class Meta(object):
+    class Meta:
         verbose_name = _("Home page")
         verbose_name_plural = _("Home pages")
 
@@ -27,10 +24,9 @@ class StartUrl(Orderable):
     url = models.CharField(verbose_name=_('URL pattern'), max_length=100)
 
 
-@python_2_unicode_compatible
 class UserProfile(models.Model):
     
-    class Meta(object):
+    class Meta:
         verbose_name = _("User setting")
         verbose_name_plural = _("User settings")
         

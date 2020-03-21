@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
-from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.formats import date_format
@@ -11,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class Wert (models.Model):
     
-    class Meta(object):
+    class Meta:
         verbose_name = _('Measurement')
         verbose_name_plural = _('Measurements')
 

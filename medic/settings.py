@@ -43,7 +43,7 @@ TIME_ZONE = 'Europe/Berlin'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'de-DE'
+LANGUAGE_CODE = 'de'
 # LANGUAGE_CODE = 'en-US'
 
 SITE_ID = 1
@@ -127,7 +127,7 @@ INSTALLED_APPS = [
 ACCOUNT_ACTIVATION_DAYS = 3
 
 BOOTSTRAP4 = {
-    'javascript_in_head': True,
+    "include_jquery": True,
     'theme_url': '/static/css/bootstrap.min.css',
     'form_renderers': {
         'default': 'medic.bootstrap4_form_renderer.FormRenderer',
@@ -166,7 +166,7 @@ LOGGING = {
     'loggers': {
         'django.db.backends' : {
             'level': 'CRITICAL',
-#            'level': 'DEBUG',
+            # 'level': 'DEBUG',
         },
         'medic' : {
             'handlers': ['default', 'console'],

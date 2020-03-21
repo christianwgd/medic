@@ -3,15 +3,10 @@
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
 <link rel="stylesheet" href="{% static 'font-awesome-5/css/all.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/medic.css" %}" />
 <link rel="stylesheet" type="text/css" href="{% static "css/medic.print.css" %}" media="print"/>
 <link rel="stylesheet" type="text/css" href="{% static "css/animate.css" %}" />
-
-<script defer src="{% static 'font-awesome-5/js/all.min.js' %}"></script>
 
 <meta name="viewport" content="width=device-width"/>
 
@@ -32,6 +27,11 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="{% static 'icons/ms-icon-144x144.png' %}">
 <meta name="theme-color" content="#ffffff">
+{% endblock %}
+
+{% block bootstrap4_extra_script %}
+{{ block.super }}
+<script defer src="{% static 'font-awesome-5/js/all.min.js' %}"></script>
 {% endblock %}
 
 {% block bootstrap4_title %}medic{% endblock %}
@@ -115,7 +115,7 @@
 
 
 <!-- Content -->
-<div class="container">
+<div class="container-fluid">
 
     <div class="row">
         <div class="col-12">

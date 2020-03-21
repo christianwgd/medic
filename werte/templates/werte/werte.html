@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 {% load i18n bootstrap4 static usrprofile_tags %}
 
+{% block bootstrap4_extra_head %}
+{{ block.super }}
+{{ form.media.css }}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+{% endblock %}
+
 {% block bootstrap4_extra_script %}
 {{ block.super }}
-{{ form.media }}
+{{ form.media.js }}
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 {% endblock %}
 
 {% block page_title %}{% endblock %}
@@ -20,15 +29,15 @@
     <a href="{% url 'werte:neu' %}" class="btn btn-primary" role="button" title="{% trans 'New measurements' %}">
         <i class="far fa-plus"></i>
     </a>
-    <a href="{% url 'werte:diagram' von|date:'Y-m-d' bis|date:'Y-m-d' %}" 
+    <a href="{% url 'werte:diagram' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
         class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}">
         <i class="far fa-chart-area"></i>
     </a>
-    <a href="{% url 'werte:minmax' von|date:'Y-m-d' bis|date:'Y-m-d' %}" 
+    <a href="{% url 'werte:minmax' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
         class="btn btn-primary" role="button" title="{% trans 'Statistics' %}">
         <i class="far fa-arrows-v"></i>
     </a>
-    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}" 
+    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
         class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}">
         <i class="far fa-envelope"></i>
     </a>
@@ -36,9 +45,16 @@
 
 <div class="v-offset">
     <h5>Zeitraum</h5>
-    <form method="POST" class="form-inline" role="form">
+    <form method="POST" class="" role="form" >
         {% csrf_token %}
-        {% bootstrap_form form layout='inline' %}
+        <div class="row">
+            <div class="col">
+                {% bootstrap_field form.vonDate %}
+            </div>
+            <div class="col">
+                {% bootstrap_field form.bisDate %}
+            </div>
+        </div>
         {% buttons %}
             <button type="submit" class="btn btn-secondary">
                 <i class="far fa-sync"></i>
@@ -48,17 +64,18 @@
     </form>
 </div>
 
-<div class="v-offset">
+<div style="margin-top: -50px;">
     <div class="table-responsive">
-    <table id="wertelist" class="table table-condensed table-striped table-bordered">
+    <table id="wertelist" data-toggle="table" class="table table-condensed table-striped table-bordered"
+            data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>
-                <th>{% trans 'Date' %}</th>
-                <th>{% trans 'RR sys' %}<br>(mm/Hg)</th>
-                <th>{% trans 'RR dia' %}<br>(mm/Hg)</th>
-                <th>{% trans 'Pulse' %}<br>(1/min)</th>
-                <th>{% trans 'Temp.' %}<br>(&deg;C)</th>
-                <th>{% trans 'Weight' %}<br>(Kg)</th>
+                <th data-sortable="true">{% trans 'Date' %}</th>
+                <th data-sortable="true">{% trans 'RR sys' %}<br>(mm/Hg)</th>
+                <th data-sortable="true">{% trans 'RR dia' %}<br>(mm/Hg)</th>
+                <th data-sortable="true">{% trans 'Pulse' %}<br>(1/min)</th>
+                <th data-sortable="true">{% trans 'Temp.' %}<br>(&deg;C)</th>
+                <th data-sortable="true">{% trans 'Weight' %}<br>(Kg)</th>
                 <th>{% trans 'Peculiarity' %}</th>
             </tr>
         </thead>
@@ -66,7 +83,7 @@
             {% for wert in wertelist %}
             <tr>
                 <td><a href="{% url 'werte:edit' wert.id %}">{{ wert.date|date:"SHORT_DATETIME_FORMAT" }}</a></td>
-                <td>{{ wert.rrsys|default_if_none:"" }}</td>
+                <td class="sortable">{{ wert.rrsys|default_if_none:"" }}</td>
                 <td>{{ wert.rrdia|default_if_none:"" }}</td>
                 <td>{{ wert.puls|default_if_none:"" }}</td>
                 <td>{{ wert.temp|floatformat:1 }}</td>

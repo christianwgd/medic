@@ -1,13 +1,9 @@
 # encoding: utf-8
-
-from __future__ import unicode_literals
-
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.messages.constants import SUCCESS, ERROR, INFO
 from django.utils.translation import ugettext_lazy as _
 
 from usrprofile.forms import UsrProfForm

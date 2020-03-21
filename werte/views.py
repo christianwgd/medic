@@ -8,7 +8,6 @@ from decimal import Decimal
 from logging import getLogger
 
 from django import forms
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -38,10 +37,10 @@ def werte(request):
     wertelist = Wert.objects.none()
     form = None
     message = ''
-    
+
     try:
         up = UserProfile.objects.get(ref_usr=request.user)
-        
+
         t = datetime.timedelta(days=up.werteLetzteTage)  # default from UserProfile
         bis = timezone.now()
         von = bis - t
@@ -58,10 +57,10 @@ def werte(request):
                 'vonDate': von,
                 'bisDate': bis
             })
-            
+
         wertelist = Wert.objects.filter(
-            date__date__gte=von, 
-            date__date__lte=bis, 
+            date__date__gte=von,
+            date__date__lte=bis,
             ref_usr=request.user
         ).order_by('-date')
     except UserProfile.DoesNotExist:
@@ -72,7 +71,7 @@ def werte(request):
         message =  _('Error in reading measurements.')
         logger.exception(message)
         messages.error(request, message)
-    
+
     return render(request, 'werte/werte.html',
                   {'wertelist': wertelist, 'form': form, 'user': request.user, 'von': von, 'bis': bis})
 

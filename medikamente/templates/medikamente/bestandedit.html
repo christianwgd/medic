@@ -3,14 +3,12 @@
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.css' %}" type="text/css" />
-<script src="{% static 'bootstrap4_datetime/moment-with-locales.min.js' %}"></script>
-<script src="{% static 'bootstrap4_datetime/bootstrap-datetimepicker.min.js' %}"></script>
+{{ form.media.css }}
 {% endblock %}
 
 {% block bootstrap4_extra_script %}
-{{ form.media }}
 {{ block.super }}
+{{ form.media.js }}
 <script type="text/javascript">
 $(document).ready(function(){
     var menge = "{{ defmenge }}";
