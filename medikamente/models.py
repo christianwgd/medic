@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import locale
 
-from builtins import object
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -19,7 +15,7 @@ EINHEIT_CHOICES = (
 
 class Medikament (models.Model):
     
-    class Meta(object):
+    class Meta:
         verbose_name = _('Medicament')
         verbose_name_plural = _('Medicaments')
         ordering = ['name', 'staerke']
@@ -104,7 +100,7 @@ class Verordnung (models.Model):
 
 class VrdFuture (models.Model):
 
-    class Meta(object):
+    class Meta:
         verbose_name = _('Scheduled prescription')
         verbose_name_plural = _('Scheduled prescriptions')
 
@@ -152,7 +148,7 @@ GRUND_CHOICES = (
 
 class Bestandsveraenderung(models.Model):
     
-    class Meta(object):
+    class Meta:
         verbose_name = _('Change of inventory')
         verbose_name_plural = _('Changes of inventory')
         
