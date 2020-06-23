@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% load i18n bootstrap4 medi_tags usrprofile_tags %}
 
+{% block bootstrap4_extra_head %}
+{{ block.super }}
+{{ form.media.css }}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+{% endblock %}
+
+{% block bootstrap4_extra_script %}
+{{ block.super }}
+{{ form.media.js }}
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+{% endblock %}
 
 {% block page_title %}{% endblock %}
 
@@ -22,7 +34,8 @@
 </div>
 
 <div class="v-offset">
-    <table id="wertelist" class="table table-striped table-bordered table-condensed">
+    <table id="vrd" data-toggle="table" class="table table-condensed table-striped table-bordered"
+                data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>
                 <th>{% trans 'Medicament' %}</th>
