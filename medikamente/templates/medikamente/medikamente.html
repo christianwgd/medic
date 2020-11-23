@@ -51,17 +51,17 @@
                 <td>{{ med.wirkstoff }}</td>
                 <td>{{ med.packung }} {% trans 'Tabl.' %}</td>
                 <td style="text-align: right;">{{ med.staerke|floatformat:2 }} {{ med.einheit }}</td>
-{#                <td style="text-align: right;">#}
-{#                    {{ med.bestand|floatformat:2 }} {% trans 'Tabl.' %}#}
-{#                    &nbsp;#}
-{#                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="{% trans 'Inventory change' %}">#}
-{#                        <i class="far fa-sm fa-edit"></i>#}
-{#                    </a>#}
-{#                    &nbsp;#}
-{#                    <a href="{% url 'medikamente:besthistory' med.id %}" title="{% trans 'Inventory history' %}">#}
-{#                        <i class="far fa-sm fa-history"></i>#}
-{#                    </a>#}
-{#                </td>#}
+                <td style="text-align: right;">
+                    {{ med.bestand|floatformat:2 }} {% trans 'Tabl.' %}
+                    &nbsp;
+                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="{% trans 'Inventory change' %}">
+                        <i class="far fa-sm fa-edit"></i>
+                    </a>
+                    &nbsp;
+                    <a href="{% url 'medikamente:besthistory' med.id %}" title="{% trans 'Inventory history' %}">
+                        <i class="far fa-sm fa-history"></i>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
