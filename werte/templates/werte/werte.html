@@ -43,9 +43,9 @@
     </a>
 </div>
 
-<div class="v-offset">
+<div>
     <h5>Zeitraum</h5>
-    <form method="POST" class="" role="form" >
+    <form method="post" role="form" >
         {% csrf_token %}
         <div class="row">
             <div class="col">
@@ -54,17 +54,17 @@
             <div class="col">
                 {% bootstrap_field form.bisDate %}
             </div>
+            <div class="col">
+                <button type="submit" class="btn btn-secondary" style="margin-top: 30px;">
+                    <i class="far fa-sync"></i>
+                    {% trans 'Refresh' %}
+                </button>
+            </div>
         </div>
-        {% buttons %}
-            <button type="submit" class="btn btn-secondary">
-                <i class="far fa-sync"></i>
-                {% trans 'Refresh' %}
-            </button>
-        {% endbuttons %}
     </form>
 </div>
 
-<div style="margin-top: -50px;">
+<div>
     <div class="table-responsive">
     <table id="wertelist" data-toggle="table" class="table table-condensed table-striped table-bordered"
             data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">

@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import datetime
-from django.core.management.base import CommandError, NoArgsCommand
+from django.core.management.base import CommandError, BaseCommand
 from medikamente.models import Verordnung, VrdFuture
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Aktiviert eingegebene, fällige Verordnungsänderungen.'
 
-    def handle_noargs(self, **options):
+    def handle(self, **options):
         try:
             vrdfutlist = VrdFuture.objects.filter(erledigt=False)
             if vrdfutlist.count() == 0:

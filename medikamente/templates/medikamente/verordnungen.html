@@ -5,6 +5,13 @@
 {{ block.super }}
 {{ form.media.css }}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+<style>
+th, td {
+    border-left: none !important;
+    border-right: none !important;
+}
+.table-bordered { border: none !important; }
+</style>
 {% endblock %}
 
 {% block bootstrap4_extra_script %}
@@ -34,7 +41,7 @@
 </div>
 
 <div class="v-offset">
-    <table id="vrd" data-toggle="table" class="table table-condensed table-striped table-bordered"
+    <table id="vrd" data-toggle="table" class="table"
                 data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>
