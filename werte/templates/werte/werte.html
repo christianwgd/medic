@@ -5,6 +5,7 @@
 {{ block.super }}
 {{ form.media.css }}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/filter.css' %}">
 {% endblock %}
 
 {% block bootstrap4_extra_script %}
@@ -48,14 +49,14 @@
     <form method="post" role="form" >
         {% csrf_token %}
         <div class="row">
-            <div class="col">
+            <div class="col-6 col-sm-4">
                 {% bootstrap_field form.vonDate size='small' %}
             </div>
-            <div class="col">
+            <div class="col-6 col-sm-4">
                 {% bootstrap_field form.bisDate size='small' %}
             </div>
-            <div class="col">
-                <button type="submit" class="btn btn-sm btn-secondary" style="margin-top: 30px;">
+            <div class="col-12 col-sm-4">
+                <button id="id_refresh" type="submit" class="btn btn-sm btn-secondary">
                     <i class="far fa-sync"></i>
                     {% trans 'Refresh' %}
                 </button>
