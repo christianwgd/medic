@@ -121,6 +121,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
     'two_factor',
     'bootstrap4',
+    'bootstrap_modal_forms',
     'bootstrap_datepicker_plus',
 ]
 

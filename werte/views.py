@@ -4,16 +4,16 @@ import json
 from decimal import Decimal
 from logging import getLogger
 
-from django import forms
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.db.models import Avg, Max, Min
-from django.forms import ModelForm
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone, formats, dateparse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from mail_templated import send_mail
 
@@ -22,9 +22,8 @@ from medic.utils import getLocaleMonthNames
 from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
 
-from werte.forms import TimeForm
+from werte.forms import TimeForm, MesswertForm
 from werte.models import Wert
-
 
 logger = getLogger('medic')
 
@@ -65,7 +64,7 @@ def werte(request):
         messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except Exception as e:
-        message =  _('Error in reading measurements.')
+        message = _('Error in reading measurements.')
         logger.exception(message)
         messages.error(request, message)
 
@@ -85,8 +84,8 @@ def emailwerte(request, von, bis):
     bis = dateparse.parse_date(bis)
 
     wertelist = Wert.objects.filter(
-        date__date__gte=von, 
-        date__date__lte=bis, 
+        date__date__gte=von,
+        date__date__lte=bis,
         ref_usr=request.user
     ).order_by('-date')
 
@@ -104,15 +103,15 @@ def emailwerte(request, von, bis):
                     mail_to = []
                     if user.email is None or user.email == '':
                         messages.warning(request,
-                            _('Sending emails requires email address in user settings.')
-                        )
+                                         _('Sending emails requires email address in user settings.')
+                                         )
                     else:
                         mail_to.append(form.cleaned_data['mailadr'])
                         email_from = user.email
                         send_mail(
                             'werte/emailwerte.txt',
                             {
-                                'user': user, 'text': form.cleaned_data['text'], 
+                                'user': user, 'text': form.cleaned_data['text'],
                                 'wertelist': wertelist, 'von': von, 'bis': bis
                             },
                             email_from, mail_to
@@ -126,7 +125,7 @@ def emailwerte(request, von, bis):
                 'mailadr': up.email_arzt,
                 'subject': _('Measurements {name} from {von} to {bis}').format(
                     name=request.user.get_full_name(),
-                    von=formats.date_format(min_date, 'SHORT_DATE_FORMAT'), 
+                    von=formats.date_format(min_date, 'SHORT_DATE_FORMAT'),
                     bis=formats.date_format(max_date, 'SHORT_DATE_FORMAT')
                 )}
             )
@@ -148,20 +147,20 @@ def emailwerte(request, von, bis):
 def minmax(request, von, bis):
     von_date = dateparse.parse_date(von)
     bis_date = dateparse.parse_date(bis)
-    
+
     minrrsys = maxrrsys = medrrsys = None
     minrrdia = maxrrdia = medrrdia = None
-    minpuls  = maxpuls  = medpuls  = None
-    mintemp  = maxtemp  = medtemp  = None
-    mingew   = maxgew   = medgew   = None
-    
+    minpuls = maxpuls = medpuls = None
+    mintemp = maxtemp = medtemp = None
+    mingew = maxgew = medgew = None
+
     try:
         values = Wert.objects.filter(
-            date__date__gte=von_date, 
+            date__date__gte=von_date,
             date__date__lte=bis_date,
             ref_usr=request.user
         ).exclude(rrsys=None
-        ).aggregate(
+                  ).aggregate(
             Avg('rrsys'), Max('rrsys'), Min('rrsys'),
             Avg('rrdia'), Max('rrdia'), Min('rrdia'),
             Avg('puls'), Max('puls'), Min('puls'),
@@ -192,7 +191,7 @@ def minmax(request, von, bis):
         message = _('Error in calculating statistics')
         logger.exception(message)
         messages.error(request, message)
-    
+
     return render(request, 'werte/minmax.html', {
         'minrrsys': minrrsys, 'maxrrsys': maxrrsys, 'medrrsys': medrrsys,
         'minrrdia': minrrdia, 'maxrrdia': maxrrdia, 'medrrdia': medrrdia,
@@ -221,7 +220,6 @@ class DecimalEncoder(json.JSONEncoder):
 
 @login_required(login_url='/login/')
 def diagram(request, von, bis):
-    
     von_date = dateparse.parse_date(von)
     bis_date = dateparse.parse_date(bis)
 
@@ -230,10 +228,10 @@ def diagram(request, von, bis):
     puls = []
     temp = []
     gew = []
-    
+
     try:
         wertelist = Wert.objects.filter(
-            date__date__gte=von_date, 
+            date__date__gte=von_date,
             date__date__lte=bis_date,
             ref_usr=request.user
         ).order_by('date')
@@ -249,7 +247,7 @@ def diagram(request, von, bis):
             puls.append([date, wert.puls])
             temp.append([date, wert.temp])
             gew.append([date, wert.gew])
-            
+
         js_sys = json.dumps(sys, cls=DecimalEncoder)
         js_dia = json.dumps(dia, cls=DecimalEncoder)
         js_puls = json.dumps(puls, cls=DecimalEncoder)
@@ -263,100 +261,32 @@ def diagram(request, von, bis):
     loc_months = getLocaleMonthNames()
     return render(request, 'werte/diagram.html', {
         'user': request.user,
-        'sys': js_sys, 
-        'dia': js_dia, 
-        'puls': js_puls, 
-        'tmp': js_temp, 
+        'sys': js_sys,
+        'dia': js_dia,
+        'puls': js_puls,
+        'tmp': js_temp,
         'gew': js_gew,
         'loc_months': loc_months,
     })
 
 
-class MesswertForm(ModelForm):
-    
-    def __init__(self, *args, **kwargs):
-        super(MesswertForm, self).__init__(*args, **kwargs)
-        self.fields['gew'].localize = True
-        self.fields['temp'].localize = True
-    
-    class Meta:
-        model = Wert
-        fields = ['rrsys', 'rrdia', 'puls', 'temp', 'gew', 'bemerkung']
-        widgets = { 
-            'rrsys': forms.NumberInput(attrs={'min': 0, "autofocus": "autofocus"}),
-            'rrdia': forms.NumberInput(attrs={'min': 0}),
-            'puls': forms.NumberInput(attrs={'min': 0}),
-            'temp': forms.NumberInput(attrs={'min': 0}),
-            'gew': forms.NumberInput(attrs={'min': 0}),
-        }  
+class WertCreateView(LoginRequiredMixin, BSModalCreateView):
+    model = Wert
+    form_class = MesswertForm
+    template_name = 'werte/measurments_form.html'
+    success_message = _('New masurements saved.')
+    success_url = reverse_lazy('werte:werte')
+
+    def form_valid(self, form):
+        new_val = form.save(commit=False)
+        new_val.ref_usr = self.request.user
+        new_val.save()
+        return super().form_valid(form)
 
 
-@login_required(login_url='/login/')
-def new(request):
-
-    if 'cancel' in request.POST:
-        messages.info(request, _('Function canceled.'))
-        return redirect(reverse_lazy('werte:werte'))
-
-    try:
-        UserProfile.objects.get(ref_usr=request.user)
-    except Exception as e:
-        message = _('User {user} has no user profile.').format(user=request.user)
-        messages.error(request, message)
-        return redirect(reverse_lazy('startpage'))
-
-    if request.method == 'POST':
-        form = MesswertForm(request.POST)
-        if form.is_valid():
-            try:
-                new_val = form.save(commit=False)
-                if (new_val.rrsys is None and new_val.rrdia is None and new_val.puls is None
-                    and new_val.temp is None and new_val.gew is None):
-                    messages.error(request, _('No values entered.'))
-                else:
-                    new_val.ref_usr = request.user
-                    new_val.save()
-                    local = timezone.localtime(new_val.date)
-                    msg = _('Measurements from {date} saved.').format(
-                        date=formats.date_format(local, 'SHORT_DATETIME_FORMAT'),
-                    )
-                    messages.success(request, msg)
-                    return redirect(reverse_lazy('werte:werte'))
-            except Exception:
-                msg = _('Error saving measurements.')
-                logger.exception(msg)
-                messages.error(request, msg)
-    else:  # GET
-        form = MesswertForm(initial={'ref_usr': request.user})
-    return render(request, 'werte/edit.html', {'form': form})
-
-
-@login_required(login_url='/login/')
-def edit(request, wert_id):
-
-    if 'cancel' in request.POST:
-        messages.info(request, _('Function canceled.'))
-        return redirect(reverse_lazy('werte:werte'))
-
-    val = Wert.objects.get(id=wert_id)
-    
-    if request.method == 'POST':
-        form = MesswertForm(request.POST, instance=val)
-        if form.is_valid():
-            try:
-                val.ref_usr = request.user
-                val.save()
-                local = timezone.localtime(val.date)
-                msg = _('Measurements from {date} saved.').format(
-                    date=formats.date_format(local, 'SHORT_DATETIME_FORMAT'),
-                )
-                messages.success(request, msg)
-                return redirect(reverse_lazy('werte:werte'))
-            except Exception:
-                msg = _('Error saving measurements.')
-                logger.exception(request, msg)
-                messages.error(request, msg)
-    else:  # GET
-        form = MesswertForm(instance=val)
-        
-    return render(request, 'werte/edit.html', {'form': form})
+class WertUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = Wert
+    form_class = MesswertForm
+    template_name = 'werte/measurments_form.html'
+    success_message = _('Masurements saved.')
+    success_url = reverse_lazy('werte:werte')

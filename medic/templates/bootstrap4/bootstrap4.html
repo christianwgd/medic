@@ -7,7 +7,7 @@
 <script>
     var errors = [];
     {% for message in messages %}
-        var error = {type: "{{ message.tags }}", text: "{{ message|safe }}", icon:"", delay: 5000};
+        var error = {type: "{{ message.tags }}", text: "{{ message|safe }}", icon:"", delay: 0};
         switch(error.type) {
             case "error":
                 error.icon = 'far fa-exclamation-circle';
@@ -38,8 +38,8 @@
                     align: "right"
                 },
                 offset: {
-                    x: 10,
-                    y: 60
+                    x: 15,
+                    y: 150
                 },
                 animate: {
                     enter: 'animated slideInRight',

@@ -4,21 +4,15 @@
 {% block bootstrap4_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
-<style>
-th, td {
-    border-left: none !important;
-    border-right: none !important;
-}
-.table-bordered { border: none !important; }
-</style>
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
 {% endblock %}
 
 {% block bootstrap4_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
-<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 {% endblock %}
 
 {% block page_title %}{% endblock %}
@@ -41,7 +35,7 @@ th, td {
 </div>
 
 <div class="v-offset">
-    <table id="vrd" data-toggle="table" class="table"
+    <table id="vrd" data-toggle="table" class="table table-striped"
                 data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>

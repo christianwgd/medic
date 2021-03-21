@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 09:35+0200\n"
+"POT-Creation-Date: 2021-03-21 19:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,191 +19,198 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\apps.py:6 .\models.py:16 .\templates\werte\diagram.html:226
-#: .\templates\werte\edit.html:4 .\templates\werte\minmax.html:15
-#: .\templates\werte\werte.html:13
+#: apps.py:6 models.py:12 templates/werte/diagram.html:206
+#: templates/werte/minmax.html:15 templates/werte/werte.html:43
 msgid "Measurements"
 msgstr "Messwerte"
 
-#: .\models.py:15
+#: models.py:11 templates/werte/measurments_form.html:6
 msgid "Measurement"
 msgstr "Messwert"
 
-#: .\models.py:22 .\templates\werte\emailwerte.html:24
-#: .\templates\werte\emailwerte.txt:12 .\templates\werte\werte.html:57
+#: models.py:18 templates/werte/emailwerte.html:24
+#: templates/werte/emailwerte.txt:12 templates/werte/werte.html:94
 msgid "Date"
 msgstr "Datum"
 
-#: .\models.py:26 .\templates\werte\emailwerte.html:25
-#: .\templates\werte\emailwerte.txt:13 .\templates\werte\minmax.html:31
-#: .\templates\werte\werte.html:58
+#: models.py:22 templates/werte/emailwerte.html:25
+#: templates/werte/emailwerte.txt:13 templates/werte/minmax.html:31
+#: templates/werte/werte.html:95
 msgid "RR sys"
 msgstr "RR Sys"
 
-#: .\models.py:30 .\templates\werte\emailwerte.html:26
-#: .\templates\werte\emailwerte.txt:14 .\templates\werte\minmax.html:37
-#: .\templates\werte\werte.html:59
+#: models.py:26 templates/werte/emailwerte.html:26
+#: templates/werte/emailwerte.txt:14 templates/werte/minmax.html:37
+#: templates/werte/werte.html:96
 msgid "RR dia"
 msgstr "RR Dia"
 
-#: .\models.py:34 .\templates\werte\emailwerte.html:27
-#: .\templates\werte\emailwerte.txt:15 .\templates\werte\minmax.html:43
-#: .\templates\werte\werte.html:60
+#: models.py:30 templates/werte/emailwerte.html:27
+#: templates/werte/emailwerte.txt:15 templates/werte/minmax.html:43
+#: templates/werte/werte.html:97
 msgid "Pulse"
 msgstr "Puls"
 
-#: .\models.py:38 .\templates\werte\emailwerte.html:28
-#: .\templates\werte\emailwerte.txt:16 .\templates\werte\werte.html:61
+#: models.py:34 templates/werte/emailwerte.html:28
+#: templates/werte/emailwerte.txt:16 templates/werte/werte.html:98
 msgid "Temp."
 msgstr "Temp."
 
-#: .\models.py:42 .\templates\werte\emailwerte.html:29
-#: .\templates\werte\emailwerte.txt:17 .\templates\werte\minmax.html:55
-#: .\templates\werte\werte.html:62
+#: models.py:38 templates/werte/emailwerte.html:29
+#: templates/werte/emailwerte.txt:17 templates/werte/minmax.html:55
+#: templates/werte/werte.html:99
 msgid "Weight"
 msgstr "Gewicht"
 
-#: .\models.py:46 .\templates\werte\emailwerte.html:30
-#: .\templates\werte\emailwerte.txt:18 .\templates\werte\werte.html:63
+#: models.py:42 templates/werte/emailwerte.html:30
+#: templates/werte/emailwerte.txt:18 templates/werte/werte.html:100
 msgid "Peculiarity"
 msgstr "Besonderheiten"
 
-#: .\models.py:50
+#: models.py:46
 msgid "user"
 msgstr "Benutzer"
 
-#: .\templates\werte\diagram.html:219
+#: templates/werte/diagram.html:199
 msgid "Measurements diagramm"
 msgstr "Messwerte Diagramm"
 
-#: .\templates\werte\diagram.html:223 .\templates\werte\minmax.html:12
-#: .\templates\werte\werte.html:17
+#: templates/werte/diagram.html:203 templates/werte/minmax.html:12
+#: templates/werte/werte.html:47
 msgid "Home page"
 msgstr "Startseite"
 
-#: .\templates\werte\edit.html:12
-msgid "Ok"
-msgstr ""
-
-#: .\templates\werte\edit.html:13 .\templates\werte\emailwerte.html:13
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: .\templates\werte\emailwerte.html:4
+#: templates/werte/emailwerte.html:4
 msgid "Send measurements"
 msgstr "Messwerte senden"
 
-#: .\templates\werte\emailwerte.html:12
+#: templates/werte/emailwerte.html:12
 msgid "<i class='far fa-paper-plane'></i> Send"
 msgstr "<i class='far fa-paper-plane'></i> Senden"
 
-#: .\templates\werte\emailwerte.txt:4
+#: templates/werte/emailwerte.html:13 templates/werte/measurments_form.html:18
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/werte/emailwerte.txt:4
 msgid "Measurements for"
 msgstr "Messwerte für"
 
-#: .\templates\werte\emailwerte.txt:4
+#: templates/werte/emailwerte.txt:4
 msgid "from"
 msgstr "vom"
 
-#: .\templates\werte\emailwerte.txt:4
+#: templates/werte/emailwerte.txt:4
 msgid "to "
 msgstr "bis"
 
-#: .\templates\werte\minmax.html:8
+#: templates/werte/measurments_form.html:21
+msgid "Ok"
+msgstr ""
+
+#: templates/werte/minmax.html:8
 msgid "Minimum, maximum and average values"
 msgstr "Minimum, Maximum und Mittelwerte"
 
-#: .\templates\werte\minmax.html:25
+#: templates/werte/minmax.html:25
 msgid "Minimum"
 msgstr "Minimum"
 
-#: .\templates\werte\minmax.html:26
+#: templates/werte/minmax.html:26
 msgid "Maximum"
 msgstr "Maximum"
 
-#: .\templates\werte\minmax.html:27
+#: templates/werte/minmax.html:27
 msgid "Average"
 msgstr "Mittelwert"
 
-#: .\templates\werte\minmax.html:49
+#: templates/werte/minmax.html:49
 msgid "Temperature"
 msgstr "Temperatur"
 
-#: .\templates\werte\werte.html:20
+#: templates/werte/werte.html:50
 msgid "New measurements"
 msgstr "Neuer Messwert"
 
-#: .\templates\werte\werte.html:24
+#: templates/werte/werte.html:54
 msgid "Diagramm"
 msgstr "Diagramm"
 
-#: .\templates\werte\werte.html:28
+#: templates/werte/werte.html:58
 msgid "Statistics"
 msgstr "Statistik"
 
-#: .\templates\werte\werte.html:32
+#: templates/werte/werte.html:62
 msgid "Send measurements by email"
 msgstr "Messwerte per Email senden"
 
-#: .\templates\werte\werte.html:46
+#: templates/werte/werte.html:81
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: .\views.py:52
+#: views.py:53
 msgid "From date must be earlier than to date!"
 msgstr "Von-Datum muss kleiner als bis-Datum sein!"
 
-#: .\views.py:65 .\views.py:136 .\views.py:308
+#: views.py:66 views.py:137 views.py:308 views.py:336
 #, python-brace-format
 msgid "User {user} has no user profile."
 msgstr "Der Benutzer {user} hat kein Profil."
 
-#: .\views.py:69 .\views.py:140
+#: views.py:70 views.py:141
 msgid "Error in reading measurements."
 msgstr "Fehler beim Lesen der Messwerte."
 
-#: .\views.py:82 .\views.py:302 .\views.py:342
+#: views.py:83 views.py:345
 msgid "Function canceled."
 msgstr "Funktion abgebrochen."
 
-#: .\views.py:108
+#: views.py:109
 msgid "Sending emails requires email address in user settings."
 msgstr "Um Emails zu senden, ist eine Emailadresse erforderlich."
 
-#: .\views.py:121
+#: views.py:122
 msgid "Email sent."
 msgstr "Email versendet."
 
-#: .\views.py:124
+#: views.py:125
 msgid "Error sending email: {}."
 msgstr "Fehler beim Senden der Email: {}."
 
-#: .\views.py:128
+#: views.py:129
 #, python-brace-format
 msgid "Measurements {name} from {von} to {bis}"
 msgstr "Messwerte {name} vom {von} bis {bis}"
 
-#: .\views.py:193
+#: views.py:194
 msgid "Error in calculating statistics"
 msgstr "Fehler beim Berechnen der Statistik"
 
-#: .\views.py:243
+#: views.py:244
 msgid "No measurements found."
 msgstr "Keine Messwerte gefunden."
 
-#: .\views.py:263
+#: views.py:261
 msgid "Error in measurements"
 msgstr "Fehler in Messwerten"
 
-#: .\views.py:319
+#: views.py:300
+msgid "New masurements saved."
+msgstr "Neue Messwerte gespeichert"
+
+#: views.py:316
 msgid "No values entered."
 msgstr "Keine Werte eingegeben."
 
-#: .\views.py:324 .\views.py:354
+#: views.py:328
+msgid "Masurements saved."
+msgstr "Messwerte gespeichert."
+
+#: views.py:357
 #, python-brace-format
 msgid "Measurements from {date} saved."
 msgstr "Messwerte vom {date} übernommen."
 
-#: .\views.py:330 .\views.py:360
+#: views.py:363
 msgid "Error saving measurements."
 msgstr "Fehler beim Sichern der Messwerte."

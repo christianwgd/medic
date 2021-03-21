@@ -34,3 +34,7 @@ body {
 .table td svg {
     margin-bottom: 1px;
 }
+
+.modal {
+    margin-top: 5rem;
+}
