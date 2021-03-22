@@ -48,19 +48,10 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="appDropdown" data-toggle="dropdown" href="">
-                    {% trans 'Measurement' %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'werte:werte' %}">
+                    {% trans 'Measurements' %}
                 </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'werte:werte' %}">
-                        {% trans 'List' %}
-                    </a>
-                    <a class="dropdown-item" href="{% url 'werte:neu' %}">
-                        {% trans 'New measurement' %}
-                    </a>
-                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'medikamente:medikamente' %}">
@@ -72,10 +63,8 @@
                     {% trans 'Prescriptions' %}
                 </a>
             </li>
-            {% endif %}
         </ul>
         <ul class="navbar-nav">
-            {% if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown" data-toggle="dropdown" href="">
                     <i class="far fa-user"></i>
@@ -108,7 +97,6 @@
                     {% endif %}
                 </div>
             </li>
-            {% endif %}
         </ul>
     </div>
 </nav>
