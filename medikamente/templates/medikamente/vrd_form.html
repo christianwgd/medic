@@ -1,0 +1,147 @@
+{% load bootstrap4 i18n %}
+<style>
+    .wide-addon { width: 12rem; }
+    .v-offset { margin-bottom: .5rem; }
+    .weekdays td, th { text-align: center; }
+</style>
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">
+            {% trans 'Prescription' %}
+            {% if object.id %}
+                &dash; {{ object.ref_medikament.name }}
+                {{ object.ref_medikament.staerke }}
+                {{ object.ref_medikament.einheit }}
+            {% endif %}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
+        {% bootstrap_field form.ref_medikament %}
+
+        {% trans 'Tabl. <span id="modosis"></span>' as modose %}
+        {% trans 'Tabl. <span id="nndosis"></span>' as nndose %}
+        {% trans 'Tabl. <span id="evdosis"></span>' as evdose %}
+        {% trans 'Tabl. <span id="ngdosis"></span>' as ngdose %}
+        {% bootstrap_field form.morgen addon_after=modose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.mittag addon_after=nndose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.abend addon_after=evdose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.nacht addon_after=ngdose addon_after_class='input-group-text wide-addon' %}
+
+        <h4>Wochentage</h4>
+        <div class="v-offset">
+            <button type="button" class="btn btn-sm btn-secondary" onclick="checkall();">
+                <i class="far fa-check-square"></i> {% trans 'All' %}
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="checknone();">
+                <i class="far fa-square"></i> {% trans 'None' context 'medic' %}
+            </button>
+        </div>
+        <table class="table table-bordered weekdays">
+            <thead>
+                <tr>
+                    <th>{{form.mo.label}}</th>
+                    <th>{{form.di.label}}</th>
+                    <th>{{form.mi.label}}</th>
+                    <th>{{form.do.label}}</th>
+                    <th>{{form.fr.label}}</th>
+                    <th>{{form.sa.label}}</th>
+                    <th>{{form.so.label}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{form.mo}}</td>
+                    <td>{{form.di}}</td>
+                    <td>{{form.mi}}</td>
+                    <td>{{form.do}}</td>
+                    <td>{{form.fr}}</td>
+                    <td>{{form.sa}}</td>
+                    <td>{{form.so}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+            calcdosis("#id_morgen", "#modosis");
+            calcdosis("#id_mittag", "#nndosis");
+            calcdosis("#id_abend", "#evdosis");
+            calcdosis("#id_nacht", "#ngdosis");
+        });
+
+        function checkall() {
+            $('#id_mo').prop('checked', true);
+            $('#id_di').prop('checked', true);
+            $('#id_mi').prop('checked', true);
+            $('#id_do').prop('checked', true);
+            $('#id_fr').prop('checked', true);
+            $('#id_sa').prop('checked', true);
+            $('#id_so').prop('checked', true);
+        }
+
+        function checknone() {
+            $('#id_mo').prop('checked', false);
+            $('#id_di').prop('checked', false);
+            $('#id_mi').prop('checked', false);
+            $('#id_do').prop('checked', false);
+            $('#id_fr').prop('checked', false);
+            $('#id_sa').prop('checked', false);
+            $('#id_so').prop('checked', false);
+        }
+
+        function calcdosis (tabl_id, dosis_id) {
+            var med_id = $("#id_ref_medikament").children(":selected").val();
+            if (med_id) {
+                var url = "/medikamente/getmed/" + med_id + "/";
+                $.get(url, function (data) {
+                    var med = data[0]['fields'];
+                    var medstaerke = med['staerke'];
+                    var medeinheit = med['einheit'];
+                    var tabl = $(tabl_id).val();
+                    if (tabl !== "") {
+                        var dosis = medstaerke * parseFloat(tabl.replace(/,/g, '.'));
+                        var strdosis = dosis.toFixed(2).toString().replace(/\./g, ',');
+                        $(dosis_id).html('( = ' + strdosis + ' ' + medeinheit + ')');
+                    }
+                });
+            }
+        }
+
+        $("#id_morgen").change(function () {
+            calcdosis("#id_morgen", "#modosis");
+        });
+        $("#id_mittag").change(function () {
+            calcdosis("#id_mittag", "#nndosis");
+        });
+        $("#id_abend").change(function () {
+            calcdosis("#id_abend", "#evdosis");
+        });
+        $("#id_nacht").change(function () {
+            calcdosis("#id_nacht", "#ngdosis");
+        });
+        $("#id_ref_medikament").change(function () {
+            calcdosis("#id_morgen", "#modosis");
+            calcdosis("#id_mittag", "#nndosis");
+            calcdosis("#id_abend", "#evdosis");
+            calcdosis("#id_nacht", "#ngdosis");
+        });
+        </script>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+            {% trans 'Ok' %}
+        </button>
+        <button class="btn btn-secondary" data-dismiss="modal">
+            {% trans 'Cancel' %}
+        </button>
+    </div>
+
+</form>

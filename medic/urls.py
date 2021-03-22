@@ -5,7 +5,7 @@ from django.urls import path, include, reverse_lazy
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from two_factor.urls import urlpatterns as tf_urls
 
 from . import  views

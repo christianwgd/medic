@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-import locale
-
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
+from django.utils import formats
+from django.utils.translation import gettext_lazy as _
 
 EINHEIT_CHOICES = (
         ('mg', _('Milligram')),
@@ -21,8 +20,7 @@ class Medikament (models.Model):
         ordering = ['name', 'staerke']
         
     def __str__(self):
-        locale.setlocale(locale.LC_ALL, '')
-        dose = locale.format_string('%.2f', self.staerke)
+        dose = formats.localize(self.staerke, use_l10n=True)
         return '{name} {dose} {unit}'.format(
                 name=self.name, 
                 dose=dose,
@@ -63,6 +61,7 @@ class Verordnung (models.Model):
     class Meta(object):
         verbose_name = _('Prescription')
         verbose_name_plural = _('Prescriptions')
+        ordering = ['ref_medikament__name', 'ref_medikament__staerke']
         
     def __str__(self):
         return '{}'.format(self.ref_medikament)
@@ -86,13 +85,13 @@ class Verordnung (models.Model):
         verbose_name=_('Night'), max_digits=3, 
         decimal_places=2, null=True, blank=True
     )
-    mo = models.BooleanField(verbose_name=_('Mo'), default=False)
-    di = models.BooleanField(verbose_name=_('Tu'), default=False)
-    mi = models.BooleanField(verbose_name=_('We'), default=False)
-    do = models.BooleanField(verbose_name=_('Th'), default=False)
-    fr = models.BooleanField(verbose_name=_('Fr'), default=False)
-    sa = models.BooleanField(verbose_name=_('Sa'), default=False)
-    so = models.BooleanField(verbose_name=_('Su'), default=False)
+    mo = models.BooleanField(verbose_name=_('Mo'), default=True)
+    di = models.BooleanField(verbose_name=_('Tu'), default=True)
+    mi = models.BooleanField(verbose_name=_('We'), default=True)
+    do = models.BooleanField(verbose_name=_('Th'), default=True)
+    fr = models.BooleanField(verbose_name=_('Fr'), default=True)
+    sa = models.BooleanField(verbose_name=_('Sa'), default=True)
+    so = models.BooleanField(verbose_name=_('Su'), default=True)
     ref_usr = models.ForeignKey(
         User, verbose_name='Benutzer', on_delete=models.PROTECT
     )

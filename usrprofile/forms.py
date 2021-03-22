@@ -4,7 +4,7 @@ from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
 from django.forms import EmailInput
 from django.forms.models import ModelForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 from usrprofile.models import UserProfile

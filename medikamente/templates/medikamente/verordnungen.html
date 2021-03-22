@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n bootstrap4 medi_tags usrprofile_tags %}
+{% load i18n static bootstrap4 medi_tags usrprofile_tags %}
 
 {% block bootstrap4_extra_head %}
 {{ block.super }}
@@ -13,11 +13,44 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-action").modalForm({
+        formURL: "{% url 'medikamente:vrdnew' %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+    $(".update-action").each(function() {
+        $(this).modalForm({
+            formURL: $(this).data('url'),
+            modalID: "#modal",
+            errorClass: '.is-invalid'
+        });
+    });
+
+    $(".delete-action").each(function() {
+        $(this).modalForm({
+            formURL: $(this).data('url'),
+            modalID: "#modal",
+            isDeleteForm: true
+        });
+    });
+
+});
+</script>
 {% endblock %}
 
 {% block page_title %}{% endblock %}
 
 {% block content %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
 
 {% trans 'Prescriptions' as user_title %}
 {% user_header user_title user %}
@@ -26,9 +59,9 @@
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'medikamente:vrdnew' %}" class="btn btn-primary" role="button" title="{% trans 'New prescription' %}">
+    <button id="create-action" class="btn btn-primary" role="button" title="{% trans 'New prescription' %}">
         <i class="far fa-plus"></i>
-    </a>
+    </button>
     <a href="{% url 'medikamente:emailverordnungen' %}" class="btn btn-primary" role="button" title="{% trans 'Send prescription' %}">
         <i class="far fa-envelope"></i>
     </a>
@@ -50,14 +83,19 @@
             </tr>
         </thead>
         <tbody>
-            {% for vo in verordnungen %}
+            {% for vo in verordnung_list %}
             <tr>
                 <td>
-                    <a href="{% url 'medikamente:vrdedit' vo.id %}">
-                        {{ vo.ref_medikament.name }}
-                        {{ vo.ref_medikament.staerke }}
-                        {{ vo.ref_medikament.einheit }}
-                    </a>
+                    <div class="row">
+                        <div class="update-action col-10" data-url="{% url 'medikamente:vrdedit' vo.id %}">
+                            {{ vo.ref_medikament.name }}
+                            {{ vo.ref_medikament.staerke }}
+                            {{ vo.ref_medikament.einheit }}
+                        </div>
+                        <div class="col-2 text-right">
+                            <i class="far fa-trash delete-action" data-url="{% url 'medikamente:deletevrd' vo.id %}"></i>
+                        </div>
+                    </div>
                 </td>
                 <td>
                     {% if vo.morgen %}

@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-import locale
-
 from django import template
-from django.utils.translation import ugettext_lazy as _
+from django.utils import formats
+from django.utils.translation import gettext_lazy as _
 
 from medikamente.models import Verordnung, Medikament
 
@@ -13,11 +10,10 @@ register = template.Library()
 @register.simple_tag(name='calc_dosis')
 def calc_dosis(value, vo_id):
     vo = Verordnung.objects.get(pk=vo_id)
-    dosis = vo.ref_medikament.staerke * value
-    locale.setlocale(locale.LC_ALL, '')
-    dose = locale.format_string('%.2f', dosis)
+    dosis = round(vo.ref_medikament.staerke * value, 2)
+    dose = formats.localize(dosis, use_l10n=True)
     return "{dose}{unit}".format(
-        dose=dose, 
+        dose=dose,
         unit=vo.ref_medikament.einheit
     )
 
@@ -27,12 +23,11 @@ def medi_header(med_id, *args, **kwargs):
     try:
         med = Medikament.objects.get(pk=med_id)
         med_detail = '{name} {strength} {unit}'.format(
-            name = med.name, 
+            name = med.name,
             strength = med.staerke,
             unit = med.einheit,
         )
-        locale.setlocale(locale.LC_ALL, '')
-        in_stock = locale.format_string('%.2f', med.bestand)
+        in_stock = formats.localize(med.bestand, use_l10n=True)
         med_stock = _('{stock} Tablets').format(
             stock = in_stock
         )
