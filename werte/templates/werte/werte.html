@@ -24,7 +24,11 @@ $(document).ready(function() {
     });
 
     $(".update-action").each(function() {
-        $(this).modalForm({formURL: $(this).data('url'), modalID: "#modal"});
+        $(this).modalForm({
+            formURL: $(this).data('url'),
+            modalID: "#modal",
+            errorClass: '.is-invalid'
+        });
     });
 
 });

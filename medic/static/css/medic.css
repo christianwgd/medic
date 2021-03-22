@@ -1,5 +1,6 @@
 body {
     font-size: 0.9rem;
+    padding-bottom: 1rem;
 }
 
 .centered {
@@ -37,4 +38,14 @@ body {
 
 .modal {
     margin-top: 5rem;
+}
+
+.update-action {
+    color: #19699d;
+    cursor: pointer;
+}
+
+.delete-action {
+    color: crimson;
+    cursor: pointer;
 }

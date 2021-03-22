@@ -54,5 +54,5 @@ class MesswertForm(BSModalModelForm):
             not cleaned_data['puls'] and not cleaned_data['temp'] and
             not cleaned_data['gew']
         ):
-            raise ValidationError(_('No values entered.'))
+            raise ValidationError(_('No values entered.'), code='no_values')
         return cleaned_data

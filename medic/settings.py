@@ -136,7 +136,7 @@ LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'root' : {'level': 'DEBUG',
               'handlers': None},
     'formatters': {

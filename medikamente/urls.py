@@ -1,26 +1,27 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import  views
 
 app_name = 'medikamente'
+
 urlpatterns = [
-    url(r'^medikamente/$', views.medikamente, name='medikamente'),
-    url(r'^mededit/(?P<med_id>\d+)/$', views.mededit, name='mededit'),
-    url(r'^mednew/$', views.mednew, name='mednew'),
-    url(r'^getmed/(?P<med_id>\d+)/$', views.getmed, name='getmed'),
-    url(r'^deletemed/(?P<pk>\d+)/$', views.MedDelete.as_view(), name='deletemed'),
+    path('medikamente/', views.MedListView.as_view(), name='medikamente'),
+    path('mededit/<int:pk>/', views.MedUpdateView.as_view(), name='mededit'),
+    path('mednew/', views.MedCreateView.as_view(), name='mednew'),
+    path('getmed/(<int:med_id>/', views.getmed, name='getmed'),
+    path('deletemed/<int:pk>/', views.MedDeleteView.as_view(), name='deletemed'),
 
-    url(r'^verordnungen/$', views.verordnungen, name='verordnungen'),
-    url(r'^mailvrd/$', views.emailverordnungen, name='emailverordnungen'),
-    url(r'^vrdedit/(?P<vrd_id>\d+)/$', views.vrdedit, name='vrdedit'),
-    url(r'^vrdnew/$', views.vrdnew, name='vrdnew'),
-    url(r'^deletevrd/(?P<pk>[0-9]+)/$', views.VerordnungDelete.as_view(), name='deletevrd'),
+    path('verordnungen/', views.verordnungen, name='verordnungen'),
+    path('mailvrd/', views.emailverordnungen, name='emailverordnungen'),
+    path('vrdedit/<int:vrd_id>/', views.vrdedit, name='vrdedit'),
+    path('vrdnew/', views.vrdnew, name='vrdnew'),
+    path('deletevrd/<int:pk>/', views.VerordnungDelete.as_view(), name='deletevrd'),
 
-    url(r'^vrdfutchange/$', views.vrdfutchange, name='vrdfutchange'),
-    url(r'^vrdfutnew/$', views.vrdfutnew, name='vrdfutedit'),
-    url(r'^vrdfutedit/(?P<vrdfut_id>\d+)/$', views.vrdfutedit, name='vrdfutedit'),
-    url(r'^vrdfuthistory/$', views.vrdfuthistory, name='vrdfuthistory'),
+    path('vrdfutchange/', views.vrdfutchange, name='vrdfutchange'),
+    path('vrdfutnew/', views.vrdfutnew, name='vrdfutedit'),
+    path('vrdfutedit/<int:vrdfut_id>/', views.vrdfutedit, name='vrdfutedit'),
+    path('vrdfuthistory/', views.vrdfuthistory, name='vrdfuthistory'),
 
-    url(r'^bestandedit/(?P<med_id>\d+)/$', views.bestandedit, name='bestandedit'),
-    url(r'^besthistory/(?P<med_id>\d+)/$', views.besthistory, name='besthistory'),
+    path('bestandedit/<int:med_id>/', views.bestandedit, name='bestandedit'),
+    path('besthistory/<int:med_id>/', views.besthistory, name='besthistory'),
 ]

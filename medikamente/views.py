@@ -2,9 +2,12 @@
 import datetime
 import logging
 
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
+from django.views.generic import ListView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -20,7 +23,7 @@ from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
 from medikamente.models import Verordnung, Medikament, Bestandsveraenderung, VrdFuture
 
-from .forms import vrdForm, vrdFutForm, medForm, bestEditForm
+from .forms import vrdForm, vrdFutForm, MedForm, bestEditForm
 
 
 logger = logging.getLogger('medic')
@@ -380,94 +383,47 @@ def medikamente(request):
     })
 
 
-@login_required(login_url='/login/')
-def mednew(request):
-    if 'cancel' in request.POST:
-        messages.info(request, _('Function canceled.'))
-        return redirect(reverse_lazy('medikamente:medikamente'))
-
-    if request.method == 'POST':
-        form = medForm(request.POST)
-        if form.is_valid():
-            try:
-                new_med = form.save(commit=False)
-                new_med.ref_usr = request.user
-                new_med.bestand = 0
-                new_med.bestand_vom = datetime.date.today()
-                new_med.save()
-                msg = _('{med} {dose} {unit} saved.').format(
-                    med=new_med.name, 
-                    dose=new_med.staerke,
-                    unit=new_med.einheit
-                )
-                messages.success(request, msg)
-                return redirect(reverse_lazy('medikamente:medikamente'))
-            except:
-                message = _('Error saving {med}.').format(med=new_med.name)
-                logger.exception(message)
-                messages.error(request, message)
-    else:  # GET
-        form = medForm(initial={'ref_usr': request.user})
-
-    return render(request, 'medikamente/mededit.html', {'form': form})
-
-
-@login_required(login_url='/login/')
-def mededit(request, med_id):
-    if 'cancel' in request.POST:
-        messages.info(request, _('Function canceled.'))
-        return redirect(reverse_lazy('medikamente:medikamente'))
-
-    med = Medikament.objects.get(id=med_id)
-
-    if request.method == 'POST':
-        form = medForm(request.POST, instance=med)
-        if form.is_valid():
-            try:
-                form.save()
-                msg = _('{med} {dose} {unit} saved.').format(
-                    med=med.name, 
-                    dose=med.staerke,
-                    unit=med.einheit
-                )
-                messages.success(request, msg)
-                return redirect(reverse_lazy('medikamente:medikamente'))
-            except:
-                message = _('Error saving {med}.').format(med=med.name)
-                logger.exception(message)
-                messages.error(request, message)
-    else:  # GET
-        form = medForm(instance=med)
-
-    return render(request, 'medikamente/mededit.html', {
-        'form': form, 
-        'med_id': med_id
-    })
-
-
-class MedDelete(DeleteView):
+class MedListView(LoginRequiredMixin, ListView):
     model = Medikament
-    template_name = 'medikamente/med_delete_confirm.html'
+    template_name = 'medikamente/medikamente.html'
+
+
+
+class MedCreateView(LoginRequiredMixin, BSModalCreateView):
+    model = Medikament
+    form_class = MedForm
+    template_name = 'medikamente/med_form.html'
+    success_message = _('New medicament saved.')
     success_url = reverse_lazy('medikamente:medikamente')
 
-    def post(self, request, *args, **kwargs):
-        if 'cancel' in request.POST:
-            return redirect(reverse_lazy(
-                'medikamente:mededit',
-                 kwargs = {'med_id': self.kwargs['pk']})
-            )
+    def form_valid(self, form):
+        new_med = form.save(commit=False)
+        new_med.ref_usr = self.request.user
+        new_med.bestand = 0
+        new_med.bestand_vom = datetime.date.today()
+        return super().form_valid(form)
 
+
+class MedUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = Medikament
+    form_class = MedForm
+    template_name = 'medikamente/med_form.html'
+    success_message = _('Medicament saved.')
+    success_url = reverse_lazy('medikamente:medikamente')
+
+
+class MedDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = Medikament
+    template_name = 'medikamente/med_confirm_delete.html'
+    success_url = reverse_lazy('medikamente:medikamente')
+    success_message = _('Medicament deleted')
+
+    def post(self, request, *args, **kwargs):
         try:
-            response = super(MedDelete, self).post(request, args, kwargs)
-            messages.success(request, _('Medicament deleted'))
-            return response
+            super(MedDeleteView, self).post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(request, _('Could not delete medicament due to existing prescription.'))
-
-        return redirect(reverse_lazy(
-            'medikamente:mededit',
-                kwargs = {'med_id': self.kwargs['pk']})
-        )
+        return redirect(self.success_url)
 
 
 @login_required(login_url='/login/')

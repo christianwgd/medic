@@ -280,7 +280,6 @@ class WertCreateView(LoginRequiredMixin, BSModalCreateView):
     def form_valid(self, form):
         new_val = form.save(commit=False)
         new_val.ref_usr = self.request.user
-        new_val.save()
         return super().form_valid(form)
 
 

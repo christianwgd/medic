@@ -1,0 +1,33 @@
+{% load bootstrap4 i18n %}
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">
+            {% trans 'Medicament' %}
+            {% if object.id %}
+                &dash; {{ object.name }}
+                {{ object.staerke }}
+                {{ object.einheit }}
+            {% endif %}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
+        {% bootstrap_form form %}
+    </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">
+        {% trans 'Ok' %}
+    </button>
+    <button class="btn btn-secondary" data-dismiss="modal">
+        {% trans 'Cancel' %}
+    </button>
+  </div>
+
+</form>

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from builtins import object
 from bootstrap_datepicker_plus import DatePickerInput
+from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -47,9 +48,9 @@ class vrdFutForm(forms.ModelForm):
         ]
 
 
-class medForm(forms.ModelForm):
+class MedForm(BSModalModelForm):
     def __init__(self, *args, **kwargs):
-        super(medForm, self).__init__(*args, **kwargs)
+        super(MedForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget = forms.TextInput({"autofocus": "autofocus"})
 
     class Meta(object):
