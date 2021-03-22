@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% load i18n bootstrap4 static usrprofile_tags %}
+{% load i18n django_bootstrap5 static usrprofile_tags %}
 
-{% block bootstrap4_extra_head %}
+{% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
 <link rel="stylesheet" href="{% static 'css/filter.css' %}">
 {% endblock %}
 
-{% block bootstrap4_extra_script %}
+{% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
 <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
@@ -74,10 +74,10 @@ $(document).ready(function() {
         {% csrf_token %}
         <div class="row">
             <div class="col-6 col-sm-4">
-                {% bootstrap_field form.vonDate size='small' %}
+                {% bootstrap_field form.vonDate size='sm' %}
             </div>
             <div class="col-6 col-sm-4">
-                {% bootstrap_field form.bisDate size='small' %}
+                {% bootstrap_field form.bisDate size='sm' %}
             </div>
             <div class="col-12 col-sm-4">
                 <button id="id_refresh" type="submit" class="btn btn-sm btn-secondary">

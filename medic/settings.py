@@ -130,16 +130,15 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
     'two_factor',
-    'bootstrap4',
+    'django_bootstrap5',
     'bootstrap_modal_forms',
     'bootstrap_datepicker_plus',
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
-BOOTSTRAP4 = {
-    "include_jquery": True,
-    'theme_url': '/static/css/bootstrap.min.css',
+BOOTSTRAP5 = {
+    # 'theme_url': '/static/css/bootstrap.min.css',
 }
 
 LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')

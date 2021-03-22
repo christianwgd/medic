@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load static bootstrap4 l10n i18n usrprofile_tags %}
+{% load static django_bootstrap5 l10n i18n usrprofile_tags %}
 
-{% block bootstrap4_extra_head %}
+{% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
 {% endblock %}
 
-{% block bootstrap4_extra_script %}
+{% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
 {% endblock %}

@@ -1,7 +1,7 @@
-{% extends 'bootstrap4/bootstrap4.html' %}
-{% load bootstrap4 static i18n %}
+{% extends 'django_bootstrap5/bootstrap5.html' %}
+{% load django_bootstrap5 static i18n %}
 
-{% block bootstrap4_extra_head %}
+{% block bootstrap5_extra_head %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'font-awesome-5/css/all.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/medic.css" %}" />
@@ -29,15 +29,16 @@
 <meta name="theme-color" content="#ffffff">
 {% endblock %}
 
-{% block bootstrap4_extra_script %}
+{% block bootstrap5_extra_script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 {{ block.super }}
 <script defer src="{% static 'font-awesome-5/js/all.min.js' %}"></script>
 {% endblock %}
 
-{% block bootstrap4_title %}medic{% endblock %}
+{% block bootstrap_title %}medic{% endblock %}
 {% block title %}medic{% endblock %}
 
-{% block bootstrap4_content %}
+{% block bootstrap5_content %}
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-light bg-light">

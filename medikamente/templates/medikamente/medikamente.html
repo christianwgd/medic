@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% load i18n static bootstrap4 usrprofile_tags %}
+{% load i18n static django_bootstrap5 usrprofile_tags %}
 
-{% block bootstrap4_extra_head %}
+{% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
 {% endblock %}
 
-{% block bootstrap4_extra_script %}
+{% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
 <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
