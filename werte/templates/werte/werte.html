@@ -31,6 +31,10 @@ $(document).ready(function() {
         });
     });
 
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip({'animation': true})
+    })
+
 });
 </script>
 {% endblock %}
@@ -48,22 +52,27 @@ $(document).ready(function() {
 {% user_header user_title user %}
 
 <div class="btn-group" role="group" >
-    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button"
+       title="{% trans 'Home page' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-home"></i>
     </a>
-    <button id="create-action" class="btn btn-primary" role="button" title="{% trans 'New measurements' %}">
+    <button id="create-action" class="btn btn-primary" role="button"
+            title="{% trans 'New measurements' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-plus"></i>
     </button>
     <a href="{% url 'werte:diagram' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
-        class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}">
+        class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"
+        data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-chart-area"></i>
     </a>
     <a href="{% url 'werte:minmax' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
-        class="btn btn-primary" role="button" title="{% trans 'Statistics' %}">
+        class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
+        data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-arrows-v"></i>
     </a>
     <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
-        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}">
+        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}"
+        data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-envelope"></i>
     </a>
 </div>
