@@ -17,37 +17,30 @@
 
 {% trans 'Settings for' as user_title %}
 {% user_header user_title user %}
+<form role="form" method="post" novalidate>
+    {% csrf_token %}
 
-<div class="v-offset">
-    <form role="form" class="form-horizontal" method="post" novalidate>
-        {% csrf_token %}
+    {% bootstrap_form_errors form type='non_fields' %}
 
-        {% bootstrap_form_errors form type='non_fields' %}
+    <h4>{% trans 'Personal data' %}</h4>
+    {% bootstrap_field form.gebdat %}
+    {% bootstrap_field form.email %}
+    {% bootstrap_field form.myStartPage %}
 
-        <h4 class="v-offset">{% trans 'Personal data' %}</h4>
-        {% bootstrap_field form.gebdat layout='horizontal' %}
-        {% bootstrap_field form.email layout='horizontal' %}
-        {% bootstrap_field form.myStartPage layout='horizontal' %}
+    <h4>{% trans 'Periods' %}</h4>
+    {% bootstrap_field form.warnenTageVorher %}
+    {% bootstrap_field form.werteLetzteTage %}
 
-        <h4 class="v-offset">{% trans 'Periods' %}</h4>
-        {% bootstrap_field form.warnenTageVorher layout='horizontal' %}
-        {% bootstrap_field form.werteLetzteTage layout='horizontal' %}
+    <h4>{% trans 'Visibility of data for doctor' %}</h4>
+    {% bootstrap_field form.zeigeArztWerte %}
+    {% bootstrap_field form.zeigeArztMed %}
 
-        <h4 class="v-offset">{% trans 'Visibility of data for doctor' %}</h4>
-        {% bootstrap_field form.zeigeArztWerte layout='horizontal' %}
-        {% bootstrap_field form.zeigeArztMed layout='horizontal' %}
+    <h4>{% trans 'Doctor' %}</h4>
+    {% bootstrap_field form.email_arzt %}
 
-        <h4 class="v-offset">{% trans 'Doctor' %}</h4>
-        {% bootstrap_field form.email_arzt layout='horizontal' %}
-
-        {% trans 'Ok' as ok %}
-        {% trans 'Cancel' as cancel %}
-        {% buttons layout='inline' %}
-            {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok' %}
-            {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
-        {% endbuttons %}
-    </form>
-</div>
-
-
+    {% trans 'Ok' as ok %}
+    {% trans 'Cancel' as cancel %}
+    {% bootstrap_button ok button_class="btn-primary" button_type='submit' name='ok' %}
+    {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
+</form>
 {% endblock %}

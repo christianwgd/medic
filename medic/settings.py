@@ -137,6 +137,8 @@ INSTALLED_APPS = [
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 BOOTSTRAP5 = {
     # 'theme_url': '/static/css/bootstrap.min.css',
 }

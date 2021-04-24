@@ -1,4 +1,13 @@
-body {
+.bg-primary {
+    background-color: #19699d !important;
+}
+
+.btn-primary {
+    background-color: #19699d !important;
+    border-color: #19699d !important;
+}
+
+ody {
     font-size: 0.9rem;
     padding-bottom: 1rem;
 }
