@@ -32,8 +32,8 @@
     {% bootstrap_field form.werteLetzteTage layout='floating' %}
 
     <h4>{% trans 'Visibility of data for doctor' %}</h4>
-    {% bootstrap_field form.zeigeArztWerte %}
-    {% bootstrap_field form.zeigeArztMed %}
+    {% bootstrap_field form.zeigeArztWerte wrapper_class="form-check form-switch" %}
+    {% bootstrap_field form.zeigeArztMed  wrapper_class="form-check form-switch" %}
 
     <h4>{% trans 'Doctor' %}</h4>
     {% bootstrap_field form.email_arzt layout='floating' %}
