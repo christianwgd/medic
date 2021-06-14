@@ -33,11 +33,11 @@ def startpage(request):
         return redirect(reverse_lazy(startpage))
     except User.DoesNotExist:
         message = _('User does not exist.')
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
         return redirect(reverse_lazy('startpage'))
     except UserProfile.DoesNotExist:
         message = _('User {} has no user profile.'.format(usr))
-        messages.add_message(request, ERROR, message)
+        messages.error(request, message)
         return redirect(reverse_lazy('usrprofile:userprof'))
 
 
@@ -48,4 +48,3 @@ def log_off(request):
     except Exception:
         logger.exception(_('Error during logoff of user: {user})!'.format(user)))
     return redirect(reverse_lazy('medic_login'))
-    

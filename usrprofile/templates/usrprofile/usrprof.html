@@ -23,20 +23,20 @@
     {% bootstrap_form_errors form type='non_fields' %}
 
     <h4>{% trans 'Personal data' %}</h4>
-    {% bootstrap_field form.gebdat %}
-    {% bootstrap_field form.email %}
-    {% bootstrap_field form.myStartPage %}
+    {% bootstrap_field form.gebdat layout='floating' %}
+    {% bootstrap_field form.email layout='floating' %}
+    {% bootstrap_field form.myStartPage layout='floating' %}
 
     <h4>{% trans 'Periods' %}</h4>
-    {% bootstrap_field form.warnenTageVorher %}
-    {% bootstrap_field form.werteLetzteTage %}
+    {% bootstrap_field form.warnenTageVorher layout='floating' %}
+    {% bootstrap_field form.werteLetzteTage layout='floating' %}
 
     <h4>{% trans 'Visibility of data for doctor' %}</h4>
     {% bootstrap_field form.zeigeArztWerte %}
     {% bootstrap_field form.zeigeArztMed %}
 
     <h4>{% trans 'Doctor' %}</h4>
-    {% bootstrap_field form.email_arzt %}
+    {% bootstrap_field form.email_arzt layout='floating' %}
 
     {% trans 'Ok' as ok %}
     {% trans 'Cancel' as cancel %}
