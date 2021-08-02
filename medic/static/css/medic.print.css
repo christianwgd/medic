@@ -2,21 +2,22 @@
     Druck css
 */
 
+body {
+    font-size: 0.7rem;
+}
+
 .container {
 	width: 90%;
 	margin: 0 auto !important;
 }
 
-.btn-group, .btn {
+svg, .btn-group, .btn , .navbar,
+.filter, .alert {
 	display: none !important;
 }
 
-a[href]::after {
-    content: "" !important;
-}
-a:link, a:hover, a:visited {
-	text-decoration: none;
-	color: rgb(33, 37, 41);
+.update-action {
+    color: rgb(33, 37, 41);
 }
 
 .user-header {

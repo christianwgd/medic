@@ -7,7 +7,7 @@
     border-color: #19699d !important;
 }
 
-ody {
+body {
     font-size: 0.9rem;
     padding-bottom: 1rem;
 }
@@ -60,11 +60,7 @@ ody {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0,0,0,.03);
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(255,204,0,.2);
+    background-color: rgba(0,0,0,.005);
 }
 
 .tooltip-inner {

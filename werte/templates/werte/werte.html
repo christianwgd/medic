@@ -81,7 +81,7 @@ $(document).ready(function() {
     <h5>Zeitraum</h5>
     <form method="post" role="form" >
         {% csrf_token %}
-        <div class="row input-group">
+        <div class="row input-group filter">
             <div class="col-4 col-sm-3">
                 {% bootstrap_field form.vonDate addon_after='<i class="far fa-calendar-alt"></i>' %}
             </div>
@@ -99,7 +99,6 @@ $(document).ready(function() {
 </div>
 
 <div class="row">
-    <div class="table-responsive">
     <table id="wertelist" data-toggle="table" class="table table-striped table-bordered"
             data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
         <thead>
@@ -116,10 +115,8 @@ $(document).ready(function() {
         <tbody>
             {% for wert in wertelist %}
             <tr>
-                <td>
-                    <span class="update-action btn-link" data-url="{% url 'werte:edit' wert.id %}">
-                        {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
-                    </span>
+                <td class="update-action" data-url="{% url 'werte:edit' wert.id %}">
+                    {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
                 </td>
                 <td class="sortable">{{ wert.rrsys|default_if_none:"" }}</td>
                 <td>{{ wert.rrdia|default_if_none:"" }}</td>
@@ -131,7 +128,6 @@ $(document).ready(function() {
             {% endfor %}
         </tbody>
     </table>
-    </div>
 </div>
 
 
