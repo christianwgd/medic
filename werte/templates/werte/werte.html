@@ -76,13 +76,13 @@ $(document).ready(function() {
     <form method="post" role="form" >
         {% csrf_token %}
         <div class="row input-group filter">
-            <div class="col-4 col-sm-3">
+            <div class="col-md-3">
                 {% bootstrap_field form.vonDate addon_after='<i class="far fa-calendar-alt"></i>' %}
             </div>
-            <div class="col-4 col-sm-3">
+            <div class="col-md-3">
                 {% bootstrap_field form.bisDate addon_after='<i class="far fa-calendar-alt"></i>' %}
             </div>
-            <div class="col-4 col-sm-3">
+            <div class="col-md-3">
                 <button id="id_refresh" type="submit" class="btn btn-secondary">
                     <i class="far fa-sync"></i>
                     {% trans 'Refresh' %}
