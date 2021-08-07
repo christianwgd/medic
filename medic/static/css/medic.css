@@ -63,6 +63,10 @@ body {
     background-color: rgba(0,0,0,.005);
 }
 
+.table-striped tbody tr:hover {
+    background-color: rgba(24, 102, 152, .2);
+}
+
 .tooltip-inner {
     color: #333333;
     background-color: #dddddd;
