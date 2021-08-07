@@ -8,12 +8,14 @@
 <form method="POST" class="form" role="form" novalidate>
     {% csrf_token %}
     {% bootstrap_form form %}
-    {% buttons layout='inline'  %}
     {% trans "<i class='far fa-paper-plane'></i> Send" as send %}
     {% trans 'Cancel' as cancel %}
-    {% bootstrap_button send button_class="btn-primary" button_type='submit' name='ok' %}
-        {% bootstrap_button cancel button_class="btn-secondary" button_type='submit' name='cancel' %}
-    {% endbuttons %}
+    <button type="submit" class="btn btn-primary">
+        {% trans "<i class='far fa-paper-plane'></i> Send" %}
+    </button>
+    <button type="submit" name="cancel" class="btn btn-secondary">
+        {% trans 'Cancel' %}
+    </button>
 </form>
 
 <div class="v-offset">
