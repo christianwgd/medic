@@ -15,15 +15,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
 
-ADMINS = (
-    'cwiegand', 'cwiegand@wgdnet.de'
-)
-
-# Move to localsettings...
-# EMAIL_HOST = 'smtp.strato.de'
-# EMAIL_HOST_USER = 'wgdsrv@wgdnet.de'
-# EMAIL_HOST_PASSWORD = 'mistral+99'
-# EMAIL_USE_TLS = True
+ADMINS = [
+    ('cwiegand', 'cwiegand@wgdnet.de')
+]
 
 MANAGERS = ADMINS
 
