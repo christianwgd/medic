@@ -13,8 +13,8 @@
     </div>
 
     <div class="modal-body">
-        <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
         {% bootstrap_form form layout='floating' %}
+        <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
     </div>
 
     <div class="modal-footer">
