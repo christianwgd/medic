@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load i18n static django_bootstrap5 usrprofile_tags medi_tags %}
+
+{% block bootstrap5_extra_script %}
+{{ block.super }}
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#id_edit").modalForm({
+        formURL: "{% url 'medikamente:vrdedit' verordnung.id %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+    $("#id_delete").modalForm({
+        formURL: "{% url 'medikamente:deletevrd' verordnung.id %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+});
+</script>
+{% endblock %}
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+{% user_header verordnung request.user %}
+
+<div class="row mt-3">
+    <div class="col-12">
+        <table id="med" class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th class="label">{% trans 'Medicament' %}</th>
+                    <td>{{ verordnung.ref_medikament.name }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Active ingredient' %}</td>
+                    <td>{{ verordnung.ref_medikament.wirkstoff }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Package size' %}</td>
+                    <td>{{ verordnung.ref_medikament.packung }} {% trans 'Tabl.' %}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Dose' %}</td>
+                    <td>
+                        {{ verordnung.ref_medikament.staerke|floatformat:2 }}
+                        {{ verordnung.ref_medikament.einheit }}
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        {% trans 'Prescription' %}
+                    </th>
+                </tr>
+                {% if verordnung.morgen %}
+                <tr>
+                    <td>{% trans 'Morning' %}</td>
+                    <td>
+                        {{ verordnung.morgen|floatformat:2 }} {% trans 'Tabl.' %}
+                        <small>({% calc_dosis verordnung.morgen verordnung.id %})</small>
+                    </td>
+                </tr>
+                {% endif %}
+                {% if verordnung.mittag %}
+                <tr>
+                    <td>{% trans 'Noon' %}</td>
+                    <td>
+                        {{ verordnung.mittag|floatformat:2 }} {% trans 'Tabl.' %}
+                        <small>({% calc_dosis verordnung.mittag verordnung.id %})</small>
+                    </td>
+                </tr>
+                {% endif %}
+                {% if verordnung.abend %}
+                <tr>
+                    <td>{% trans 'Evening' %}</td>
+                    <td>
+                        {{ verordnung.abend|floatformat:2 }} {% trans 'Tabl.' %}
+                        <small>({% calc_dosis verordnung.abend verordnung.id %})</small>
+                    </td>
+                </tr>
+                {% endif %}
+                {% if verordnung.nacht %}
+                <tr>
+                    <td>{% trans 'Night' %}</td>
+                    <td>
+                        {{ verordnung.nacht|floatformat:2 }} {% trans 'Tabl.' %}
+                        <small>({% calc_dosis verordnung.nacht verordnung.id %})</small>
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>{% trans 'Weekdays' %}</td>
+                    <td>
+                        {% if verordnung.mo and verordnung.di and verordnung.mi and verordnung.do and verordnung.fr and verordnung.sa and verordnung.so %}
+                            <span>alle</span>
+                        {% else %}
+                            {% trans 'Mo ,' as mo  %}
+                            {% trans 'Tu ,' as tu  %}
+                            {% trans 'We ,' as we  %}
+                            {% trans 'Th ,' as th  %}
+                            {% trans 'Fr ,' as fr  %}
+                            {% trans 'Sa ,' as sa  %}
+                            {% trans 'Su ,' as su  %}
+                            {{ verordnung.mo|yesno:mo }}
+                            {{ verordnung.di|yesno:tu }}
+                            {{ verordnung.mi|yesno:we }}
+                            {{ verordnung.do|yesno:th }}
+                            {{ verordnung.fr|yesno:fr }}
+                            {{ verordnung.sa|yesno:sa }}
+                            {{ verordnung.so|yesno:su }}
+                    </td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <button id="id_delete" type="button" class="btn btn-danger"
+                data-url="{% url 'medikamente:deletevrd' object.id %}">
+            {% trans 'Delete' %}
+        </button>
+    </div>
+    <div class="col-8 text-end">
+        <button id="id_edit" type="button" class="btn btn-primary">
+            {% trans 'Edit' %}
+        </button>
+        <a href="{% url 'medikamente:verordnungen' %}" class="btn btn-secondary">
+            {% trans 'Back' %}
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+

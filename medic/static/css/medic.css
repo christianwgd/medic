@@ -16,10 +16,6 @@ body {
     text-align: center;
 }
 
-.v-offset {
-    margin-top: 10px;
-}
-
 .menu {
     width: 80%;
 }
@@ -46,16 +42,11 @@ body {
 }
 
 .modal {
-    margin-top: 5rem;
+    margin-top: 3vh;
 }
 
-.update-action {
+.as_link {
     color: #19699d;
-    cursor: pointer;
-}
-
-.delete-action {
-    color: crimson;
     cursor: pointer;
 }
 
@@ -73,4 +64,13 @@ body {
 }
 .tooltip.bs-tooltip-bottom .arrow:before {
     border-bottom-color: #dddddd !important;
+}
+
+th.label {
+    width: 30%;
+}
+
+td > a {
+    text-decoration: none;
+    color: #19699d;
 }

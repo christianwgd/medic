@@ -7,9 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import ProtectedError
@@ -34,6 +34,10 @@ class MedListView(LoginRequiredMixin, ListView):
         return Medikament.objects.filter(ref_usr=self.request.user)
 
 
+class MedDetailView(LoginRequiredMixin, DetailView):
+    model = Medikament
+
+
 class MedCreateView(LoginRequiredMixin, BSModalCreateView):
     model = Medikament
     form_class = MedForm
@@ -54,7 +58,9 @@ class MedUpdateView(LoginRequiredMixin, BSModalUpdateView):
     form_class = MedForm
     template_name = 'medikamente/med_form.html'
     success_message = _('Medicament saved.')
-    success_url = reverse_lazy('medikamente:medikamente')
+
+    def get_success_url(self):
+        return reverse('medikamente:meddetail', kwargs={'pk': self.object.id})
 
 
 class MedDeleteView(LoginRequiredMixin, BSModalDeleteView):
@@ -79,6 +85,10 @@ class VrdListView(LoginRequiredMixin, ListView):
         return Verordnung.objects.filter(ref_usr=self.request.user)
 
 
+class VrdDetailView(LoginRequiredMixin, DetailView):
+    model = Verordnung
+
+
 class VrdCreateView(LoginRequiredMixin, BSModalCreateView):
     model = Verordnung
     form_class = VrdForm
@@ -97,7 +107,9 @@ class VrdUpdateView(LoginRequiredMixin, BSModalUpdateView):
     form_class = VrdForm
     template_name = 'medikamente/vrd_form.html'
     success_message = _('Prescription saved.')
-    success_url = reverse_lazy('medikamente:verordnungen')
+
+    def get_success_url(self):
+        return reverse('medikamente:vrddetail', kwargs={'pk': self.object.id})
 
 
 class VerordnungDelete(LoginRequiredMixin, BSModalDeleteView):

@@ -6,12 +6,14 @@ app_name = 'medikamente'
 
 urlpatterns = [
     path('medikamente/', views.MedListView.as_view(), name='medikamente'),
+    path('meddetail/<int:pk>/', views.MedDetailView.as_view(), name='meddetail'),
     path('mednew/', views.MedCreateView.as_view(), name='mednew'),
     path('mededit/<int:pk>/', views.MedUpdateView.as_view(), name='mededit'),
     path('deletemed/<int:pk>/', views.MedDeleteView.as_view(), name='deletemed'),
     path('getmed/<int:med_id>/', views.getmed, name='getmed'),
 
     path('verordnungen/', views.VrdListView.as_view(), name='verordnungen'),
+    path('vrddetail/<int:pk>/', views.VrdDetailView.as_view(), name='vrddetail'),
     path('vrdnew/', views.VrdCreateView.as_view(), name='vrdnew'),
     path('vrdedit/<int:pk>/', views.VrdUpdateView.as_view(), name='vrdedit'),
     path('deletevrd/<int:pk>/', views.VerordnungDelete.as_view(), name='deletevrd'),

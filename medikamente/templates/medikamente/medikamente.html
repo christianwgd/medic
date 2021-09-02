@@ -4,15 +4,15 @@
 {% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
-<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -21,22 +21,6 @@ $(document).ready(function() {
         formURL: "{% url 'medikamente:mednew' %}",
         modalID: "#modal",
         errorClass: '.is-invalid'
-    });
-
-    $(".update-action").each(function() {
-        $(this).modalForm({
-            formURL: $(this).data('url'),
-            modalID: "#modal",
-            errorClass: '.is-invalid'
-        });
-    });
-
-    $(".delete-action").each(function() {
-        $(this).modalForm({
-            formURL: $(this).data('url'),
-            modalID: "#modal",
-            isDeleteForm: true
-        });
     });
 
 });
@@ -59,49 +43,44 @@ $(document).ready(function() {
     </button>
 </div>
 
-<div class="v-offset">
-    <table id="medlist" data-toggle="table" class="table table-striped"
-            data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
+<div class="row">
+    <div class="col">
+    <table data-toggle="table" data-classes="table table-striped table-bordered"
+           data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>
                 <th>{% trans 'Medicament' %}</th>
                 <th>{% trans 'Active ingredient' %}</th>
                 <th>{% trans 'Package size' %}</th>
                 <th style="text-align: right;">{% trans 'Dose' %}</th>
-{#                <th style="text-align: right; padding-right: 4rem;">{% trans 'Inventory' %}</th>#}
-            </tr>
-        </thead>
-        <tbody>
-            {% for med in medikament_list %}
-            <tr>
-                <td>
-                    <div class="row">
-                        <div class="update-action col-6" data-url="{% url 'medikamente:mededit' med.id %}">
-                            {{ med.name }}
-                        </div>
-                        <div class="col-6 text-right">
-                            <i class="far fa-trash delete-action" data-url="{% url 'medikamente:deletemed' med.id %}"></i>
-                        </div>
-                    </div>
-                </td>
-                <td>{{ med.wirkstoff }}</td>
-                <td>{{ med.packung }} {% trans 'Tabl.' %}</td>
-                <td style="text-align: right;">{{ med.staerke|floatformat:2 }} {{ med.einheit }}</td>
-{#                <td style="text-align: right;">#}
-{#                    {{ med.bestand|floatformat:2 }} {% trans 'Tabl.' %}#}
-                    &nbsp;
-{#                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="{% trans 'Inventory change' %}">#}
-{#                        <i class="far fa-sm fa-edit"></i>#}
-{#                    </a>#}
-{#                    &nbsp;#}
-{#                    <a href="{% url 'medikamente:besthistory' med.id %}" title="{% trans 'Inventory history' %}">#}
-{#                        <i class="far fa-sm fa-history"></i>#}
-{#                    </a>#}
-{#                </td>#}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {#                <th style="text-align: right; padding-right: 4rem;">{% trans 'Inventory' %}</th>#}
+                </tr>
+            </thead>
+            <tbody>
+                {% for med in medikament_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'medikamente:meddetail' med.id %}">{{ med.name }}</a>
+                    </td>
+                    <td>{{ med.wirkstoff }}</td>
+                    <td>{{ med.packung }} {% trans 'Tabl.' %}</td>
+                    <td style="text-align: right;">{{ med.staerke|floatformat:2 }} {{ med.einheit }}</td>
+    {#                <td style="text-align: right;">#}
+    {#                    {{ med.bestand|floatformat:2 }} {% trans 'Tabl.' %}#}
+                        &nbsp;
+    {#                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="{% trans 'Inventory change' %}">#}
+    {#                        <i class="far fa-sm fa-edit"></i>#}
+    {#                    </a>#}
+    {#                    &nbsp;#}
+    {#                    <a href="{% url 'medikamente:besthistory' med.id %}" title="{% trans 'Inventory history' %}">#}
+    {#                        <i class="far fa-sm fa-history"></i>#}
+    {#                    </a>#}
+    {#                </td>#}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}

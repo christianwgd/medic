@@ -4,15 +4,15 @@
 {% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
-<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -21,22 +21,6 @@ $(document).ready(function() {
         formURL: "{% url 'medikamente:vrdnew' %}",
         modalID: "#modal",
         errorClass: '.is-invalid'
-    });
-
-    $(".update-action").each(function() {
-        $(this).modalForm({
-            formURL: $(this).data('url'),
-            modalID: "#modal",
-            errorClass: '.is-invalid'
-        });
-    });
-
-    $(".delete-action").each(function() {
-        $(this).modalForm({
-            formURL: $(this).data('url'),
-            modalID: "#modal",
-            isDeleteForm: true
-        });
     });
 
 });
@@ -61,84 +45,81 @@ $(document).ready(function() {
     </a>
 </div>
 
-<div class="v-offset">
-    <table id="vrd" data-toggle="table" class="table table-striped"
-                data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
-        <thead>
-            <tr>
-                <th>{% trans 'Medicament' %}</th>
-                <th>{% trans 'Morning' %}</th>
-                <th>{% trans 'Noon' %}</th>
-                <th>{% trans 'Evening' %}</th>
-                <th>{% trans 'Night' %}</th>
-                <th>{% trans 'Weekdays' %}</th>
-                <!--<th><span style="margin-left: 12px;">Bestand</span></th>-->
-                <!--<th><span style="margin-left: 15px;">reicht f&uuml;r</span></th>-->
-            </tr>
-        </thead>
-        <tbody>
-            {% for vo in verordnung_list %}
-            <tr>
-                <td>
-                    <div class="row">
-                        <div class="update-action col-10" data-url="{% url 'medikamente:vrdedit' vo.id %}">
+<div class="row mt-3">
+    <div class="col">
+        <table data-toggle="table" data-classes="table table-striped table-bordered"
+               data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
+            <thead>
+                <tr>
+                    <th>{% trans 'Medicament' %}</th>
+                    <th>{% trans 'Morning' %}</th>
+                    <th>{% trans 'Noon' %}</th>
+                    <th>{% trans 'Evening' %}</th>
+                    <th>{% trans 'Night' %}</th>
+                    <th>{% trans 'Weekdays' %}</th>
+                    <!--<th><span style="margin-left: 12px;">Bestand</span></th>-->
+                    <!--<th><span style="margin-left: 15px;">reicht f&uuml;r</span></th>-->
+                </tr>
+            </thead>
+            <tbody>
+                {% for vo in verordnung_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'medikamente:vrddetail' vo.id %}">
                             {{ vo.ref_medikament.name }}
                             {{ vo.ref_medikament.staerke }}
                             {{ vo.ref_medikament.einheit }}
-                        </div>
-                        <div class="col-2 text-right">
-                            <i class="far fa-trash delete-action" data-url="{% url 'medikamente:deletevrd' vo.id %}"></i>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    {% if vo.morgen %}
-                        {{ vo.morgen|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis vo.morgen vo.id %})</small>
+                        </a>
+                    </td>
+                    <td>
+                        {% if vo.morgen %}
+                            {{ vo.morgen|floatformat:2 }} {% trans 'Tabl.' %}
+                            <small>({% calc_dosis vo.morgen vo.id %})</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vo.mittag %}
+                            {{ vo.mittag|floatformat:2 }} {% trans 'Tabl.' %}
+                           <small>({% calc_dosis vo.mittag vo.id %})</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vo.abend %}
+                            {{ vo.abend|floatformat:2 }} {% trans 'Tabl.' %}
+                            <small>({% calc_dosis vo.abend vo.id %})</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vo.nacht %}
+                            {{ vo.nacht|floatformat:2 }} {% trans 'Tabl.' %}
+                            <small>({% calc_dosis vo.nacht vo.id %})</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                    {% if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so %}
+                        <span>alle</span>
+                    {% else %}
+                        {% trans 'Mo ,' as mo  %}
+                        {% trans 'Tu ,' as tu  %}
+                        {% trans 'We ,' as we  %}
+                        {% trans 'Th ,' as th  %}
+                        {% trans 'Fr ,' as fr  %}
+                        {% trans 'Sa ,' as sa  %}
+                        {% trans 'Su ,' as su  %}
+                        {{ vo.mo|yesno:mo }}
+                        {{ vo.di|yesno:tu }}
+                        {{ vo.mi|yesno:we }}
+                        {{ vo.do|yesno:th }}
+                        {{ vo.fr|yesno:fr }}
+                        {{ vo.sa|yesno:sa }}
+                        {{ vo.so|yesno:su }}
+                    </td>
                     {% endif %}
-                </td>
-                <td>
-                    {% if vo.mittag %}
-                        {{ vo.mittag|floatformat:2 }} {% trans 'Tabl.' %}
-                       <small>({% calc_dosis vo.mittag vo.id %})</small>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if vo.abend %}
-                        {{ vo.abend|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis vo.abend vo.id %})</small>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if vo.nacht %}
-                        {{ vo.nacht|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis vo.nacht vo.id %})</small>
-                    {% endif %}
-                </td>
-                <td>
-                {% if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so %}
-                    <span>alle</span>
-                {% else %}
-                    {% trans 'Mo ,' as mo  %}
-                    {% trans 'Tu ,' as tu  %}
-                    {% trans 'We ,' as we  %}
-                    {% trans 'Th ,' as th  %}
-                    {% trans 'Fr ,' as fr  %}
-                    {% trans 'Sa ,' as sa  %}
-                    {% trans 'Su ,' as su  %}
-                    {{ vo.mo|yesno:mo }}
-                    {{ vo.di|yesno:tu }}
-                    {{ vo.mi|yesno:we }}
-                    {{ vo.do|yesno:th }}
-                    {{ vo.fr|yesno:fr }}
-                    {{ vo.sa|yesno:sa }}
-                    {{ vo.so|yesno:su }}
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}

@@ -1,9 +1,16 @@
 {% load django_bootstrap5 i18n %}
 <style>
-    .wide-addon { width: 12rem; }
     .v-offset { margin-bottom: .5rem; }
     .weekdays td, th { text-align: center; }
 </style>
+
+<!-- Modal -->
+<div class="modal fade" role="dialog" id="modal_delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
 <form role="form" class="form-horizontal" method="post" novalidate>
     {% csrf_token %}
 

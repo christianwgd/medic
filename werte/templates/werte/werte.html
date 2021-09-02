@@ -71,57 +71,63 @@ $(document).ready(function() {
     </a>
 </div>
 
-<div>
-    <h5>Zeitraum</h5>
-    <form method="post" role="form" >
-        {% csrf_token %}
-        <div class="row input-group filter">
-            <div class="col-md-3">
-                {% bootstrap_field form.vonDate addon_after='<i class="far fa-calendar-alt"></i>' %}
+<div class="row mt-3">
+    <div class="col">
+        <h5>Zeitraum</h5>
+        <form method="post" role="form" >
+            {% csrf_token %}
+            <div class="row input-group filter">
+                <div class="col-md-3">
+                    {% bootstrap_field form.vonDate addon_after='<i class="far fa-calendar-alt"></i>' %}
+                </div>
+                <div class="col-md-3">
+                    {% bootstrap_field form.bisDate addon_after='<i class="far fa-calendar-alt"></i>' %}
+                </div>
+                <div class="col-md-3">
+                    <button id="id_refresh" type="submit" class="btn btn-secondary">
+                        <i class="far fa-sync"></i>
+                        {% trans 'Refresh' %}
+                    </button>
+                </div>
             </div>
-            <div class="col-md-3">
-                {% bootstrap_field form.bisDate addon_after='<i class="far fa-calendar-alt"></i>' %}
-            </div>
-            <div class="col-md-3">
-                <button id="id_refresh" type="submit" class="btn btn-secondary">
-                    <i class="far fa-sync"></i>
-                    {% trans 'Refresh' %}
-                </button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
-<div class="row">
-    <table id="wertelist" data-toggle="table" class="table table-striped table-bordered"
-            data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
-        <thead>
-            <tr>
-                <th data-sortable="true">{% trans 'Date' %}</th>
-                <th data-sortable="true">{% trans 'RR sys' %}<br><small>(mm/Hg)</small></th>
-                <th data-sortable="true">{% trans 'RR dia' %}<br><small>(mm/Hg)</small></th>
-                <th data-sortable="true">{% trans 'Pulse' %}<br><small>(1/min)</small></th>
-                <th data-sortable="true">{% trans 'Temp.' %}<br><small>(&deg;C)</small></th>
-                <th data-sortable="true">{% trans 'Weight' %}<br><small>(Kg)</small></th>
-                <th>{% trans 'Peculiarity' %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for wert in wertelist %}
-            <tr>
-                <td class="update-action" data-url="{% url 'werte:edit' wert.id %}">
-                    {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
-                </td>
-                <td class="sortable">{{ wert.rrsys|default_if_none:"" }}</td>
-                <td>{{ wert.rrdia|default_if_none:"" }}</td>
-                <td>{{ wert.puls|default_if_none:"" }}</td>
-                <td>{{ wert.temp|floatformat:1 }}</td>
-                <td>{{ wert.gew|floatformat:1 }}</td>
-                <td>{{ wert.bemerkung|default_if_none:"" }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="row" style="margin-top: -1rem;">
+    <div class="col">
+        <table id="wertelist" data-toggle="table" class="table table-striped table-bordered"
+                data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
+            <thead>
+                <tr>
+                    <th data-sortable="true">{% trans 'Date' %}</th>
+                    <th data-sortable="true">{% trans 'RR sys' %}<br><small>(mm/Hg)</small></th>
+                    <th data-sortable="true">{% trans 'RR dia' %}<br><small>(mm/Hg)</small></th>
+                    <th data-sortable="true">{% trans 'Pulse' %}<br><small>(1/min)</small></th>
+                    <th data-sortable="true">{% trans 'Temp.' %}<br><small>(&deg;C)</small></th>
+                    <th data-sortable="true">{% trans 'Weight' %}<br><small>(Kg)</small></th>
+                    <th>{% trans 'Peculiarity' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wert in wertelist %}
+                <tr>
+                    <td>
+                        <span class="as_link update-action" data-url="{% url 'werte:edit' wert.id %}">
+                            {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
+                        </span>
+                    </td>
+                    <td class="sortable">{{ wert.rrsys|default_if_none:"" }}</td>
+                    <td>{{ wert.rrdia|default_if_none:"" }}</td>
+                    <td>{{ wert.puls|default_if_none:"" }}</td>
+                    <td>{{ wert.temp|floatformat:1 }}</td>
+                    <td>{{ wert.gew|floatformat:1 }}</td>
+                    <td>{{ wert.bemerkung|default_if_none:"" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
