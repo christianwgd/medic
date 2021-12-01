@@ -131,6 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 BOOTSTRAP5 = {
     # 'theme_url': '/static/css/bootstrap.min.css',
+    # There's a typo in django-bootstrap5 -> https://github.com/zostera/django-bootstrap5/issues/208
+    # Override the javascript_url until typo is fixed...
+    "javascript_url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js",
 }
 
 LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
