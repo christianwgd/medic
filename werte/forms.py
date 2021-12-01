@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bootstrap_datepicker_plus import DatePickerInput
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
 from django.conf import settings

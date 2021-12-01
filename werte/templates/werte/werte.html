@@ -88,10 +88,10 @@ $(document).ready(function() {
             {% csrf_token %}
             <div class="row input-group filter">
                 <div class="col-md-3">
-                    {% bootstrap_field form.vonDate addon_after='<i class="far fa-calendar-alt"></i>' %}
+                    {% bootstrap_field form.vonDate %}
                 </div>
                 <div class="col-md-3">
-                    {% bootstrap_field form.bisDate addon_after='<i class="far fa-calendar-alt"></i>' %}
+                    {% bootstrap_field form.bisDate %}
                 </div>
                 <div class="col-md-3">
                     <button id="id_refresh" type="submit" class="btn btn-secondary">
