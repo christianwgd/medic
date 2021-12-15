@@ -9,25 +9,27 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from orderable.models import Orderable
 
 
-class StartUrl(Orderable):
+class StartUrl(models.Model):
 
     class Meta:
         verbose_name = _("Home page")
         verbose_name_plural = _("Home pages")
+        ordering = ['sort_order', ]
 
     def __str__(self):
         return self.name
 
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     url = models.CharField(verbose_name=_('URL pattern'), max_length=100)
+    sort_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
 
 class UserProfile(models.Model):
-    
+
     class Meta:
         verbose_name = _("User setting")
         verbose_name_plural = _("User settings")
-        
+
     def __str__(self):
         return self.ref_usr.username
 
@@ -51,14 +53,14 @@ class UserProfile(models.Model):
         default=False, verbose_name=_("Doctor is allowed to see prescription")
     )
     ref_usr = models.OneToOneField(
-        User, on_delete=models.CASCADE, 
+        User, on_delete=models.CASCADE,
         verbose_name=_("User"), related_name='profile'
     )
     email_arzt = models.EmailField(
         verbose_name=_("Doctor's email address"), null=True, blank=True
     )
     myStartPage = models.ForeignKey(
-        StartUrl, on_delete=models.PROTECT, 
+        StartUrl, on_delete=models.PROTECT,
         verbose_name=_("My home page"), blank=True, null=True
     )
 
