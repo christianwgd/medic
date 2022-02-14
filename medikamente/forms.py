@@ -1,6 +1,5 @@
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -22,17 +21,17 @@ class VrdForm(BSModalModelForm):
     class Meta:
         model = Verordnung
         fields = [
-            'ref_medikament', 'morgen', 'mittag', 'abend', 'nacht', 
+            'ref_medikament', 'morgen', 'mittag', 'abend', 'nacht',
             'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'
         ]
 
     def clean(self):
-        cleaned_data = super(VrdForm, self).clean()
+        cleaned_data = super().clean()
         if (
             not cleaned_data['morgen'] and not cleaned_data['mittag'] and
             not cleaned_data['abend'] and not cleaned_data['nacht']
         ):
-            raise ValidationError(_('No values entered.'), code='no_values')
+            raise forms.ValidationError(_('No values entered.'))
         return cleaned_data
 
 

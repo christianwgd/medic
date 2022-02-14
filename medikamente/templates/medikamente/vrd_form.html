@@ -27,7 +27,8 @@
     </div>
 
     <div class="modal-body">
-        <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
+        <div class="{% if form.non_field_errors %}is-invalid{% endif %}"></div>
+        {% bootstrap_form_errors form %}
         {% bootstrap_field form.ref_medikament %}
 
         {% trans 'Tabl. <span id="modosis"></span>' as modose %}
