@@ -16,11 +16,9 @@
         <form method="post">
             {% csrf_token %}
             {% bootstrap_form form %}
-            {% buttons %}
             <button class="btn btn-danger" type="submit">
                 {% trans "Disable" %}
             </button>
-            {% endbuttons %}
         </form>
     </div>
 </div>

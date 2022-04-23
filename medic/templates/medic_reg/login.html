@@ -8,12 +8,10 @@
     <form role="form" method="post" novalidate>
         {% csrf_token %}
         {% bootstrap_form form layout='floating' %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary">
-                <i class="far fa-sign-in"></i>
-                {% trans 'Login' %}
-            </button>
-        {% endbuttons %}
+        <button type="submit" class="btn btn-primary">
+            <i class="far fa-sign-in"></i>
+            {% trans 'Login' %}
+        </button>
     </form>
 </div>
 {% endblock %}

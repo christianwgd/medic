@@ -45,10 +45,12 @@ $(document).ready(function(){
 <form method="post" action="" novalidate>
     {% csrf_token %}
     {% bootstrap_form form %}
-    {% buttons layout='inline' %}
-        {% bootstrap_button "Ok" button_class="btn-primary" button_type='submit' name='Ok' %}
-        {% bootstrap_button "abbrechen" button_class="btn-secondary" button_type='submit' name='cancel' %}
-    {% endbuttons %}
+    <button class="btn btn-primary" type="submit" name="Ok">
+        Ok
+    </button>
+    <button class="btn btn-secondary" type="submit" name="cancel">
+        abbrechen
+    </button>
 </form>
 
 {% endblock %}
