@@ -27,3 +27,7 @@ svg, .btn-group, .btn , .navbar,
 .user-header .card-text {
 	color: #666;
 }
+
+a {
+    color: #333333 !important;
+}
