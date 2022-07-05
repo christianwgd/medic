@@ -1,6 +1,6 @@
 Babel==2.10.1
 beautifulsoup4==4.11.1
-Django==4.0.4
+Django==4.0.6
 django-admin-sortable2==2.0.3
 django-axes==5.32.0
 django-bootstrap-datepicker-plus==4.0.0
