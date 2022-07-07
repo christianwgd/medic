@@ -11,3 +11,4 @@ db.*
 .project
 _versions/
 json/
+*.afdesign
