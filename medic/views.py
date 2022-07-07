@@ -4,7 +4,6 @@ from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.messages.constants import ERROR
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
 
@@ -24,6 +23,10 @@ def index(request):
 @login_required(login_url='/login/')
 def startpage(request):
     try:
+        # messages.info(request, 'info with a little more text text text text')
+        # messages.success(request, 'success')
+        # messages.warning(request, 'warning')
+        # messages.error(request, 'error')
         usr = User.objects.get(username=request.user.username)
         usrProf = UserProfile.objects.get(ref_usr=usr)
         if usrProf.myStartPage:

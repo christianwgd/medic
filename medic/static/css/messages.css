@@ -1,0 +1,66 @@
+.message-box {
+    position: absolute;
+    top: 150px;
+    right: 12px;
+    z-index: 999;
+    margin-left: 12px;
+}
+
+@media (min-width: 577px) {
+    .message-box {
+        padding-left: 4rem;
+    }
+}
+
+.message-box .alert-dismissible .close {
+    padding: .5rem 1rem;
+}
+
+.alert-text::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    margin-right: .5rem;
+}
+
+.alert-info {
+    color: #004085;
+    background: #cce5ff;
+    border-color: #b8daff;
+}
+
+.alert-info .alert-text::before {
+    font-family: "Font Awesome 5 Pro"; font-weight: 900; content: "\f05a";
+}
+
+.alert-success {
+    color: #155724;
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-success .alert-text::before {
+    font-family: "Font Awesome 5 Pro"; font-weight: 900; content: "\f058";
+}
+
+.alert-warning {
+    color: #856404;
+    background: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.alert-warning .alert-text::before {
+    font-family: "Font Awesome 5 Pro"; font-weight: 900; content: "\f06a";
+}
+
+.alert-danger {
+    color: #721c24;
+    background: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-danger .alert-text::before {
+    font-family: "Font Awesome 5 Pro"; font-weight: 900; content: "\f071";
+}
