@@ -32,8 +32,6 @@ body {
     font-size: smaller;
 }
 
-.bootstrap-growl { width: 300px !important; }
-
 .table-condensed td, .table-condensed th {
     padding: 0.4rem;
 }
@@ -73,4 +71,10 @@ th.label {
 td > a {
     text-decoration: none;
     color: #19699d;
+}
+
+@media (max-width: 768px) {
+    br.opt {
+        display: none;
+    }
 }

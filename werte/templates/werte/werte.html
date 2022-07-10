@@ -4,16 +4,16 @@
 {% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
 <link rel="stylesheet" href="{% static 'css/filter.css' %}">
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
-<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -111,11 +111,11 @@ $(document).ready(function() {
             <thead>
                 <tr>
                     <th data-sortable="true">{% trans 'Date' %}</th>
-                    <th data-sortable="true">{% trans 'RR sys' %}<br><small>(mm/Hg)</small></th>
-                    <th data-sortable="true">{% trans 'RR dia' %}<br><small>(mm/Hg)</small></th>
-                    <th data-sortable="true">{% trans 'Pulse' %}<br><small>(1/min)</small></th>
-                    <th data-sortable="true">{% trans 'Temp.' %}<br><small>(&deg;C)</small></th>
-                    <th data-sortable="true">{% trans 'Weight' %}<br><small>(Kg)</small></th>
+                    <th data-sortable="true">{% trans 'RR sys' %}<br class="opt"><small>(mm/Hg)</small></th>
+                    <th data-sortable="true">{% trans 'RR dia' %}<br class="opt"><small>(mm/Hg)</small></th>
+                    <th data-sortable="true">{% trans 'Pulse' %}<br class="opt"><small>(1/min)</small></th>
+                    <th data-sortable="true">{% trans 'Temp.' %}<br class="opt"><small>(&deg;C)</small></th>
+                    <th data-sortable="true">{% trans 'Weight' %}<br class="opt"><small>(Kg)</small></th>
                     <th>{% trans 'Peculiarity' %}</th>
                 </tr>
             </thead>
