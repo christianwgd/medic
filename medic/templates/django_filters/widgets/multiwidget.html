@@ -1,0 +1,8 @@
+<div class="row">
+{% for widget in widget.subwidgets %}
+    <div class="col-md-6">
+        {% include widget.template_name %}
+        {% if forloop.first %}<span class="hidden"> - </span>{% endif %}
+    </div>
+{% endfor %}
+</div>

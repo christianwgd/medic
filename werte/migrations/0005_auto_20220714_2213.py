@@ -9,11 +9,31 @@ def migrate_werte(apps, schema_editor):
     value_type_model = apps.get_model('werte', 'valuetype')
     measurement_model = apps.get_model('werte', 'measurement')
 
-    rrsys = value_type_model.objects.get(slug='rrsys')
-    rrdia = value_type_model.objects.get(slug='rrdia')
-    puls = value_type_model.objects.get(slug='puls')
-    temp = value_type_model.objects.get(slug='temp')
-    gew = value_type_model.objects.get(slug='gewicht')
+    rrsys, created = value_type_model.objects.get_or_create(
+        name='RR sys',
+        slug='rrsys',
+        unit='mm/HG',
+    )
+    rrdia, created = value_type_model.objects.get_or_create(
+        name='RR dia',
+        slug='rrdia',
+        unit='mm/HG',
+    )
+    puls, created = value_type_model.objects.get_or_create(
+        name='Puls',
+        slug='puls',
+        unit='1/min',
+    )
+    temp, created = value_type_model.objects.get_or_create(
+        name='Temp.',
+        slug='temp',
+        unit='°C',
+    )
+    gew, created = value_type_model.objects.get_or_create(
+        name='Gewicht',
+        slug='gewicht',
+        unit='Kg',
+    )
 
     for wert in wert_model.objects.all():
         measurement = measurement_model.objects.create(
@@ -53,7 +73,7 @@ def migrate_werte(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('werte', '0005_valuetype_slug'),
+        ('werte', '0004_measurement_valuetype_value'),
     ]
 
     operations = [

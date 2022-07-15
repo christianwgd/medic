@@ -78,3 +78,7 @@ td > a {
         display: none;
     }
 }
+
+@media (min-width: 769px) {
+    span.hidden { display: none; }
+}

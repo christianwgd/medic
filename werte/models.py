@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Manager
 from django.utils.formats import date_format
 from django.utils.translation import gettext_lazy as _
+
+
+class ActiveTypeManager(Manager):
+
+    def active(self):
+        return self.filter(active=True)
 
 
 class ValueType(models.Model):
@@ -15,6 +22,8 @@ class ValueType(models.Model):
     def __str__(self):
         return self.name
 
+    objects = ActiveTypeManager()
+
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT,
         verbose_name=_('user'), null=True, blank=True
@@ -25,8 +34,11 @@ class ValueType(models.Model):
     unit = models.CharField(
         verbose_name=_('Unit'), max_length=50
     )
+    format = models.PositiveIntegerField(
+        verbose_name=_('Decimal places'), default=0)
     slug = models.SlugField()
     sort_order = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(verbose_name=_('active'), default=False)
 
 
 class Measurement(models.Model):
@@ -52,6 +64,12 @@ class Measurement(models.Model):
     )
 
 
+class ActiveValueManager(Manager):
+
+    def active(self):
+        return self.filter(value_type__active=True)
+
+
 class Value(models.Model):
 
     class Meta:
@@ -61,12 +79,15 @@ class Value(models.Model):
     def __str__(self):
         return f'{self.value_type}-{self.measurement}'
 
+    objects = ActiveValueManager()
+
     value_type = models.ForeignKey(
         ValueType, db_index=True, verbose_name=_('Value Type'),
         on_delete=models.CASCADE
     )
     value = models.DecimalField(
-        verbose_name=_('Value'), max_digits=5, decimal_places=2
+        verbose_name=_('Value'), max_digits=5, decimal_places=2,
+        null=True, blank=True
     )
     measurement = models.ForeignKey(
         Measurement, db_index=True, verbose_name=_('Value'),

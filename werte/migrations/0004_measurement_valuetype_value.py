@@ -32,8 +32,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50, verbose_name='Name')),
+                ('slug', models.SlugField(default='')),
                 ('unit', models.CharField(max_length=50, verbose_name='Unit')),
                 ('owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('sort_order', models.PositiveIntegerField(default=0)),
             ],
             options={
                 'verbose_name': 'Value Type',
@@ -44,7 +46,7 @@ class Migration(migrations.Migration):
             name='Value',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.DecimalField(decimal_places=2, max_digits=5, verbose_name='Value')),
+                ('value', models.DecimalField(decimal_places=2, max_digits=5, verbose_name='Value', null=True, blank=True)),
                 ('measurement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='values', to='werte.measurement', verbose_name='Value')),
                 ('value_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='werte.valuetype', verbose_name='Value Type')),
             ],

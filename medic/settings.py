@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -115,6 +116,7 @@ INSTALLED_APPS = [
     'mail_templated',
     'adminsortable2',
     'medic',
+    'django_filters',
     'usrprofile.apps.UsrProfileConfig',
     'werte.apps.WerteConfig',
     'medikamente.apps.MedikamenteConfig',

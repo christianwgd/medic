@@ -4,7 +4,7 @@ from . import  views
 
 app_name = 'werte'
 urlpatterns = [
-    path('werte/', views.werte, name='werte'),
+    path('werte/', views.MeasurementListView.as_view(), name='werte'),
     path('minmax/<str:von>/<str:bis>/', views.minmax, name='minmax'),
     path('mail/<str:von>/<str:bis>/', views.emailwerte, name='email'),
     path('new/', views.WertCreateView.as_view(), name='neu'),

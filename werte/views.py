@@ -14,6 +14,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone, formats, dateparse
 from django.utils.translation import gettext_lazy as _
+from django_filters.views import FilterView
 
 from mail_templated import send_mail
 
@@ -21,66 +22,28 @@ from medic.utils import getLocaleMonthNames
 
 from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
+from werte.filters import MeasurementFilter
 
-from werte.forms import TimeForm, MesswertForm
-from werte.models import Wert, Measurement
+from werte.forms import MesswertForm
+from werte.models import Wert, Measurement, ValueType
 
 logger = getLogger('medic')
 
 
-@login_required(login_url='/login/')
-def werte(request):
-    wertelist = Wert.objects.none()
-    form = None
-    message = ''
+class MeasurementListView(LoginRequiredMixin, FilterView):
+    model = Measurement
+    filterset_class = MeasurementFilter
+    paginate_by = 16
 
-    try:
-        up = UserProfile.objects.get(ref_usr=request.user)
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['value_types'] = ValueType.objects.active()
+        return ctx
 
-        t = datetime.timedelta(days=up.werteLetzteTage)  # default from UserProfile
-        bis = timezone.now()
-        von = bis - t
-
-        if request.method == 'POST':
-            form = TimeForm(request.POST)
-            if form.is_valid():
-                von = form.cleaned_data['vonDate']
-                bis = form.cleaned_data['bisDate']
-                if von > bis:
-                    messages.error(request, _('From date must be earlier than to date!'))
-        else:
-            form = TimeForm(initial={
-                'vonDate': von,
-                'bisDate': bis
-            })
-
-        wertelist = Measurement.objects.filter(
-            date__date__gte=von,
-            date__date__lte=bis,
-            owner=request.user
+    def get_queryset(self):
+        return Measurement.objects.filter(
+            owner=self.request.user
         ).order_by('-date').prefetch_related('values').all()
-
-        print(wertelist[0].date)
-        for wert in wertelist[0].values.all():
-            print(wert, wert.value)
-
-    except UserProfile.DoesNotExist:
-        message = _('User {user} has no user profile.').format(user=request.user)
-        messages.error(request, message)
-        return redirect(reverse_lazy('startpage'))
-    except Exception as e:
-        message = _('Error in reading measurements.')
-        logger.exception(message)
-        messages.error(request, message)
-
-    return render(
-        request, 'werte/werte.html', {
-            'wertelist': wertelist,
-            'form': form,
-            'user': request.user,
-            'von': von, 'bis': bis
-        }
-    )
 
 
 @login_required(login_url='/login/')
@@ -113,9 +76,10 @@ def emailwerte(request, von, bis):
                 try:
                     mail_to = []
                     if user.email is None or user.email == '':
-                        messages.warning(request,
-                                         _('Sending emails requires email address in user settings.')
-                                         )
+                        messages.warning(
+                            request,
+                            _('Sending emails requires email address in user settings.')
+                        )
                     else:
                         mail_to.append(form.cleaned_data['mailadr'])
                         email_from = user.email
