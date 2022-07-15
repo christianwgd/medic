@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
 from werte.models import Wert, ValueType, Value, Measurement
 
 
 @admin.register(ValueType)
-class ValueTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'unit', 'owner']
+class ValueTypeAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ['name', 'slug', 'unit', 'owner', 'sort_order']
     search_fields = ['name']
 
 

@@ -127,12 +127,14 @@ $(document).ready(function() {
                             {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
                         </span>
                     </td>
-                    <td class="sortable">{{ wert.rrsys|default_if_none:"" }}</td>
-                    <td>{{ wert.rrdia|default_if_none:"" }}</td>
-                    <td>{{ wert.puls|default_if_none:"" }}</td>
-                    <td>{{ wert.temp|floatformat:1 }}</td>
-                    <td>{{ wert.gew|floatformat:1 }}</td>
-                    <td>{{ wert.bemerkung|default_if_none:"" }}</td>
+                    <td class="sortable">
+                        {{ wert.values.all.0.value|floatformat:0|default_if_none:"" }}
+                    </td>
+                    <td>{{ wert.values.all.1.value|floatformat:0|default_if_none:"" }}</td>
+                    <td>{{ wert.values.all.2.value|floatformat:0|default_if_none:"" }}</td>
+                    <td>{{ wert.values.all.3.value|floatformat:1|default_if_none:"-" }}</td>
+                    <td>{{ wert.values.all.4.value|floatformat:1 }}</td>
+                    <td>{{ wert.comment|default_if_none:"" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

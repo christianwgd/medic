@@ -23,36 +23,31 @@ def migrate_werte(apps, schema_editor):
         measurement.date = wert.date
         measurement.save()
 
-        if wert.rrsys:
-            value_model.objects.create(
-                measurement=measurement,
-                value_type=rrsys,
-                value=wert.rrsys
-            )
-        if wert.rrdia:
-            value_model.objects.create(
-                measurement=measurement,
-                value_type=rrdia,
-                value=wert.rrdia
-            )
-        if wert.puls:
-            value_model.objects.create(
-                measurement=measurement,
-                value_type=puls,
-                value=wert.puls
-            )
-        if wert.temp:
-            value_model.objects.create(
-                measurement=measurement,
-                value_type=temp,
-                value=wert.temp
-            )
-        if wert.gew:
-            value_model.objects.create(
-                measurement=measurement,
-                value_type=gew,
-                value=wert.gew
-            )
+        value_model.objects.create(
+            measurement=measurement,
+            value_type=rrsys,
+            value=wert.rrsys or None
+        )
+        value_model.objects.create(
+            measurement=measurement,
+            value_type=rrdia,
+            value=wert.rrdia or None
+        )
+        value_model.objects.create(
+            measurement=measurement,
+            value_type=puls,
+            value=wert.puls or None
+        )
+        value_model.objects.create(
+            measurement=measurement,
+            value_type=temp,
+            value=wert.temp or None
+        )
+        value_model.objects.create(
+            measurement=measurement,
+            value_type=gew,
+            value=wert.gew or None
+        )
 
 
 class Migration(migrations.Migration):

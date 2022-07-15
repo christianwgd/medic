@@ -10,6 +10,7 @@ class ValueType(models.Model):
     class Meta:
         verbose_name = _('Value Type')
         verbose_name_plural = _('Value Types')
+        ordering = ['sort_order']
 
     def __str__(self):
         return self.name
@@ -25,6 +26,7 @@ class ValueType(models.Model):
         verbose_name=_('Unit'), max_length=50
     )
     slug = models.SlugField()
+    sort_order = models.PositiveIntegerField(default=0)
 
 
 class Measurement(models.Model):

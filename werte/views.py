@@ -23,7 +23,7 @@ from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
 
 from werte.forms import TimeForm, MesswertForm
-from werte.models import Wert
+from werte.models import Wert, Measurement
 
 logger = getLogger('medic')
 
@@ -54,11 +54,16 @@ def werte(request):
                 'bisDate': bis
             })
 
-        wertelist = Wert.objects.filter(
+        wertelist = Measurement.objects.filter(
             date__date__gte=von,
             date__date__lte=bis,
-            ref_usr=request.user
-        ).order_by('-date')
+            owner=request.user
+        ).order_by('-date').prefetch_related('values').all()
+
+        print(wertelist[0].date)
+        for wert in wertelist[0].values.all():
+            print(wert, wert.value)
+
     except UserProfile.DoesNotExist:
         message = _('User {user} has no user profile.').format(user=request.user)
         messages.error(request, message)
@@ -68,8 +73,14 @@ def werte(request):
         logger.exception(message)
         messages.error(request, message)
 
-    return render(request, 'werte/werte.html',
-                  {'wertelist': wertelist, 'form': form, 'user': request.user, 'von': von, 'bis': bis})
+    return render(
+        request, 'werte/werte.html', {
+            'wertelist': wertelist,
+            'form': form,
+            'user': request.user,
+            'von': von, 'bis': bis
+        }
+    )
 
 
 @login_required(login_url='/login/')
