@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.db.models import Avg, Max, Min
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.utils import timezone, formats, dateparse
+from django.utils import formats, dateparse
 from django.utils.translation import gettext_lazy as _
 from django_filters.views import FilterView
 

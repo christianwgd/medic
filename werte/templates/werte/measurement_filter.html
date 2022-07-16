@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n django_bootstrap5 static usrprofile_tags %}
+{% load i18n django_bootstrap5 static usrprofile_tags wert_tags %}
 
 {% block bootstrap5_extra_head %}
 {{ block.super }}
@@ -127,8 +127,8 @@ $(document).ready(function() {
                             {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
                         </span>
                     </td>
-                    {% for value in wert.values.active %}
-                    <td>{{ value.value|floatformat:value.value_type.format|default_if_none:"" }}</td>
+                    {% for value_type in value_types %}
+                        <td>{% format_value wert value_type %}</td>
                     {% endfor %}
                     <td>{{ wert.comment|default_if_none:"" }}</td>
                 </tr>
