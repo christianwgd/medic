@@ -23,9 +23,3 @@ class ValueAdmin(admin.ModelAdmin):
     list_filter = ['value_type', 'measurement__owner']
     date_hierarchy = 'measurement__date'
     autocomplete_fields = ['value_type']
-
-
-@admin.register(Wert)
-class WertAdmin(admin.ModelAdmin):
-    list_display = ['date', 'rrsys', 'rrdia', 'puls', 'temp', 'gew']
-    list_filter = ['ref_usr']
