@@ -139,9 +139,11 @@ $(document).ready(function() {
 </div>
 
 <div class="row mt-3">
+    <div class="col-12">
     {% if is_paginated %}
         {% bootstrap_pagination page_obj extra=request.GET.urlencode size="sm" %}
     {% endif %}
+    </div>
 </div>
 
 {% endblock %}
