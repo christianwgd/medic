@@ -46,7 +46,7 @@ class Measurement(models.Model):
     class Meta:
         verbose_name = _('Measurement')
         verbose_name_plural = _('Measurements')
-        ordering = ['date']
+        ordering = ['-date']
 
     def __str__(self):
         return date_format(self.date)

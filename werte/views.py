@@ -24,8 +24,8 @@ from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
 from werte.filters import MeasurementFilter
 
-from werte.forms import MesswertForm
-from werte.models import Wert, Measurement, ValueType
+from werte.forms import MeasurementForm
+from werte.models import Wert, Measurement, ValueType, Value
 
 logger = getLogger('medic')
 
@@ -43,7 +43,62 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return Measurement.objects.filter(
             owner=self.request.user
-        ).order_by('-date').prefetch_related('values').all()
+        ).prefetch_related('values').all()
+
+
+class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
+    model = Measurement
+    form_class = MeasurementForm
+    template_name = 'werte/measurment_form.html'
+    success_message = _('New masurements saved.')
+    success_url = reverse_lazy('werte:werte')
+
+    def form_valid(self, form):
+        measurement = form.save(commit=False)
+        measurement.owner = self.request.user
+        measurement.save()
+        for value_type in ValueType.objects.active():
+            if value_type.slug in form.cleaned_data:
+                Value.objects.create(
+                    value_type=value_type,
+                    measurement=measurement,
+                    value=form.cleaned_data[value_type.slug]
+                )
+        return super().form_valid(form)
+
+
+class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = Measurement
+    form_class = MeasurementForm
+    template_name = 'werte/measurment_form.html'
+    success_message = _('Masurements saved.')
+    success_url = reverse_lazy('werte:werte')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        for value_type in ValueType.objects.active():
+            try:
+                value = Value.objects.get(
+                    value_type=value_type,
+                    measurement=self.object,
+                )
+                initial[value_type.slug] = f'{value.value:.{value_type.format}f}'
+            except Value.DoesNotExist:
+                pass
+        return initial
+
+    def form_valid(self, form):
+        measurement = form.save(commit=False)
+        for value_type in ValueType.objects.active():
+            if value_type.slug in form.cleaned_data and value_type.slug in form.changed_data:
+                value = Value.objects.get(
+                    value_type=value_type,
+                    measurement=measurement,
+                )
+                value.value = form.cleaned_data[value_type.slug]
+                value.save()
+        return super().form_valid(form)
+
 
 
 @login_required(login_url='/login/')
@@ -243,24 +298,3 @@ def diagram(request, von, bis):
         'gew': js_gew,
         'loc_months': loc_months,
     })
-
-
-class WertCreateView(LoginRequiredMixin, BSModalCreateView):
-    model = Wert
-    form_class = MesswertForm
-    template_name = 'werte/measurments_form.html'
-    success_message = _('New masurements saved.')
-    success_url = reverse_lazy('werte:werte')
-
-    def form_valid(self, form):
-        new_val = form.save(commit=False)
-        new_val.ref_usr = self.request.user
-        return super().form_valid(form)
-
-
-class WertUpdateView(LoginRequiredMixin, BSModalUpdateView):
-    model = Wert
-    form_class = MesswertForm
-    template_name = 'werte/measurments_form.html'
-    success_message = _('Masurements saved.')
-    success_url = reverse_lazy('werte:werte')

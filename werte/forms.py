@@ -5,7 +5,7 @@ from django import forms
 from werte.models import ValueType, Measurement
 
 
-class MesswertForm(BSModalModelForm):
+class MeasurementForm(BSModalModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
