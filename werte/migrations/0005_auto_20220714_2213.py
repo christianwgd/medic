@@ -9,11 +9,46 @@ def migrate_werte(apps, schema_editor):
     value_type_model = apps.get_model('werte', 'valuetype')
     measurement_model = apps.get_model('werte', 'measurement')
 
-    rrsys = value_type_model.objects.get(slug='rrsys')
-    rrdia = value_type_model.objects.get(slug='rrdia')
-    puls = value_type_model.objects.get(slug='puls')
-    temp = value_type_model.objects.get(slug='temp')
-    gew = value_type_model.objects.get(slug='gewicht')
+    rr_sys, created = value_type_model.objects.get_or_create(
+        slug='rrsys', defaults={
+            'owner': None,
+            'name': 'RR sys',
+            'unit': 'mm/Hg',
+            'format': 0,
+        }
+    )
+    rr_dia, created = value_type_model.objects.get_or_create(
+        slug='rrdia', defaults={
+            'owner': None,
+            'name': 'RR dia',
+            'unit': 'mm/Hg',
+            'format': 0,
+        }
+    )
+    puls, created = value_type_model.objects.get_or_create(
+        slug='puls', defaults={
+            'owner': None,
+            'name': 'Puls',
+            'unit': '1/min',
+            'format': 0,
+        }
+    )
+    temp, created = value_type_model.objects.get_or_create(
+        slug='temp', defaults={
+            'owner': None,
+            'name': 'Temp.',
+            'unit': '°C',
+            'format': 1,
+        }
+    )
+    gew, created = value_type_model.objects.get_or_create(
+        slug='gewicht', defaults={
+            'owner': None,
+            'name': 'Gewicht',
+            'unit': 'Kg',
+            'format': 1,
+        }
+    )
 
     for wert in wert_model.objects.all():
         measurement = measurement_model.objects.create(
@@ -26,13 +61,13 @@ def migrate_werte(apps, schema_editor):
         if wert.rrsys:
             value_model.objects.create(
                 measurement=measurement,
-                value_type=rrsys,
+                value_type=rr_sys,
                 value=wert.rrsys
             )
         if wert.rrdia:
             value_model.objects.create(
                 measurement=measurement,
-                value_type=rrdia,
+                value_type=rr_dia,
                 value=wert.rrdia
             )
         if wert.puls:

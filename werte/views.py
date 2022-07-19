@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 import json
 from decimal import Decimal
 from logging import getLogger
@@ -9,11 +8,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.db.models import Avg, Max, Min
+from django.db.models import Avg, Max, Min, F
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import formats, dateparse
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import ListView
 from django_filters.views import FilterView
 
 from mail_templated import send_mail
@@ -173,72 +173,38 @@ def emailwerte(request, von, bis):
                   {'wertelist': wertelist, 'form': form, 'von': min_date, 'bis': max_date})
 
 
-@login_required(login_url='/login/')
-def minmax(request, von, bis):
-    von_date = dateparse.parse_date(von)
-    bis_date = dateparse.parse_date(bis)
+class MeasurementMinMaxView(LoginRequiredMixin, ListView):
+    model = Measurement
+    template_name = 'werte/minmax.html'
 
-    minrrsys = maxrrsys = medrrsys = None
-    minrrdia = maxrrdia = medrrdia = None
-    minpuls = maxpuls = medpuls = None
-    mintemp = maxtemp = medtemp = None
-    mingew = maxgew = medgew = None
-
-    try:
-        values = Wert.objects.filter(
-            date__date__gte=von_date,
-            date__date__lte=bis_date,
-            ref_usr=request.user
-        ).exclude(rrsys=None
-                  ).aggregate(
-            Avg('rrsys'), Max('rrsys'), Min('rrsys'),
-            Avg('rrdia'), Max('rrdia'), Min('rrdia'),
-            Avg('puls'), Max('puls'), Min('puls'),
-            Avg('temp'), Max('temp'), Min('temp'),
-            Avg('gew'), Max('gew'), Min('gew'),
+    def get_queryset(self):
+        measurements = Measurement.objects.filter(
+            owner=self.request.user,
         )
+        von = self.kwargs.get('von', None)
+        if von:
+            measurements = measurements.filter(date__date__gte=von)
+        bis = self.kwargs.get('bis', None)
+        if bis:
+            measurements = measurements.filter(date__date__lte=bis)
+        return measurements.prefetch_related('values').all()
 
-        minrrsys = values['rrsys__min']
-        maxrrsys = values['rrsys__max']
-        medrrsys = values['rrsys__avg']
-
-        minrrdia = values['rrdia__min']
-        maxrrdia = values['rrdia__max']
-        medrrdia = values['rrdia__avg']
-
-        minpuls = values['puls__min']
-        maxpuls = values['puls__max']
-        medpuls = values['puls__avg']
-
-        mintemp = values['temp__min']
-        maxtemp = values['temp__max']
-        medtemp = values['temp__avg']
-
-        mingew = values['gew__min']
-        maxgew = values['gew__max']
-        medgew = values['gew__avg']
-    except:
-        message = _('Error in calculating statistics')
-        logger.exception(message)
-        messages.error(request, message)
-
-    return render(request, 'werte/minmax.html', {
-        'minrrsys': minrrsys, 'maxrrsys': maxrrsys, 'medrrsys': medrrsys,
-        'minrrdia': minrrdia, 'maxrrdia': maxrrdia, 'medrrdia': medrrdia,
-        'minpuls': minpuls, 'maxpuls': maxpuls, 'medpuls': medpuls,
-        'mintemp': mintemp, 'maxtemp': maxtemp, 'medtemp': medtemp,
-        'mingew': mingew, 'maxgew': maxgew, 'medgew': medgew,
-        'vonDate': von_date, 'bisDate': bis_date, 'user': request.user
-    })
-
-
-@login_required(login_url='/login/')
-def delwert(request, delwert_id):
-    try:
-        Wert.objects.get(id=delwert_id).delete()
-    except Exception as e:
-        return HttpResponse(e)
-    return HttpResponse("ok")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        value_types = ValueType.objects.active().order_by('sort_order')
+        values = self.get_queryset()
+        stats = {}
+        for value_type in value_types:
+            stats[value_type.slug] = Value.objects.filter(
+                value_type__slug=value_type.slug, measurement__in=values
+            ).aggregate(Avg('value'), Max('value'), Min('value'))
+            stats[value_type.slug]['unit'] = value_type.unit
+            stats[value_type.slug]['name'] = value_type.name
+            stats[value_type.slug]['format'] = value_type.format
+        context['stats'] = stats
+        context['von'] = values.last()
+        context['bis'] = values.first()
+        return context
 
 
 class DecimalEncoder(json.JSONEncoder):

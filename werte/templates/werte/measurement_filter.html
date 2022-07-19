@@ -69,11 +69,11 @@ $(document).ready(function() {
 {#        data-toggle="tooltip" data-placement="bottom">#}
 {#        <i class="far fa-chart-area"></i>#}
 {#    </a>#}
-{#    <a href="{% url 'werte:minmax' von|date:'Y-m-d' bis|date:'Y-m-d' %}"#}
-{#        class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"#}
-{#        data-toggle="tooltip" data-placement="bottom">#}
-{#        <i class="far fa-arrows-v"></i>#}
-{#    </a>#}
+    <a href="{% url 'werte:minmax' filter.form.date.value.0 filter.form.date.value.1 %}"
+        class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
+        data-toggle="tooltip" data-placement="bottom">
+        <i class="far fa-arrows-v"></i>
+    </a>
 {#    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}"#}
 {#        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}"#}
 {#        data-toggle="tooltip" data-placement="bottom">#}
@@ -102,6 +102,7 @@ $(document).ready(function() {
 
 <div class="row mt-2">
     <div class="col">
+        {{ filter.form.date.value.0 }}
         <table id="wertelist" data-toggle="table" data-classes="table table-striped table-bordered"
                 data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
             <thead>
