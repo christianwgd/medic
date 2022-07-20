@@ -64,7 +64,8 @@ $(document).ready(function() {
             title="{% trans 'New measurements' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-plus"></i>
     </button>
-    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"
+{#    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"#}
+    <a href="{% url 'werte:diagram' %}"
         class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-chart-area"></i>

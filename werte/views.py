@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
-import json
-from decimal import Decimal
+from datetime import timedelta
 from logging import getLogger
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from chartjs.views.lines import BaseLineChartView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import models
 from django.urls import reverse_lazy
-from django.db.models import Avg, Max, Min, F, ExpressionWrapper, Func, CharField
-from django.shortcuts import render, redirect
-from django.utils import formats, dateparse
+from django.db.models import Avg, Max, Min
+from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django_filters.views import FilterView
-
-from medic.utils import getLocaleMonthNames
 
 from werte.filters import MeasurementFilter
 
 from werte.forms import MeasurementForm
-from werte.models import Wert, Measurement, ValueType, Value
+from werte.models import Measurement, ValueType, Value
 
 logger = getLogger('medic')
 
@@ -130,94 +124,33 @@ class MeasurementMinMaxView(LoginRequiredMixin, ListView):
         return context
 
 
-class DecimalEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, Decimal):
-            return float(o)
-        return super(DecimalEncoder, self).default(o)
-
-
-def date_to_str(date):
-    return formats.date_format(date.date, 'c')
-
-
-class MeasurementDiagramView(LoginRequiredMixin, ListView):
-    model = Measurement
+class MeasurementDiagramView(LoginRequiredMixin, TemplateView):
     template_name = 'werte/diagram.html'
-
-    def get_queryset(self):
-        measurements = Measurement.objects.filter(
-            owner=self.request.user,
-        ).order_by('date')
-        von = self.kwargs.get('von', None)
-        if von:
-            measurements = measurements.filter(date__date__gte=von)
-        bis = self.kwargs.get('bis', None)
-        if bis:
-            measurements = measurements.filter(date__date__lte=bis)
-        return measurements.prefetch_related('values').all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        value_types = ValueType.objects.active().order_by('sort_order')
-        diagram_data = {}
-        for value_type in value_types:
-            diagram_data[value_type.slug] = Value.objects.filter(
-                value_type__slug=value_type.slug, measurement__in=self.get_queryset()
-            ).values_list(
-                'measurement__date', 'value'
-            )
-        print(diagram_data)
+        context.update({'value_types': ValueType.objects.active()})
         return context
 
 
-@login_required(login_url='/login/')
-def diagram(request, von, bis):
-    von_date = dateparse.parse_date(von)
-    bis_date = dateparse.parse_date(bis)
+class ValuesJSONView(BaseLineChartView):
+    value_type = None
+    queryset = None
 
-    sys = []
-    dia = []
-    puls = []
-    temp = []
-    gew = []
+    def get(self, request, *args, **kwargs):
+        typus = kwargs.get('type')
+        date_from = timezone.now() - timedelta(days=4*365)
+        self.value_type = ValueType.objects.get(slug=typus)
+        self.queryset = Value.objects.filter(
+            value_type__slug=typus, measurement__date__gte=date_from
+        ).order_by('measurement__date')
+        return super().get(request, *args, **kwargs)
 
-    try:
-        wertelist = Wert.objects.filter(
-            date__date__gte=von_date,
-            date__date__lte=bis_date,
-            ref_usr=request.user
-        ).order_by('date')
+    def get_providers(self):
+        return [self.value_type.name]
 
-        if wertelist.count() == 0:
-            messages.warning(request, _('No measurements found.'))
-            return redirect(reverse_lazy('startpage'))
+    def get_labels(self):
+        return [formats.date_format(item.measurement.date, 'd.m.y') for item in self.queryset]
 
-        for wert in wertelist:
-            date = formats.date_format(wert.date, 'c')
-            sys.append([date, wert.rrsys])
-            dia.append([date, wert.rrdia])
-            puls.append([date, wert.puls])
-            temp.append([date, wert.temp])
-            gew.append([date, wert.gew])
-
-        js_sys = json.dumps(sys, cls=DecimalEncoder)
-        js_dia = json.dumps(dia, cls=DecimalEncoder)
-        js_puls = json.dumps(puls, cls=DecimalEncoder)
-        js_temp = json.dumps(temp, cls=DecimalEncoder)
-        js_gew = json.dumps(gew, cls=DecimalEncoder)
-    except:
-        message = _('Error in measurements')
-        logger.exception(message)
-        messages.error(request, message)
-
-    loc_months = getLocaleMonthNames()
-    return render(request, 'werte/diagram.html', {
-        'user': request.user,
-        'sys': js_sys,
-        'dia': js_dia,
-        'puls': js_puls,
-        'tmp': js_temp,
-        'gew': js_gew,
-        'loc_months': loc_months,
-    })
+    def get_data(self):
+        return [[int(item.value) for item in self.queryset]]

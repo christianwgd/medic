@@ -116,6 +116,7 @@ INSTALLED_APPS = [
     'mail_templated',
     'adminsortable2',
     'medic',
+    'chartjs',
     'django_filters',
     'usrprofile.apps.UsrProfileConfig',
     'werte.apps.WerteConfig',
