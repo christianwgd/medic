@@ -23,7 +23,9 @@ logger = getLogger('medic')
 class MeasurementListView(LoginRequiredMixin, FilterView):
     model = Measurement
     filterset_class = MeasurementFilter
-    paginate_by = 16
+
+    def get_paginate_by(self, queryset):
+        return self.request.user.profile.measurements_items_per_page
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
