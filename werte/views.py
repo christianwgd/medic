@@ -7,21 +7,17 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import models
 from django.urls import reverse_lazy
-from django.db.models import Avg, Max, Min, F
-from django.http.response import HttpResponse
+from django.db.models import Avg, Max, Min, F, ExpressionWrapper, Func, CharField
 from django.shortcuts import render, redirect
 from django.utils import formats, dateparse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from django_filters.views import FilterView
 
-from mail_templated import send_mail
-
 from medic.utils import getLocaleMonthNames
 
-from usrprofile.models import UserProfile
-from usrprofile.forms import MailForm
 from werte.filters import MeasurementFilter
 
 from werte.forms import MeasurementForm
@@ -100,79 +96,6 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
         return super().form_valid(form)
 
 
-
-@login_required(login_url='/login/')
-def emailwerte(request, von, bis):
-    message = ''
-
-    if 'cancel' in request.POST:
-        messages.info(request, _('Function canceled.'))
-        return redirect(reverse_lazy('werte:werte'))
-
-    von = dateparse.parse_date(von)
-    bis = dateparse.parse_date(bis)
-
-    wertelist = Wert.objects.filter(
-        date__date__gte=von,
-        date__date__lte=bis,
-        ref_usr=request.user
-    ).order_by('-date')
-
-    min_date = wertelist.earliest('date').date
-    max_date = wertelist.latest('date').date
-
-    try:
-        user = request.user
-        up = UserProfile.objects.get(ref_usr=user)
-
-        if request.method == 'POST':
-            form = MailForm(request.POST)
-            if form.is_valid():
-                try:
-                    mail_to = []
-                    if user.email is None or user.email == '':
-                        messages.warning(
-                            request,
-                            _('Sending emails requires email address in user settings.')
-                        )
-                    else:
-                        mail_to.append(form.cleaned_data['mailadr'])
-                        email_from = user.email
-                        send_mail(
-                            'werte/emailwerte.txt',
-                            {
-                                'user': user, 'text': form.cleaned_data['text'],
-                                'wertelist': wertelist, 'von': von, 'bis': bis
-                            },
-                            email_from, mail_to
-                        )
-                        messages.success(request, _('Email sent.'))
-                        return redirect(reverse_lazy('werte:werte'))
-                except Exception as e:
-                    messages.error(request, _('Error sending email: {}.').format(e))
-        else:
-            form = MailForm(initial={
-                'mailadr': up.email_arzt,
-                'subject': _('Measurements {name} from {von} to {bis}').format(
-                    name=request.user.get_full_name(),
-                    von=formats.date_format(min_date, 'SHORT_DATE_FORMAT'),
-                    bis=formats.date_format(max_date, 'SHORT_DATE_FORMAT')
-                )}
-            )
-
-    except UserProfile.DoesNotExist:
-        message = _('User {user} has no user profile.').format(user=request.user)
-        messages.error(request, message)
-        return redirect(reverse_lazy('startpage'))
-    except Exception:
-        message = _('Error in reading measurements.')
-        logger.exception(message)
-        messages.error(request, message)
-
-    return render(request, 'werte/emailwerte.html',
-                  {'wertelist': wertelist, 'form': form, 'von': min_date, 'bis': max_date})
-
-
 class MeasurementMinMaxView(LoginRequiredMixin, ListView):
     model = Measurement
     template_name = 'werte/minmax.html'
@@ -212,6 +135,40 @@ class DecimalEncoder(json.JSONEncoder):
         if isinstance(o, Decimal):
             return float(o)
         return super(DecimalEncoder, self).default(o)
+
+
+def date_to_str(date):
+    return formats.date_format(date.date, 'c')
+
+
+class MeasurementDiagramView(LoginRequiredMixin, ListView):
+    model = Measurement
+    template_name = 'werte/diagram.html'
+
+    def get_queryset(self):
+        measurements = Measurement.objects.filter(
+            owner=self.request.user,
+        ).order_by('date')
+        von = self.kwargs.get('von', None)
+        if von:
+            measurements = measurements.filter(date__date__gte=von)
+        bis = self.kwargs.get('bis', None)
+        if bis:
+            measurements = measurements.filter(date__date__lte=bis)
+        return measurements.prefetch_related('values').all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        value_types = ValueType.objects.active().order_by('sort_order')
+        diagram_data = {}
+        for value_type in value_types:
+            diagram_data[value_type.slug] = Value.objects.filter(
+                value_type__slug=value_type.slug, measurement__in=self.get_queryset()
+            ).values_list(
+                'measurement__date', 'value'
+            )
+        print(diagram_data)
+        return context
 
 
 @login_required(login_url='/login/')

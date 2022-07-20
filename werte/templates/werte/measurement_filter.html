@@ -64,11 +64,11 @@ $(document).ready(function() {
             title="{% trans 'New measurements' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-plus"></i>
     </button>
-{#    <a href="{% url 'werte:diagram' von|date:'Y-m-d' bis|date:'Y-m-d' %}"#}
-{#        class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"#}
-{#        data-toggle="tooltip" data-placement="bottom">#}
-{#        <i class="far fa-chart-area"></i>#}
-{#    </a>#}
+    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"
+        class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"
+        data-toggle="tooltip" data-placement="bottom">
+        <i class="far fa-chart-area"></i>
+    </a>
     <a href="{% url 'werte:minmax' filter.form.date.value.0 filter.form.date.value.1 %}"
         class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
         data-toggle="tooltip" data-placement="bottom">
