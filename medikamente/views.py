@@ -13,12 +13,14 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import ProtectedError
+from django_filters.views import FilterView
 
 from mail_templated import send_mail
 
 from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
 from medikamente.models import Verordnung, Medikament, Bestandsveraenderung, VrdFuture
+from .filter import MedikamentFilter
 
 from .forms import VrdForm, MedForm
 
@@ -26,9 +28,13 @@ from .forms import VrdForm, MedForm
 logger = logging.getLogger('medic')
 
 
-class MedListView(LoginRequiredMixin, ListView):
+class MedListView(LoginRequiredMixin, FilterView):
     model = Medikament
+    filterset_class = MedikamentFilter
     template_name = 'medikamente/medikamente.html'
+
+    def get_paginate_by(self, queryset):
+        return self.request.user.profile.medicaments_items_per_page
 
     def get_queryset(self):
         return Medikament.objects.filter(ref_usr=self.request.user)

@@ -21,7 +21,7 @@ class UsrProfForm(ModelForm):
     class Meta(object):
         model = UserProfile
         fields = [
-            'warnenTageVorher',
+            'warnenTageVorher', 'medicaments_items_per_page',
             'werteLetzteTage', 'measurements_items_per_page',
             'zeigeArztWerte', 'zeigeArztMed', 'email_arzt',
             'myStartPage', 'gebdat',

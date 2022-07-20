@@ -64,6 +64,9 @@ class UserProfile(models.Model):
     measurements_items_per_page = models.PositiveSmallIntegerField(
         verbose_name=_('Items per page'), default=16
     )
+    medicaments_items_per_page = models.PositiveSmallIntegerField(
+        verbose_name=_('Items per page'), default=16
+    )
 
     @property
     def usr_inf(self):

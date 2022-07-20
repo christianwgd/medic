@@ -128,7 +128,6 @@ INSTALLED_APPS = [
     'two_factor.plugins.phonenumber',
     'django_bootstrap5',
     'bootstrap_modal_forms',
-    'bootstrap_datepicker_plus',
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 3

@@ -45,22 +45,6 @@
                 </div>
 
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="periods">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse_periods" aria-expanded="true"
-                                aria-controls="collapse_periods">
-                            <h4>{% trans 'Periods' %}</h4>
-                        </button>
-                    </h2>
-                    <div id="collapse_periods" class="accordion-collapse collapse show" aria-labelledby="periods"
-                         data-bs-parent="#settings">
-                        <div class="accordion-body">
-                            {% bootstrap_field form.warnenTageVorher layout='floating' %}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
                     <h2 class="accordion-header" id="measurements">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapse_measurements" aria-expanded="true" aria-controls="collapse_measurements">
@@ -72,6 +56,23 @@
                         <div class="accordion-body">
                             {% bootstrap_field form.werteLetzteTage layout='floating' %}
                             {% bootstrap_field form.measurements_items_per_page layout='floating' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="medicaments">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse_medicaments" aria-expanded="true"
+                                aria-controls="collapse_medicaments">
+                            <h4>{% trans 'Medicaments' %}</h4>
+                        </button>
+                    </h2>
+                    <div id="collapse_medicaments" class="accordion-collapse collapse show" aria-labelledby="medicaments"
+                         data-bs-parent="#settings">
+                        <div class="accordion-body">
+                            {% bootstrap_field form.warnenTageVorher layout='floating' %}
+                            {% bootstrap_field form.medicaments_items_per_page layout='floating' %}
                         </div>
                     </div>
                 </div>
