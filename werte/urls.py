@@ -20,6 +20,6 @@ urlpatterns = [
     path('edit/<int:pk>/', views.MeasurementUpdateView.as_view(), name='edit'),
     path('minmax/<null-str:von>/<null-str:bis>/', views.MeasurementMinMaxView.as_view(), name='minmax'),
     # path('diagram/<null-str:von>/<null-str:bis>/', views.MeasurementDiagramView.as_view(), name='diagram'),
-    path('chart/', views.MeasurementDiagramView.as_view(), name='diagram'),
-    path('chart-json/<str:type>/', views.ValuesJSONView.as_view(), name='json-values'),
+    path('chart/<null-str:von>/<null-str:bis>/', views.MeasurementDiagramView.as_view(), name='diagram'),
+    path('chart-json/<str:type>/<null-str:von>/<null-str:bis>/', views.ValuesJSONView.as_view(), name='json-values'),
 ]

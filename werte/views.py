@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
+from datetime import timedelta, datetime
 from logging import getLogger
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
@@ -129,7 +129,17 @@ class MeasurementDiagramView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({'value_types': ValueType.objects.active()})
+        context['value_types'] = ValueType.objects.active()
+        context['von'] = self.kwargs.get('von', None)
+        context['bis'] = self.kwargs.get('bis', None)
+        if context['von'] == '':
+            context['first'] = Measurement.objects.order_by('date').first().date
+        else:
+            context['first'] = datetime.strptime(context['von'], '%Y-%m-%d')
+        if context['bis'] == '':
+            context['last'] = Measurement.objects.order_by('date').last().date
+        else:
+            context['last'] = datetime.strptime(context['bis'], '%Y-%m-%d')
         return context
 
 

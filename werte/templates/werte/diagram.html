@@ -3,11 +3,10 @@
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "css/flot.css" %}">
 <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
 <script type="text/javascript">
     {% for value_type in value_types %}
-    $.get('{% url "werte:json-values" value_type.slug %}', function(data) {
+    $.get('{% url "werte:json-values" value_type.slug von bis %}', function(data) {
         var ctx = $("#{{ value_type.slug }}_chart").get(0).getContext("2d");
         new Chart(ctx, {
             type: 'line',
@@ -34,8 +33,17 @@
     </a>
 </div>
 
+<div class="row mt-3">
+    <div class="col-12">
+        <h6>
+            {% trans 'Diagrams for measurements' %}
+            {{ first|date:'DATE_FORMAT' }} - {{ last|date:'DATE_FORMAT' }}
+        </h6>
 
-{% for value_type in value_types %}
-    <canvas id="{{ value_type.slug }}_chart" width="800" height="200"></canvas>
-{% endfor %}
+        {% for value_type in value_types %}
+            <canvas id="{{ value_type.slug }}_chart" width="800" height="200"></canvas>
+        {% endfor %}
+
+    </div>
+</div>
 {% endblock %}
