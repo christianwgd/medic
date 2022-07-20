@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
 from django.forms import EmailInput
 from django.forms.models import ModelForm
@@ -30,10 +29,6 @@ class UsrProfForm(ModelForm):
         widgets = {
             'warnenTageVorher': forms.NumberInput(attrs={'step': 1.0, 'min': 0}),
             'werteLetzteTage': forms.NumberInput(attrs={'step': 10.0, 'min': 0}),
-            # 'gebdat': DatePickerInput(options={
-            #     "format": date_format,
-            #     "locale": lang
-            # })
             'gebdat': forms.DateInput(
                 format='%Y-%m-%d',
                 attrs={'type': 'date'}
