@@ -33,9 +33,9 @@
                 {% for key, value in stats.items %}
                 <tr>
                     <th>{{ value.name }} <small>({{ value.unit }})</small></th>
-                    <td>{{ value.value__max|floatformat:value.format }}</td>
-                    <td>{{ value.value__min|floatformat:value.format }}</td>
-                    <td>{{ value.value__avg|floatformat:value.format }}</td>
+                    <td>{{ value.value__max|floatformat:value.decimals }}</td>
+                    <td>{{ value.value__min|floatformat:value.decimals }}</td>
+                    <td>{{ value.value__avg|floatformat:value.decimals }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

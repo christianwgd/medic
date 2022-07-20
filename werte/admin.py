@@ -6,7 +6,7 @@ from werte.models import Wert, ValueType, Value, Measurement
 
 @admin.register(ValueType)
 class ValueTypeAdmin(SortableAdminMixin, admin.ModelAdmin):
-    list_display = ['name', 'slug', 'unit', 'owner', 'sort_order']
+    list_display = ['name', 'slug', 'unit', 'active', 'owner', 'sort_order']
     search_fields = ['name']
 
 

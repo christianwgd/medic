@@ -34,7 +34,7 @@ class ValueType(models.Model):
     unit = models.CharField(
         verbose_name=_('Unit'), max_length=50
     )
-    format = models.PositiveIntegerField(
+    decimals = models.PositiveIntegerField(
         verbose_name=_('Decimal places'), default=0)
     slug = models.SlugField()
     sort_order = models.PositiveIntegerField(default=0)

@@ -14,7 +14,8 @@ def migrate_werte(apps, schema_editor):
             'owner': None,
             'name': 'RR sys',
             'unit': 'mm/Hg',
-            'format': 0,
+            'decimals': 0,
+            'sort_order': 0
         }
     )
     rr_dia, created = value_type_model.objects.get_or_create(
@@ -22,7 +23,8 @@ def migrate_werte(apps, schema_editor):
             'owner': None,
             'name': 'RR dia',
             'unit': 'mm/Hg',
-            'format': 0,
+            'decimals': 0,
+            'sort_order': 1
         }
     )
     puls, created = value_type_model.objects.get_or_create(
@@ -30,7 +32,8 @@ def migrate_werte(apps, schema_editor):
             'owner': None,
             'name': 'Puls',
             'unit': '1/min',
-            'format': 0,
+            'decimals': 0,
+            'sort_order': 2
         }
     )
     temp, created = value_type_model.objects.get_or_create(
@@ -38,7 +41,8 @@ def migrate_werte(apps, schema_editor):
             'owner': None,
             'name': 'Temp.',
             'unit': '°C',
-            'format': 1,
+            'decimals': 1,
+            'sort_order': 3
         }
     )
     gew, created = value_type_model.objects.get_or_create(
@@ -46,7 +50,8 @@ def migrate_werte(apps, schema_editor):
             'owner': None,
             'name': 'Gewicht',
             'unit': 'Kg',
-            'format': 1,
+            'decimals': 1,
+            'sort_order': 4
         }
     )
 

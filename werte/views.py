@@ -74,7 +74,7 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
                     value_type=value_type,
                     measurement=self.object,
                 )
-                initial[value_type.slug] = f'{value.value:.{value_type.format}f}'
+                initial[value_type.slug] = f'{value.value:.{value_type.decimals}f}'
             except Value.DoesNotExist:
                 pass
         return initial
@@ -119,7 +119,7 @@ class MeasurementMinMaxView(LoginRequiredMixin, ListView):
             ).aggregate(Avg('value'), Max('value'), Min('value'))
             stats[value_type.slug]['unit'] = value_type.unit
             stats[value_type.slug]['name'] = value_type.name
-            stats[value_type.slug]['format'] = value_type.format
+            stats[value_type.slug]['decimals'] = value_type.decimals
         context['stats'] = stats
         context['von'] = values.last()
         context['bis'] = values.first()
