@@ -151,11 +151,20 @@ class ValuesJSONView(BaseLineChartView):
 
     def get(self, request, *args, **kwargs):
         typus = kwargs.get('type')
-        date_from = timezone.now() - timedelta(days=4*365)
+        # date_from = timezone.now() - timedelta(days=4*365)
         self.value_type = ValueType.objects.get(slug=typus)
         self.queryset = Value.objects.filter(
-            value_type__slug=typus, measurement__date__gte=date_from
+            measurement__owner=self.request.user,
+            value_type__slug=typus
         ).order_by('measurement__date')
+        von = self.kwargs.get('von', None)
+        if von:
+            low_date = timezone.make_aware(datetime.strptime(von, '%Y-%m-%d'))
+            self.queryset = self.queryset.filter(measurement__date__gte=low_date)
+        bis = self.kwargs.get('bis', None)
+        if bis:
+            high_date = timezone.make_aware(datetime.strptime(bis, '%Y-%m-%d'))
+            self.queryset = self.queryset.filter(measurement__date__lte=high_date)
         return super().get(request, *args, **kwargs)
 
     def get_providers(self):
@@ -165,4 +174,4 @@ class ValuesJSONView(BaseLineChartView):
         return [formats.date_format(item.measurement.date, 'd.m.y') for item in self.queryset]
 
     def get_data(self):
-        return [[int(item.value) for item in self.queryset]]
+        return [[round(item.value, self.value_type.decimals) for item in self.queryset]]
