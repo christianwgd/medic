@@ -13,29 +13,29 @@ EINHEIT_CHOICES = (
 
 
 class Medikament (models.Model):
-    
+
     class Meta:
         verbose_name = _('Medicament')
         verbose_name_plural = _('Medicaments')
         ordering = ['name', 'staerke']
-        
+
     def __str__(self):
         dose = formats.localize(self.staerke, use_l10n=True)
         return '{name} {dose} {unit}'.format(
-                name=self.name, 
+                name=self.name,
                 dose=dose,
                 unit=self.einheit
         )
-        
+
     name = models.CharField(
         verbose_name=_('Denomination'), max_length=50
     )
     hersteller = models.CharField(
-        verbose_name=_('Manufacturer'), max_length=50, 
+        verbose_name=_('Manufacturer'), max_length=50,
         null=True, blank=True
     )
     wirkstoff = models.CharField(
-        verbose_name=_('Active ingredient'), max_length=50, 
+        verbose_name=_('Active ingredient'), max_length=50,
         null=True, blank=True
     )
     packung = models.PositiveIntegerField(
@@ -57,32 +57,32 @@ class Medikament (models.Model):
 
 
 class Verordnung (models.Model):
-    
+
     class Meta(object):
         verbose_name = _('Prescription')
         verbose_name_plural = _('Prescriptions')
         ordering = ['ref_medikament__name', 'ref_medikament__staerke']
-        
+
     def __str__(self):
         return '{}'.format(self.ref_medikament)
-        
+
     ref_medikament = models.ForeignKey(
         Medikament, verbose_name=_('Medicament'), on_delete=models.PROTECT
     )
     morgen = models.DecimalField(
-        verbose_name=_('Morning'), max_digits=3, 
+        verbose_name=_('Morning'), max_digits=3,
         decimal_places=2, null=True, blank=True
     )
     mittag = models.DecimalField(
-        verbose_name=_('Noon'), max_digits=3, 
+        verbose_name=_('Noon'), max_digits=3,
         decimal_places=2, null=True, blank=True
     )
     abend = models.DecimalField(
-        verbose_name=_('Evening'), max_digits=3, 
+        verbose_name=_('Evening'), max_digits=3,
         decimal_places=2, null=True, blank=True
     )
     nacht = models.DecimalField(
-        verbose_name=_('Night'), max_digits=3, 
+        verbose_name=_('Night'), max_digits=3,
         decimal_places=2, null=True, blank=True
     )
     mo = models.BooleanField(verbose_name=_('Mo'), default=True)
@@ -95,6 +95,8 @@ class Verordnung (models.Model):
     ref_usr = models.ForeignKey(
         User, verbose_name='Benutzer', on_delete=models.PROTECT
     )
+    valid_from = models.DateField(verbose_name=_('Valid from'))
+    valid_until = models.DateField(verbose_name=_('Valid until'))
 
 
 class VrdFuture (models.Model):
@@ -105,10 +107,10 @@ class VrdFuture (models.Model):
 
     def __str__(self):
         return '{}-{}-{}-{}-{}'.format(
-            self.ref_medikament, 
-            self.morgen, 
+            self.ref_medikament,
+            self.morgen,
             self.mittag,
-            self.abend, 
+            self.abend,
             self.nacht
         )
 
@@ -146,16 +148,16 @@ GRUND_CHOICES = (
 
 
 class Bestandsveraenderung(models.Model):
-    
+
     class Meta:
         verbose_name = _('Change of inventory')
         verbose_name_plural = _('Changes of inventory')
-        
+
     def __str__(self):
         return self.ref_medikament
 
     ref_medikament = models.ForeignKey(
-        Medikament, on_delete=models.PROTECT, verbose_name=_('Medicament'), 
+        Medikament, on_delete=models.PROTECT, verbose_name=_('Medicament'),
     )
     date = models.DateField(verbose_name=_('Date'), auto_now_add=False)
     menge = models.DecimalField(
@@ -168,5 +170,5 @@ class Bestandsveraenderung(models.Model):
         verbose_name=_('Note'), max_length=50, null=True, blank=True
     )
     ref_usr = models.ForeignKey(
-        User, on_delete=models.PROTECT, verbose_name=_('User'), 
+        User, on_delete=models.PROTECT, verbose_name=_('User'),
     )
