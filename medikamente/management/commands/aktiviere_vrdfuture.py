@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from django.core.management.base import CommandError, BaseCommand
-from medikamente.models import Verordnung, VrdFuture
+from medikamente.models import Prescription, VrdFuture
 
 
 class Command(BaseCommand):
@@ -16,11 +16,11 @@ class Command(BaseCommand):
                 today = datetime.datetime.today()
                 for vrdfut in vrdfutlist:
                     if vrdfut.gueltig_ab == today.date():
-                        self.stdout.write('+++ Aktiviere Änderung für Medikament {} für Benutzer {}'.format(
+                        self.stdout.write('+++ Aktiviere Änderung für Medicament {} für Benutzer {}'.format(
                                           vrdfut.ref_medikament, vrdfut.ref_usr))
-                        vrd, created = Verordnung.objects.get_or_create(ref_medikament=vrdfut.ref_medikament,
-                                                                        ref_usr=vrdfut.ref_usr,
-                                                                        defaults={'morgen': vrdfut.morgen,
+                        vrd, created = Prescription.objects.get_or_create(ref_medikament=vrdfut.ref_medikament,
+                                                                          ref_usr=vrdfut.ref_usr,
+                                                                          defaults={'morgen': vrdfut.morgen,
                                                                                   'mittag': vrdfut.mittag,
                                                                                   'abend': vrdfut.abend,
                                                                                   'nacht': vrdfut.nacht,
@@ -44,10 +44,10 @@ class Command(BaseCommand):
                             vrd.sa = vrdfut.sa
                             vrd.so = vrdfut.so
                             vrd.save()
-                            self.stdout.write('Verordnung {} für Benutzer {} geändert.'.format(
+                            self.stdout.write('Prescription {} für Benutzer {} geändert.'.format(
                                 vrd.ref_medikament, vrd.ref_usr))
                         else:
-                            self.stdout.write('Verordnung {} für Benutzer {} erstellt.'.format(
+                            self.stdout.write('Prescription {} für Benutzer {} erstellt.'.format(
                                 vrd.ref_medikament, vrd.ref_usr))
 
                         vrdfut.erledigt = True
@@ -56,4 +56,4 @@ class Command(BaseCommand):
                         self.stdout.write('Heute keine aktiven Änderungen für {}.'.format(vrdfut.ref_medikament))
 
         except Exception as e:
-            raise CommandError('Fehler beim Aktivieren einer geplanten Verordnung: {}'.format(e))
+            raise CommandError('Fehler beim Aktivieren einer geplanten Prescription: {}'.format(e))

@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
                 ('fr', models.BooleanField(default=False, verbose_name='Fr')),
                 ('sa', models.BooleanField(default=False, verbose_name='Sa')),
                 ('so', models.BooleanField(default=False, verbose_name='So')),
-                ('ref_medikament', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medikamente.Medikament', verbose_name='Medikament')),
+                ('ref_medikament', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medikamente.Medicament', verbose_name='Medikament')),
                 ('ref_usr', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Benutzer')),
             ],
             options={
@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
                 ('so', models.BooleanField(default=False, verbose_name='So')),
                 ('gueltig_ab', models.DateField(verbose_name='g\xfcltig ab')),
                 ('erledigt', models.BooleanField(default=False, verbose_name='erledigt')),
-                ('ref_medikament', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medikamente.Medikament', verbose_name='Medikament')),
+                ('ref_medikament', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medikamente.Medicament', verbose_name='Medikament')),
                 ('ref_usr', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Benutzer')),
             ],
             options={
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='bestandsveraenderung',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medikamente.Medikament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medikamente.Medicament'),
         ),
         migrations.AddField(
             model_name='bestandsveraenderung',

@@ -19,7 +19,7 @@ from mail_templated import send_mail
 
 from usrprofile.models import UserProfile
 from usrprofile.forms import MailForm
-from medikamente.models import Verordnung, Medikament, Bestandsveraenderung, VrdFuture
+from medikamente.models import Prescription, Medicament, StockChange, VrdFuture
 from .filter import MedikamentFilter
 
 from .forms import VrdForm, MedForm
@@ -29,7 +29,7 @@ logger = logging.getLogger('medic')
 
 
 class MedListView(LoginRequiredMixin, FilterView):
-    model = Medikament
+    model = Medicament
     filterset_class = MedikamentFilter
     template_name = 'medikamente/medikamente.html'
 
@@ -37,15 +37,15 @@ class MedListView(LoginRequiredMixin, FilterView):
         return self.request.user.profile.medicaments_items_per_page
 
     def get_queryset(self):
-        return Medikament.objects.filter(ref_usr=self.request.user)
+        return Medicament.objects.filter(ref_usr=self.request.user)
 
 
 class MedDetailView(LoginRequiredMixin, DetailView):
-    model = Medikament
+    model = Medicament
 
 
 class MedCreateView(LoginRequiredMixin, BSModalCreateView):
-    model = Medikament
+    model = Medicament
     form_class = MedForm
     template_name = 'medikamente/med_form.html'
     success_message = _('New medicament saved.')
@@ -60,7 +60,7 @@ class MedCreateView(LoginRequiredMixin, BSModalCreateView):
 
 
 class MedUpdateView(LoginRequiredMixin, BSModalUpdateView):
-    model = Medikament
+    model = Medicament
     form_class = MedForm
     template_name = 'medikamente/med_form.html'
     success_message = _('Medicament saved.')
@@ -70,7 +70,7 @@ class MedUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
 
 class MedDeleteView(LoginRequiredMixin, BSModalDeleteView):
-    model = Medikament
+    model = Medicament
     template_name = 'medikamente/med_confirm_delete.html'
     success_url = reverse_lazy('medikamente:medikamente')
     success_message = _('Medicament deleted')
@@ -84,11 +84,11 @@ class MedDeleteView(LoginRequiredMixin, BSModalDeleteView):
 
 
 class VrdListView(LoginRequiredMixin, ListView):
-    model = Verordnung
+    model = Prescription
     template_name = 'medikamente/verordnungen.html'
 
     def get_queryset(self):
-        qs = Verordnung.objects.active(
+        qs = Prescription.objects.active(
             for_user=self.request.user
         )
         print(qs)
@@ -96,11 +96,11 @@ class VrdListView(LoginRequiredMixin, ListView):
 
 
 class VrdDetailView(LoginRequiredMixin, DetailView):
-    model = Verordnung
+    model = Prescription
 
 
 class VrdCreateView(LoginRequiredMixin, BSModalCreateView):
-    model = Verordnung
+    model = Prescription
     form_class = VrdForm
     template_name = 'medikamente/vrd_form.html'
     success_message = _('New prescription saved.')
@@ -113,7 +113,7 @@ class VrdCreateView(LoginRequiredMixin, BSModalCreateView):
 
 
 class VrdUpdateView(LoginRequiredMixin, BSModalUpdateView):
-    model = Verordnung
+    model = Prescription
     form_class = VrdForm
     template_name = 'medikamente/vrd_form.html'
     success_message = _('Prescription saved.')
@@ -123,7 +123,7 @@ class VrdUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
 
 class VerordnungDelete(LoginRequiredMixin, BSModalDeleteView):
-    model = Verordnung
+    model = Prescription
     template_name = 'medikamente/vrd_confirm_delete.html'
     success_url = reverse_lazy('medikamente:verordnungen')
     success_message = _('Prescription deleted')
@@ -139,7 +139,7 @@ def emailverordnungen(request):
 
     try:
         user = request.user
-        volist = Verordnung.objects.filter(ref_usr=user)
+        volist = Prescription.objects.filter(ref_usr=user)
         up = UserProfile.objects.get(ref_usr=user)
 
         if request.method == 'POST':
@@ -191,45 +191,45 @@ def emailverordnungen(request):
 
 @login_required(login_url='/login/')
 def getmed(request, med_id):
-    med = Medikament.objects.get(id=med_id)
+    med = Medicament.objects.get(id=med_id)
     serialized_med = serializers.serialize('json', [med, ])
     return HttpResponse(serialized_med, content_type='application/json')
 
 
-# def berechne_tpt(vo):
-#     tpt = 0.0
-#     if vo.morgen is not None:
-#         tpt = float(vo.morgen)
-#     if vo.mittag is not None:
-#         tpt += float(vo.mittag)
-#     if vo.abend is not None:
-#         tpt += float(vo.abend)
-#     if vo.nacht is not None:
-#         tpt += float(vo.nacht)
-#
-#     if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so:
-#         zeitraum = _('Days')
-#     else:
-#         zeitraum = _('Week(s)')
-#         # tage = 0
-#         tpw = 0.0
-#         if vo.mo:
-#             tpw += float(tpt)
-#         if vo.di:
-#             tpw += float(tpt)
-#         if vo.mi:
-#             tpw += float(tpt)
-#         if vo.do:
-#             tpw += float(tpt)
-#         if vo.fr:
-#             tpw += float(tpt)
-#         if vo.sa:
-#             tpw += float(tpt)
-#         if vo.so:
-#             tpw += float(tpt)
-#         tpt = tpw
-#
-#     return tpt, zeitraum
+def berechne_tpt(vo):
+    tpt = 0.0
+    if vo.morgen is not None:
+        tpt = float(vo.morgen)
+    if vo.mittag is not None:
+        tpt += float(vo.mittag)
+    if vo.abend is not None:
+        tpt += float(vo.abend)
+    if vo.nacht is not None:
+        tpt += float(vo.nacht)
+
+    if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so:
+        zeitraum = _('Days')
+    else:
+        zeitraum = _('Week(s)')
+        # tage = 0
+        tpw = 0.0
+        if vo.mo:
+            tpw += float(tpt)
+        if vo.di:
+            tpw += float(tpt)
+        if vo.mi:
+            tpw += float(tpt)
+        if vo.do:
+            tpw += float(tpt)
+        if vo.fr:
+            tpw += float(tpt)
+        if vo.sa:
+            tpw += float(tpt)
+        if vo.so:
+            tpw += float(tpt)
+        tpt = tpw
+
+    return tpt, zeitraum
 
 # @login_required(login_url='/login/')
 # def bestandedit(request, med_id):
@@ -238,8 +238,8 @@ def getmed(request, med_id):
 #         return redirect(reverse_lazy('medikamente:medikamente'))
 #
 #     try:
-#         medikament = Medikament.objects.get(id=med_id)
-#         vo = Verordnung.objects.get(ref_medikament=medikament, ref_usr=request.user)
+#         medikament = Medicament.objects.get(id=med_id)
+#         vo = Prescription.objects.get(ref_medikament=medikament, ref_usr=request.user)
 #         if vo.morgen is not None:
 #             defmenge = vo.morgen
 #         elif vo.mittag is not None:
@@ -250,9 +250,9 @@ def getmed(request, med_id):
 #             defmenge = vo.nacht
 #         else:
 #             defmenge = 0
-#     except Medikament.DoesNotExist:
+#     except Medicament.DoesNotExist:
 #         defmenge = 0
-#     except Verordnung.DoesNotExist:
+#     except Prescription.DoesNotExist:
 #         defmenge = 0
 #
 #     if request.method == 'POST':
@@ -299,8 +299,8 @@ def getmed(request, med_id):
 # @login_required(login_url='/login/')
 # def besthistory(request, med_id):
 #     try:
-#         medikament = Medikament.objects.get(id=med_id)
-#         bestchangelist = Bestandsveraenderung.objects.filter(
+#         medikament = Medicament.objects.get(id=med_id)
+#         bestchangelist = StockChange.objects.filter(
 #             ref_usr=request.user,
 #             ref_medikament=medikament
 #         ).order_by('-date')
@@ -339,9 +339,9 @@ def getmed(request, med_id):
 #             try:
 #                 new_vrdfut = form.save(commit=False)
 #                 if new_vrdfut.morgen == None and new_vrdfut.mittag == None and new_vrdfut.abend == None and new_vrdfut.nacht == None:
-#                     messages.warning(request, 'Die Verordnung enthält keine Werte.')
+#                     messages.warning(request, 'Die Prescription enthält keine Werte.')
 #                 else:
-#                     med = Medikament.objects.get(id=new_vrdfut.ref_medikament.id)
+#                     med = Medicament.objects.get(id=new_vrdfut.ref_medikament.id)
 #                     med.bestand_vom = timezone.now().date()
 #                     med.save()
 #                     new_vrdfut.ref_usr = request.user
@@ -369,7 +369,7 @@ def getmed(request, med_id):
 #     try:
 #         vrdfut = VrdFuture.objects.get(id=vrdfut_id, ref_usr=request.user)
 #     except Exception as e:
-#         message = 'Lesen Verordnung {} für Benutzer {} fehlgeschlagen: {}'.format(id, request.user, e)
+#         message = 'Lesen Prescription {} für Benutzer {} fehlgeschlagen: {}'.format(id, request.user, e)
 #         messages.error(request, message)
 #         logger.exception(message)
 #

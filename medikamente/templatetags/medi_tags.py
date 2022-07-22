@@ -3,13 +3,13 @@ from django import template
 from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 
-from medikamente.models import Verordnung, Medikament
+from medikamente.models import Prescription, Medicament
 
 register = template.Library()
 
 @register.simple_tag(name='calc_dosis')
 def calc_dosis(value, vo_id):
-    vo = Verordnung.objects.get(pk=vo_id)
+    vo = Prescription.objects.get(pk=vo_id)
     dosis = round(vo.ref_medikament.staerke * value, 2)
     dose = formats.localize(dosis, use_l10n=True)
     return "{dose}{unit}".format(
@@ -21,7 +21,7 @@ def calc_dosis(value, vo_id):
 @register.inclusion_tag('medikamente/includes/mediheader.html')
 def medi_header(med_id, *args, **kwargs):
     try:
-        med = Medikament.objects.get(pk=med_id)
+        med = Medicament.objects.get(pk=med_id)
         med_detail = '{name} {strength} {unit}'.format(
             name = med.name,
             strength = med.staerke,
@@ -31,7 +31,7 @@ def medi_header(med_id, *args, **kwargs):
         med_stock = _('{stock} Tablets').format(
             stock = in_stock
         )
-    except Medikament.DoesNotExist:
+    except Medicament.DoesNotExist:
         med_detail = _('unknown')
         med_stock = _('unknown')
     return {'med_detail': med_detail, 'med_stock': med_stock}

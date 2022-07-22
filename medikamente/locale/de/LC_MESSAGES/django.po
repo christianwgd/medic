@@ -29,7 +29,7 @@ msgstr "Benutzer"
 #: templates/medikamente/medikamente.html:67
 #: templates/medikamente/verordnungen.html:55
 msgid "Medicament"
-msgstr "Medikament"
+msgstr "Medicament"
 
 #: admin.py:26
 msgid "Dosage"
@@ -100,7 +100,7 @@ msgstr "Bestandsveränderung"
 
 #: models.py:62 templates/medikamente/vrd_form.html:19
 msgid "Prescription"
-msgstr "Verordnung"
+msgstr "Prescription"
 
 #: models.py:63 templates/medikamente/verordnungen.html:35
 msgid "Prescriptions"
@@ -160,7 +160,7 @@ msgstr "So"
 
 #: models.py:103
 msgid "Scheduled prescription"
-msgstr "Terminierte Verordnung"
+msgstr "Terminierte Prescription"
 
 #: models.py:104
 msgid "Scheduled prescriptions"
@@ -229,7 +229,7 @@ msgstr "Grund"
 #: templates/medikamente/emailvrd.html:4
 #: templates/medikamente/verordnungen.html:45
 msgid "Send prescription"
-msgstr "Verordnung senden"
+msgstr "Prescription senden"
 
 #: templates/medikamente/emailvrd.html:12
 msgid "<i class='far fa-paper-plane'></i> Send"
@@ -290,11 +290,11 @@ msgstr "So ,"
 
 #: templates/medikamente/emailvrd.txt:3
 msgid "Medication for"
-msgstr "Verordnung für"
+msgstr "Prescription für"
 
 #: templates/medikamente/emailvrd.txt:12
 msgid "Medicine"
-msgstr "Medikament"
+msgstr "Medicament"
 
 #: templates/medikamente/emailvrd.txt:24 templates/medikamente/emailvrd.txt:25
 #: templates/medikamente/emailvrd.txt:26 templates/medikamente/emailvrd.txt:27
@@ -309,7 +309,7 @@ msgstr "Tabl."
 
 #: templates/medikamente/med_confirm_delete.html:6
 msgid "Delete medicament"
-msgstr "Medikament löschen"
+msgstr "Medicament löschen"
 
 #: templates/medikamente/med_confirm_delete.html:11
 #, python-format
@@ -339,20 +339,20 @@ msgstr "Startseite"
 
 #: templates/medikamente/medikamente.html:57
 msgid "New medicament"
-msgstr "Neues Medikament"
+msgstr "Neues Medicament"
 
 #: templates/medikamente/verordnungen.html:42
 msgid "New prescription"
-msgstr "Neue Verordnung"
+msgstr "Neue Prescription"
 
 #: templates/medikamente/vrd_confirm_delete.html:6
 msgid "Delete prescription"
-msgstr "Verordnung löschen"
+msgstr "Prescription löschen"
 
 #: templates/medikamente/vrd_confirm_delete.html:11
 #, python-format
 msgid "Really delete prescription \"%(object)s\"?"
-msgstr "Verordnung \"%(object)s\" wirklich löschen?"
+msgstr "Prescription \"%(object)s\" wirklich löschen?"
 
 #: templates/medikamente/vrd_form.html:33
 msgid "Tabl. <span id=\"modosis\"></span>"
@@ -386,25 +386,25 @@ msgstr "unbekannt"
 
 #: views.py:45
 msgid "New medicament saved."
-msgstr "Neues Medikament gespeichert."
+msgstr "Neues Medicament gespeichert."
 
 #: views.py:60
 msgid "Medicament saved."
-msgstr "Medikament gespeichert."
+msgstr "Medicament gespeichert."
 
 #: views.py:70
 msgid "Medicament deleted"
-msgstr "Medikament gelöscht."
+msgstr "Medicament gelöscht."
 
 #: views.py:76
 msgid "Could not delete medicament due to existing prescription."
 msgstr ""
-"Medikament konnte nicht gelöscht werden, es gibt noch eine Verordnung zum "
-"Medikament."
+"Medicament konnte nicht gelöscht werden, es gibt noch eine Prescription zum "
+"Medicament."
 
 #: views.py:92
 msgid "New prescription saved."
-msgstr "Neue Verordnung gespeichert."
+msgstr "Neue Prescription gespeichert."
 
 #: views.py:105
 msgid "Prescription saved."
@@ -412,7 +412,7 @@ msgstr "Verordnungen gespeichert."
 
 #: views.py:113
 msgid "Prescription deleted"
-msgstr "Verordnung gelöscht"
+msgstr "Prescription gelöscht"
 
 #: views.py:121
 msgid "Function canceled."
@@ -436,10 +436,10 @@ msgstr "Der Benutzer {} hat kein Profil."
 
 #: views.py:165
 msgid "Error in display of prescription"
-msgstr "Fehler bei der Anzeige der Verordnung"
+msgstr "Fehler bei der Anzeige der Prescription"
 
 #~ msgid "Really delete medicament \"%(object)s\"?"
-#~ msgstr "Medikament \"%(object)s\" wirklich löschen?"
+#~ msgstr "Medicament \"%(object)s\" wirklich löschen?"
 
 #~ msgid "Please note: All prescriptions of this medicament will be deleted!"
 #~ msgstr "Achtung: Alle Verordnungen des Medikaments werden mit gelöscht!"
@@ -463,10 +463,10 @@ msgstr "Fehler bei der Anzeige der Verordnung"
 #~ msgstr "{med} gespeichert."
 
 #~ msgid "Error saving prescription."
-#~ msgstr "Fehler beim Speicher der Verordnung."
+#~ msgstr "Fehler beim Speicher der Prescription."
 
 #~ msgid "Error in reading prescription"
-#~ msgstr "Fehler beim Lesen der Verordnung."
+#~ msgstr "Fehler beim Lesen der Prescription."
 
 #~ msgid "Error showing medicaments list."
 #~ msgstr "Fehler beim Anzeigen der Medikamentenliste."

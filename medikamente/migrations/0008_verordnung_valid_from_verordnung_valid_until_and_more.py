@@ -24,6 +24,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='verordnung',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='prescriptions', to='medikamente.medikament', verbose_name='Medicament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='prescriptions', to='medikamente.Medicament', verbose_name='Medicament'),
         ),
     ]

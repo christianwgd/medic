@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import CommandError, BaseCommand
-from medikamente.models import Medikament, Verordnung
+from medikamente.models import Medicament, Prescription
 from django.contrib.auth.models import User
 import datetime
 
@@ -36,12 +36,12 @@ class Command(BaseCommand):
         try:
             userlist = User.objects.filter(username='cwiegand')
             for usr in userlist:
-                medikamente = Medikament.objects.all()
+                medikamente = Medicament.objects.all()
                 for med in medikamente:
-                    self.stdout.write('+++ Berechnung für Medikament {}'.format(med))
-                    vo = Verordnung.objects.filter(ref_usr=usr, ref_medikament=med)
+                    self.stdout.write('+++ Berechnung für Medicament {}'.format(med))
+                    vo = Prescription.objects.filter(ref_usr=usr, ref_medikament=med)
                     tpt = 0
-                    if vo.count() == 1:  # Gibt es eine Verordnung für das Medikament?
+                    if vo.count() == 1:  # Gibt es eine Prescription für das Medicament?
                         vrd = vo[0]
 
                         today = datetime.date.today()
@@ -61,13 +61,13 @@ class Command(BaseCommand):
                         # Verbrauch berechnen
                         verbrauch = 0
                         for single_date in daterange(last_update, today):
-                            # Gibt es eine Verordnung für den Wochentag?
+                            # Gibt es eine Prescription für den Wochentag?
                             if vrd_for_weekday(single_date.isoweekday(), vrd):
                                 verbrauch += tpt
                             #     self.stdout.write(u'Verbrauch am {}: {}' % (single_date.strftime("%A, %d.%m.%Y"),
                             #                                                                      verbrauch))
                             # else:
-                            #     self.stdout.write(u'Keine Verordnung am {}' % single_date.strftime("%A, %d.%m.%Y"))
+                            #     self.stdout.write(u'Keine Prescription am {}' % single_date.strftime("%A, %d.%m.%Y"))
 
                         if med.bestand >= verbrauch:
                             best_alt = med.bestand
@@ -82,7 +82,7 @@ class Command(BaseCommand):
                             self.stdout.write('Bestand fuer {} geringer als Verbrauch' % med.name)
 
                     else:
-                        self.stdout.write('Medikament {} {}{} hat keine Verordnung.'.format(
+                        self.stdout.write('Medicament {} {}{} hat keine Prescription.'.format(
                             med.name, med.staerke, med.einheit))
                 self.stdout.write('Medikamenten-Bestaende von Benutzer {} aktualisiert.'.format(usr.username))
         except Exception as e:

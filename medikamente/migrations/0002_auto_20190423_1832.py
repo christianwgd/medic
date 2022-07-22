@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='bestandsveraenderung',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medikament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medicament'),
         ),
         migrations.AlterField(
             model_name='bestandsveraenderung',
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='verordnung',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medikament', verbose_name='Medikament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medicament', verbose_name='Medikament'),
         ),
         migrations.AlterField(
             model_name='verordnung',
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='vrdfuture',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medikament', verbose_name='Medikament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medicament', verbose_name='Medikament'),
         ),
         migrations.AlterField(
             model_name='vrdfuture',

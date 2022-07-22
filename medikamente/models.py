@@ -13,7 +13,7 @@ EINHEIT_CHOICES = (
     )
 
 
-class Medikament (models.Model):
+class Medicament(models.Model):
 
     class Meta:
         verbose_name = _('Medicament')
@@ -67,7 +67,7 @@ class ActivePrescriptionManager(Manager):
         ).order_by('valid_from')
 
 
-class Verordnung (models.Model):
+class Prescription(models.Model):
 
     class Meta(object):
         verbose_name = _('Prescription')
@@ -88,7 +88,7 @@ class Verordnung (models.Model):
     objects = ActivePrescriptionManager()
 
     ref_medikament = models.ForeignKey(
-        Medikament, verbose_name=_('Medicament'),
+        Medicament, verbose_name=_('Medicament'),
         on_delete=models.PROTECT, related_name='prescriptions'
     )
     morgen = models.DecimalField(
@@ -136,7 +136,7 @@ class VrdFuture (models.Model):
             self.nacht
         )
 
-    ref_medikament = models.ForeignKey(Medikament, verbose_name='Medikament', on_delete=models.PROTECT)
+    ref_medikament = models.ForeignKey(Medicament, verbose_name='Medikament', on_delete=models.PROTECT)
     ref_usr = models.ForeignKey(User, verbose_name='Benutzer', on_delete=models.PROTECT)
     morgen = models.DecimalField(verbose_name='Morgen', max_digits=3, decimal_places=2,
                                  null=True, blank=True, help_text=" Tabl.")
@@ -157,7 +157,7 @@ class VrdFuture (models.Model):
     erledigt = models.BooleanField(verbose_name='erledigt', default=False)
 
 
-GRUND_CHOICES = (
+REASON_CHOICES = (
     ('', _('choose ...')),
     ('01', _('New Package (+)')),
     ('02', _('Intake missed (+)')),
@@ -169,7 +169,7 @@ GRUND_CHOICES = (
 )
 
 
-class Bestandsveraenderung(models.Model):
+class StockChange(models.Model):
 
     class Meta:
         verbose_name = _('Change of inventory')
@@ -178,15 +178,15 @@ class Bestandsveraenderung(models.Model):
     def __str__(self):
         return self.ref_medikament
 
-    ref_medikament = models.ForeignKey(
-        Medikament, on_delete=models.PROTECT, verbose_name=_('Medicament'),
+    medicament = models.ForeignKey(
+        Medicament, on_delete=models.PROTECT, verbose_name=_('Medicament'),
     )
     date = models.DateField(verbose_name=_('Date'), auto_now_add=False)
-    menge = models.DecimalField(
+    amount = models.DecimalField(
         verbose_name=_('Amount'), max_digits=5, decimal_places=2
     )
-    grund = models.CharField(
-        verbose_name=_('Unit'), max_length=2, choices=GRUND_CHOICES
+    reason = models.CharField(
+        verbose_name=_('Reason'), max_length=2, choices=REASON_CHOICES
     )
     text = models.CharField(
         verbose_name=_('Note'), max_length=50, null=True, blank=True

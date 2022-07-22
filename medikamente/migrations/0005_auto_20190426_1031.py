@@ -31,11 +31,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='bestandsveraenderung',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medikament', verbose_name='Medicament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medicament', verbose_name='Medicament'),
         ),
         migrations.AlterField(
             model_name='verordnung',
             name='ref_medikament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medikament', verbose_name='Medicament'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='medikamente.Medicament', verbose_name='Medicament'),
         ),
     ]

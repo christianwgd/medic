@@ -3,7 +3,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from .models import Verordnung, Medikament
+from .models import Prescription, Medicament
 
 
 lang = getattr(settings, "LANGUAGE_CODE", 'en')
@@ -19,7 +19,7 @@ class VrdForm(BSModalModelForm):
         self.fields['nacht'].widget = forms.NumberInput(attrs={'step': 1.0, 'min': 0})
 
     class Meta:
-        model = Verordnung
+        model = Prescription
         fields = [
             'ref_medikament', 'morgen', 'mittag', 'abend', 'nacht',
             'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so',
@@ -52,7 +52,7 @@ class MedForm(BSModalModelForm):
         self.fields['name'].widget = forms.TextInput({"autofocus": "autofocus"})
 
     class Meta:
-        model = Medikament
+        model = Medicament
         fields = ['name', 'hersteller', 'wirkstoff', 'packung', 'staerke', 'einheit']
 
 
@@ -75,7 +75,7 @@ class MedForm(BSModalModelForm):
 #
 # class bestEditForm(forms.ModelForm):
 #     class Meta(object):
-#         model = Bestandsveraenderung
+#         model = StockChange
 #         fields = ['date', 'grund', 'menge', 'text', ]
 #
 #     date = forms.DateField(
@@ -86,5 +86,5 @@ class MedForm(BSModalModelForm):
 #         })
 #     )
 #     menge = forms.DecimalField(help_text=" Tablet(s)")
-#     grund = forms.ChoiceField(choices=GRUND_CHOICES)
+#     grund = forms.ChoiceField(choices=REASON_CHOICES)
 #     text = forms.CharField(max_length=50, required=False, label=_("Note"))
