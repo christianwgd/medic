@@ -25,7 +25,7 @@ class PrescriptionDetailView(LoginRequiredMixin, DetailView):
 class PrescriptionCreateView(LoginRequiredMixin, BSModalCreateView):
     model = Prescription
     form_class = PrescriptionForm
-    success_message = _('New prescription saved.')
+    success_message = _('Prescription saved')
     success_url = reverse_lazy('prescription:list')
 
     def form_valid(self, form):
@@ -37,7 +37,7 @@ class PrescriptionCreateView(LoginRequiredMixin, BSModalCreateView):
 class PrescriptionUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = Prescription
     form_class = PrescriptionForm
-    success_message = _('Prescription saved.')
+    success_message = _('Prescription saved')
 
     def get_success_url(self):
         return reverse('prescription:detail', kwargs={'pk': self.object.id})

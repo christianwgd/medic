@@ -36,7 +36,7 @@ class Medicament(models.Model):
         null=True, blank=True
     )
     package = models.PositiveIntegerField(
-        verbose_name=_('Package size'), help_text=_(' Tablets')
+        verbose_name=_('Package size'), help_text=_('Tablets')
     )
     strength = models.DecimalField(
         verbose_name=_('Strength'), max_digits=8, decimal_places=2
