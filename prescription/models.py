@@ -2,9 +2,26 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Manager, Q
 from django.utils import timezone
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from medicament.models import Medicament
+
+
+WEEK_DAYS = {
+    ('0', 'mo'),
+    ('1', 'tu'),
+    ('2', 'we'),
+    ('3', 'th'),
+    ('4', 'fr'),
+    ('5', 'sa'),
+    ('6', 'su'),
+}
+
+
+def get_weekdays_default():
+    return {
+        '0': True, '1': True, '2': True, '3': True, '4': True, '5': True, '6': True
+    }
 
 
 class ActivePrescriptionManager(Manager):
@@ -25,7 +42,7 @@ class Prescription(models.Model):
         ordering = ['medicament__name', 'medicament__strength']
 
     def __str__(self):
-        return '{}'.format(self.medicament)
+        return self.medicament.name
 
     objects = ActivePrescriptionManager()
 
@@ -49,13 +66,10 @@ class Prescription(models.Model):
         verbose_name=_('Night'), max_digits=3,
         decimal_places=2, null=True, blank=True
     )
-    mo = models.BooleanField(verbose_name=_('Mo'), default=True)
-    tu = models.BooleanField(verbose_name=_('Tu'), default=True)
-    we = models.BooleanField(verbose_name=_('We'), default=True)
-    th = models.BooleanField(verbose_name=_('Th'), default=True)
-    fr = models.BooleanField(verbose_name=_('Fr'), default=True)
-    sa = models.BooleanField(verbose_name=_('Sa'), default=True)
-    so = models.BooleanField(verbose_name=_('Su'), default=True)
+    weekdays = models.JSONField(
+        verbose_name=_('Weekdays'), default=get_weekdays_default,
+        blank=True
+    )
     owner = models.ForeignKey(
         User, verbose_name=_('Owner'), on_delete=models.PROTECT
     )

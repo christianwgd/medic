@@ -2,14 +2,16 @@
 import datetime
 import logging
 
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
+from bootstrap_modal_forms.utils import is_ajax
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core import serializers
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
-from django.views.generic import DetailView
+from django.views.generic import DetailView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import ProtectedError
@@ -60,14 +62,15 @@ class MedicamentUpdateView(LoginRequiredMixin, BSModalUpdateView):
         return reverse('medicament:detail', kwargs={'pk': self.object.id})
 
 
-class MedicamentDeleteView(LoginRequiredMixin, ModalDeleteMessageMixin, BSModalDeleteView):
+class MedicamentDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Medicament
     success_url = reverse_lazy('medicament:list')
     success_message = _('Medicament deleted')
 
     def form_valid(self, form):
         try:
-            super().form_valid(form)
+            if not is_ajax(self.request.META):
+                super().form_valid(form)
         except ProtectedError:
             messages.error(self.request, _('Could not delete medicament due to existing prescription.'))
         return redirect(self.success_url)

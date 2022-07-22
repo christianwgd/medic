@@ -95,25 +95,8 @@ $(document).ready(function() {
                 <tr>
                     <td>{% trans 'Weekdays' %}</td>
                     <td>
-                        {% if prescription.mo and prescription.tu and prescription.we and prescription.th and prescription.fr and prescription.sa and prescription.so %}
-                            <span>alle</span>
-                        {% else %}
-                            {% trans 'Mo,' as mo  %}
-                            {% trans 'Tu,' as tu  %}
-                            {% trans 'We,' as we  %}
-                            {% trans 'Th,' as th  %}
-                            {% trans 'Fr,' as fr  %}
-                            {% trans 'Sa,' as sa  %}
-                            {% trans 'Su,' as su  %}
-                            {{ prescription.mo|yesno:mo }}
-                            {{ prescription.tu|yesno:tu }}
-                            {{ prescription.we|yesno:we }}
-                            {{ prescription.th|yesno:th }}
-                            {{ prescription.fr|yesno:fr }}
-                            {{ prescription.sa|yesno:sa }}
-                            {{ prescription.su|yesno:su }}
+                        {% weekday_name prescription.weekdays %}
                     </td>
-                    {% endif %}
                 </tr>
                 <tr>
                     <th colspan="2">

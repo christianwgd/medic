@@ -7,7 +7,7 @@ from prescription.models import Prescription
 @admin.register(Prescription)
 class PrescriptionAdmin (admin.ModelAdmin):
 
-    list_display = ['medicament', 'morning', 'noon', 'evening', 'night', 'mo', 'tu', 'we', 'th', 'fr', 'sa', 'so']
+    list_display = ['medicament', 'morning', 'noon', 'evening', 'night']
     list_filter = ['owner']
     search_fields = ['medicament__name']
     autocomplete_fields = ['medicament', 'owner']
@@ -18,7 +18,7 @@ class PrescriptionAdmin (admin.ModelAdmin):
         (_('Medicament'),
             {'fields': (('medicament',),)}),
         (_('Dosage'), {
-            'fields': (('morning', 'noon', 'evening', 'night'), ('mo', 'tu', 'we', 'th', 'fr', 'sa', 'so'))
+            'fields': (('weekdays'), ('morning', 'noon', 'evening', 'night'),)
         }),
         (_('Valid'), {
             'fields': (('valid_from', 'valid_until'),)
