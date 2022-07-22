@@ -115,6 +115,24 @@ $(document).ready(function() {
                     </td>
                     {% endif %}
                 </tr>
+                <tr>
+                    <th colspan="2">
+                        {% trans 'Valid' %}
+                    </th>
+                </tr>
+                <tr>
+                    <td>{% trans 'Valid from' %}</td>
+                    <td>
+                        {{ verordnung.valid_from|date:'DATE_FORMAT' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Valid until' %}</td>
+                    <td>
+                        {% trans 'unlimited' as unlimited %}
+                        {{ verordnung.valid_until|date:'DATE_FORMAT'|default:unlimited }}
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

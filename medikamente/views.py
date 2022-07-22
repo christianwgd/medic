@@ -88,7 +88,11 @@ class VrdListView(LoginRequiredMixin, ListView):
     template_name = 'medikamente/verordnungen.html'
 
     def get_queryset(self):
-        return Verordnung.objects.filter(ref_usr=self.request.user)
+        qs = Verordnung.objects.active(
+            for_user=self.request.user
+        )
+        print(qs)
+        return qs
 
 
 class VrdDetailView(LoginRequiredMixin, DetailView):

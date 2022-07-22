@@ -22,8 +22,19 @@ class VrdForm(BSModalModelForm):
         model = Verordnung
         fields = [
             'ref_medikament', 'morgen', 'mittag', 'abend', 'nacht',
-            'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'
+            'mo', 'di', 'mi', 'do', 'fr', 'sa', 'so',
+            'valid_from', 'valid_until'
         ]
+        widgets = {
+            'valid_from': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={'type': 'date'}
+            ),
+            'valid_until': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={'type': 'date'}
+            ),
+        }
 
     def clean(self):
         cleaned_data = super().clean()

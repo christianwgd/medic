@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import formats
+from django.db.models import Manager, Q
+from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 
 EINHEIT_CHOICES = (
@@ -56,6 +57,16 @@ class Medikament (models.Model):
     ref_usr = models.ForeignKey(User, on_delete=models.PROTECT)
 
 
+class ActivePrescriptionManager(Manager):
+
+    def active(self, for_user):
+        return self.filter(
+            Q(ref_usr=for_user) &
+            Q(valid_from__lte=timezone.now()) &
+            Q(valid_until__gt=timezone.now()) | Q(valid_until=None)
+        ).order_by('valid_from')
+
+
 class Verordnung (models.Model):
 
     class Meta(object):
@@ -66,8 +77,19 @@ class Verordnung (models.Model):
     def __str__(self):
         return '{}'.format(self.ref_medikament)
 
+    def save(self, *args, **kwargs):
+        # TODO: Check for overlapping periods of same medicament!
+        existing = self.objects.filter(
+            Q(valid_until__gte=self.valid_from) | Q(valid_from__lte=self.valid_until),
+            ref_medikament=self.ref_medikament,
+        )
+        super().save(*args, **kwargs)
+
+    objects = ActivePrescriptionManager()
+
     ref_medikament = models.ForeignKey(
-        Medikament, verbose_name=_('Medicament'), on_delete=models.PROTECT
+        Medikament, verbose_name=_('Medicament'),
+        on_delete=models.PROTECT, related_name='prescriptions'
     )
     morgen = models.DecimalField(
         verbose_name=_('Morning'), max_digits=3,
@@ -95,8 +117,8 @@ class Verordnung (models.Model):
     ref_usr = models.ForeignKey(
         User, verbose_name='Benutzer', on_delete=models.PROTECT
     )
-    valid_from = models.DateField(verbose_name=_('Valid from'))
-    valid_until = models.DateField(verbose_name=_('Valid until'))
+    valid_from = models.DateField(verbose_name=_('Valid from'), null=True, blank=True)
+    valid_until = models.DateField(verbose_name=_('Valid until'), null=True, blank=True)
 
 
 class VrdFuture (models.Model):
