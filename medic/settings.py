@@ -113,7 +113,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'axes',
     'mail_templated',
-    'orderable',
     'medic',
     'usrprofile.apps.UsrProfileConfig',
     'werte.apps.WerteConfig',
