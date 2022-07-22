@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 l10n i18n medicament_tags %}
+
+{% block page_title %}{% trans 'Inventory history ' %}{% endblock %}
+
+{% block content %}
+{% medicament_header medikament.id %}
+
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="Startseite">
+        <i class="far fa-home"></i>
+    </a>
+    <a href="{% url 'medikamente:medikamente' %}" class="btn btn-primary" role="button" title="Medikamente">
+        <i class="far fa-list"></i>
+    </a>
+</div>
+
+<div class="v-offset">
+    <table id="wertelist" class="table table-striped table-condensed table-bordered">
+        <thead>
+            <tr>
+                <th>{% trans 'Date' %}</th>
+                <th style="text-align: right; padding-right: 10px;">{% trans 'Amount' %}</th>
+                <th>{% trans 'Reason' %}</th>
+                <th>{% trans 'Note' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for change in bestchangelist %}
+            <tr>
+                <td>{{ change.date|date:"SHORT_DATE_FORMAT" }}</td>
+                <td style="text-align: right; padding-right: 10px;">{{ change.menge|floatformat:2 }} Tabl.</td>
+                <td>{{ change.get_grund_display }}</td>
+                <td>{{ change.text }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

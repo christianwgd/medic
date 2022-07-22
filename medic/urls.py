@@ -41,6 +41,7 @@ urlpatterns = [
     path('logoff/', views.log_off, name='logoff'),
 
     path('werte/', include('werte.urls')),
-    path('medikamente/', include('medikamente.urls')),
+    path('medicament/', include('medicament.urls')),
+    path('prescription/', include('prescription.urls')),
     path('usrprofile/', include('usrprofile.urls')),
 ]
