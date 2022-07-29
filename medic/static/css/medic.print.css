@@ -11,6 +11,10 @@ body {
 	margin: 0 auto !important;
 }
 
+.navbar {
+    display: none;
+}
+
 svg, .btn-group, .btn , .navbar,
 .filter, .alert {
 	display: none !important;
