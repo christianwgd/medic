@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load i18n static django_bootstrap5 usrprofile_tags prescription_tags %}
 
+{% block bootstrap5_extra_head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "presription/css/prescription.css" %}" />
+{% endblock %}
+
 {% block bootstrap5_extra_script %}
 {{ block.super }}
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
@@ -95,7 +100,7 @@ $(document).ready(function() {
                 <tr>
                     <td>{% trans 'Weekdays' %}</td>
                     <td>
-                        {% weekday_name prescription.weekdays %}
+                        {% weekday_disp prescription.weekdays %}
                     </td>
                 </tr>
                 <tr>

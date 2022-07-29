@@ -1,0 +1,5 @@
+<ul class="weekdays">
+{% for wd in weekdays %}
+    <li class="weekday{% if wd.1 %} active{% endif %}">{{ wd.0 }}</li>
+{% endfor %}
+</ul>

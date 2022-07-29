@@ -8,13 +8,13 @@ from medicament.models import Medicament
 
 
 WEEK_DAYS = {
-    ('0', 'mo'),
-    ('1', 'tu'),
-    ('2', 'we'),
-    ('3', 'th'),
-    ('4', 'fr'),
-    ('5', 'sa'),
-    ('6', 'su'),
+    '0': 'mo',
+    '1': 'tu',
+    '2': 'we',
+    '3': 'th',
+    '4': 'fr',
+    '5': 'sa',
+    '6': 'su',
 }
 
 
@@ -42,7 +42,7 @@ class Prescription(models.Model):
         ordering = ['medicament__name', 'medicament__strength']
 
     def __str__(self):
-        return self.medicament.name
+        return str(self.medicament)
 
     objects = ActivePrescriptionManager()
 

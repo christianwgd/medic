@@ -3,8 +3,7 @@ from django import template
 from django.utils import formats
 from django.utils.translation import gettext as _, pgettext
 
-from prescription.models import Prescription
-
+from prescription.models import Prescription, WEEK_DAYS
 
 register = template.Library()
 
@@ -16,20 +15,7 @@ def calc_dosis(value, vo_id):
     return f'{dose}{vo.medicament.unit}'
 
 
-@register.simple_tag(name='weekday_name')
-def weekday_name(weekdays):
-    names = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-    result = ''
-    all_days = True
-    no_days = True
-    for key, value in weekdays.items():
-        if value:
-            result += f'{_(names[int(key)])} '
-            no_days = False
-        else:
-            all_days = False
-    if all_days:
-        return _('All')
-    if no_days:
-        return pgettext('medic', 'None')
-    return result
+@register.inclusion_tag('prescription/includes/weekdays.html')
+def weekday_disp(weekdays):
+    wds = [(_(WEEK_DAYS[key].capitalize()), weekdays[key]) for key, name in WEEK_DAYS.items()]
+    return {'weekdays': wds}

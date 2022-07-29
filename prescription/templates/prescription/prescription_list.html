@@ -5,6 +5,7 @@
 {{ block.super }}
 {{ form.media.css }}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" type="text/css" href="{% static "presription/css/prescription.css" %}" />
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
@@ -92,26 +93,7 @@ $(document).ready(function() {
                             <small>({% calc_dosis prescription.night prescription.id %})</small>
                         {% endif %}
                     </td>
-                    <td>
-                    {% if prescription.mo and prescription.tu and prescription.we and prescription.th and prescription.fr and prescription.sa and prescription.so %}
-                        <span>alle</span>
-                    {% else %}
-                        {% trans 'Mo ,' as mo  %}
-                        {% trans 'Tu ,' as tu  %}
-                        {% trans 'We ,' as we  %}
-                        {% trans 'Th ,' as th  %}
-                        {% trans 'Fr ,' as fr  %}
-                        {% trans 'Sa ,' as sa  %}
-                        {% trans 'Su ,' as su  %}
-                        {{ prescription.mo|yesno:mo }}
-                        {{ prescription.tu|yesno:tu }}
-                        {{ prescription.we|yesno:we }}
-                        {{ prescription.th|yesno:th }}
-                        {{ prescription.fr|yesno:fr }}
-                        {{ prescription.sa|yesno:sa }}
-                        {{ prescription.so|yesno:su }}
-                    </td>
-                    {% endif %}
+                    <td>{% weekday_disp prescription.weekdays %}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -14,13 +14,13 @@ class PrescriptionForm(BSModalModelForm):
         self.fields['evening'].widget = forms.NumberInput(attrs={'step': 1.0, 'min': 0})
         self.fields['night'].widget = forms.NumberInput(attrs={'step': 1.0, 'min': 0})
 
-        for weekday in WEEK_DAYS:
-            self.fields[weekday[1]] = forms.BooleanField(
-                label=_(weekday[1].capitalize()),
+        for key, name in WEEK_DAYS.items():
+            self.fields[name] = forms.BooleanField(
+                label=_(name.capitalize()),
                 required=False
             )
-            self.Meta.fields.append(weekday[1])
-            self.fields[weekday[1]].initial = self.instance.weekdays[weekday[0]]
+            self.Meta.fields.append(name)
+            self.fields[name].initial = self.instance.weekdays[key]
 
     class Meta:
         model = Prescription

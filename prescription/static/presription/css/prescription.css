@@ -1,0 +1,23 @@
+ul.weekdays {
+    list-style-type: none;
+    font-size: 12px;
+    margin-bottom: 0;
+    padding: 0;
+    width: fit-content;
+}
+
+li.weekday {
+    display: inline-block;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 0 2px;
+    color: #aaaaaa;
+    width: 1.8rem;
+    text-align: center;
+}
+
+.weekday.active {
+    color: white;
+    background-color: #19699d;
+    border-color: #19699d;
+}

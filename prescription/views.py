@@ -30,8 +30,8 @@ class PrescriptionCreateView(LoginRequiredMixin, BSModalCreateView):
 
     def form_valid(self, form):
         new_prescription = form.save(commit=False)
-        for weekday in WEEK_DAYS:
-            new_prescription.weekdays[weekday[0]] = form.cleaned_data[weekday[1]]
+        for key, name in WEEK_DAYS.items():
+            new_prescription.weekdays[key] = form.cleaned_data[name]
         new_prescription.owner = self.request.user
         return super().form_valid(form)
 
@@ -46,8 +46,8 @@ class PrescriptionUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
     def form_valid(self, form):
         prescription = form.save(commit=False)
-        for weekday in WEEK_DAYS:
-            prescription.weekdays[weekday[0]] = form.cleaned_data[weekday[1]]
+        for key, name in WEEK_DAYS.items():
+            prescription.weekdays[key] = form.cleaned_data[name]
         return super().form_valid(form)
 
 
