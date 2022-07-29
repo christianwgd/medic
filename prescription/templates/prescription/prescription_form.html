@@ -1,0 +1,161 @@
+{% load django_bootstrap5 i18n %}
+<style>
+    .weekdays td, .weekdays th { text-align: center; }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" role="dialog" id="modal_delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">
+            {% trans 'Prescription' %}
+            {% if object.id %}
+                &dash; {{ object.medicament.name }}
+                {{ object.medicament.strength }}
+                {{ object.medicament.unit }}
+            {% endif %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="{% if form.non_field_errors %}is-invalid{% endif %}"></div>
+        {% bootstrap_form_errors form %}
+        {% bootstrap_field form.medicament %}
+
+        {% trans 'Tabl. <span id="modosis"></span>' as modose %}
+        {% trans 'Tabl. <span id="nndosis"></span>' as nndose %}
+        {% trans 'Tabl. <span id="evdosis"></span>' as evdose %}
+        {% trans 'Tabl. <span id="ngdosis"></span>' as ngdose %}
+        {% bootstrap_field form.morning addon_after=modose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.noon addon_after=nndose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.evening addon_after=evdose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.night addon_after=ngdose addon_after_class='input-group-text wide-addon' %}
+
+        <h4>Wochentage</h4>
+        <div class="mb-2">
+            <button type="button" class="btn btn-sm btn-secondary" onclick="checkall();">
+                <i class="far fa-check-square"></i> {% trans 'All' %}
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="checknone();">
+                <i class="far fa-square"></i> {% trans 'None' context 'medic' %}
+            </button>
+        </div>
+        <table class="table table-bordered weekdays">
+            <thead>
+                <tr>
+                    <th>{{form.mo.label}}</th>
+                    <th>{{form.tu.label}}</th>
+                    <th>{{form.we.label}}</th>
+                    <th>{{form.th.label}}</th>
+                    <th>{{form.fr.label}}</th>
+                    <th>{{form.sa.label}}</th>
+                    <th>{{form.su.label}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{form.mo}}</td>
+                    <td>{{form.tu}}</td>
+                    <td>{{form.we}}</td>
+                    <td>{{form.th}}</td>
+                    <td>{{form.fr}}</td>
+                    <td>{{form.sa}}</td>
+                    <td>{{form.su}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-6">
+                {% bootstrap_field form.valid_from size='sm' %}
+            </div>
+            <div class="col-6">
+                {% bootstrap_field form.valid_until size='sm' %}
+            </div>
+        </div>
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+            calcdosis("#id_morning", "#modosis");
+            calcdosis("#id_noon", "#nndosis");
+            calcdosis("#id_evening", "#evdosis");
+            calcdosis("#id_night", "#ngdosis");
+        });
+
+        function checkall() {
+            $('#id_mo').prop('checked', true);
+            $('#id_tu').prop('checked', true);
+            $('#id_we').prop('checked', true);
+            $('#id_th').prop('checked', true);
+            $('#id_fr').prop('checked', true);
+            $('#id_sa').prop('checked', true);
+            $('#id_su').prop('checked', true);
+        }
+
+        function checknone() {
+            $('#id_mo').prop('checked', false);
+            $('#id_tu').prop('checked', false);
+            $('#id_we').prop('checked', false);
+            $('#id_th').prop('checked', false);
+            $('#id_fr').prop('checked', false);
+            $('#id_sa').prop('checked', false);
+            $('#id_su').prop('checked', false);
+        }
+
+        function calcdosis (tabl_id, dosis_id) {
+            let med_id = $("#id_medicament").children(":selected").val();
+            if (med_id) {
+                let url = "/medicament/get/" + med_id + "/";
+                $.get(url, function (data) {
+                    let med = data[0]['fields'];
+                    let medstaerke = med['strength'];
+                    let medeinheit = med['unit'];
+                    let tabl = $(tabl_id).val();
+                    if (tabl !== "") {
+                        let dosis = medstaerke * parseFloat(tabl.replace(/,/g, '.'));
+                        let strdosis = dosis.toFixed(2).toString().replace(/\./g, ',');
+                        $(dosis_id).html('( = ' + strdosis + ' ' + medeinheit + ')');
+                    }
+                });
+            }
+        }
+
+        $("#id_morning").change(function () {
+            calcdosis("#id_morgen", "#modosis");
+        });
+        $("#id_noon").change(function () {
+            calcdosis("#id_mittag", "#nndosis");
+        });
+        $("#id_evening").change(function () {
+            calcdosis("#id_abend", "#evdosis");
+        });
+        $("#id_night").change(function () {
+            calcdosis("#id_nacht", "#ngdosis");
+        });
+        $("#id_medicament").change(function () {
+            calcdosis("#id_morning", "#modosis");
+            calcdosis("#id_noon", "#nndosis");
+            calcdosis("#id_evening", "#evdosis");
+            calcdosis("#id_night", "#ngdosis");
+        });
+        </script>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+            {% trans 'Ok' %}
+        </button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button" aria-label="Close">
+            {% trans 'Cancel' %}
+        </button>
+    </div>
+
+</form>

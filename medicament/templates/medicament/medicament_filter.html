@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load i18n static django_bootstrap5 usrprofile_tags %}
+
+{% block bootstrap5_extra_head %}
+{{ block.super }}
+{{ form.media.css }}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/filter.css' %}">
+{% endblock %}
+
+{% block bootstrap5_extra_script %}
+{{ block.super }}
+{{ form.media.js }}
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-action").modalForm({
+        formURL: "{% url 'medicament:create' %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+});
+</script>
+{% endblock %}
+
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+{% trans 'Medicaments' as user_title %}
+{% user_header user_title request.user %}
+
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
+        <i class="far fa-home"></i>
+    </a>
+    <button id="create-action" class="btn btn-primary" role="button" title="{% trans 'New medicament' %}">
+        <i class="far fa-plus"></i>
+    </button>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+        <form method="get" role="form" >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% bootstrap_form filter.form size='sm' %}
+                </div>
+                <div class="col-md-6">
+                    <button id="id_refresh" type="submit" class="btn btn-sm btn-secondary">
+                        <i class="far fa-sync"></i>
+                        {% trans 'Refresh' %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+    <table data-toggle="table" data-classes="table table-striped table-bordered"
+           data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
+        <thead>
+            <tr>
+                <th>{% trans 'Medicament' %}</th>
+                <th>{% trans 'Active ingredient' %}</th>
+                <th>{% trans 'Package size' %}</th>
+                <th class="text-end">{% trans 'Dose' %}</th>
+    {#                <th style="text-align: right; padding-right: 4rem;">{% trans 'Inventory' %}</th>#}
+                </tr>
+            </thead>
+            <tbody>
+                {% for med in medicament_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'medicament:detail' med.id %}">{{ med.name }}</a>
+                    </td>
+                    <td>{{ med.ingredient }}</td>
+                    <td>{{ med.package }} {% trans 'Tabl.' %}</td>
+                    <td style="text-align: right;">{{ med.strength|floatformat:2 }} {{ med.unit }}</td>
+    {#                <td style="text-align: right;">#}
+    {#                    {{ med.bestand|floatformat:2 }} {% trans 'Tabl.' %}#}
+                        &nbsp;
+    {#                    <a href="{% url 'medikamente:bestandedit' med.id %}" title="{% trans 'Inventory change' %}">#}
+    {#                        <i class="far fa-sm fa-edit"></i>#}
+    {#                    </a>#}
+    {#                    &nbsp;#}
+    {#                    <a href="{% url 'medikamente:besthistory' med.id %}" title="{% trans 'Inventory history' %}">#}
+    {#                        <i class="far fa-sm fa-history"></i>#}
+    {#                    </a>#}
+    {#                </td>#}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+    {% if is_paginated %}
+        {% bootstrap_pagination page_obj extra=request.GET.urlencode size="sm" %}
+    {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+

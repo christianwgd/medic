@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-22 14:30+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:16
+msgid "User"
+msgstr ""
+
+#: admin.py:18 models.py:33 templates/prescription/prescription_detail.html:36
+#: templates/prescription/prescription_list.html:51
+msgid "Medicament"
+msgstr "Medikament"
+
+#: admin.py:20
+msgid "Dosage"
+msgstr "Dosis"
+
+#: admin.py:23 templates/prescription/prescription_detail.html:120
+msgid "Valid"
+msgstr "Gültigkeit"
+
+#: forms.py:40
+msgid "No values entered."
+msgstr "Keine Werte angegeben"
+
+#: models.py:23 templates/prescription/prescription_detail.html:56
+#: templates/prescription/prescription_form.html:18
+msgid "Prescription"
+msgstr "Verordnung"
+
+#: models.py:24 templates/prescription/prescription_list.html:33
+msgid "Prescriptions"
+msgstr "Verordnungen"
+
+#: models.py:37 templates/prescription/prescription_detail.html:61
+#: templates/prescription/prescription_list.html:52
+msgid "Morning"
+msgstr "Morgen"
+
+#: models.py:41 templates/prescription/prescription_detail.html:70
+#: templates/prescription/prescription_list.html:53
+msgid "Noon"
+msgstr "Mittag"
+
+#: models.py:45 templates/prescription/prescription_detail.html:79
+#: templates/prescription/prescription_list.html:54
+msgid "Evening"
+msgstr "Abend"
+
+#: models.py:49 templates/prescription/prescription_detail.html:88
+#: templates/prescription/prescription_list.html:55
+msgid "Night"
+msgstr "Nacht"
+
+#: models.py:52
+msgid "Mo"
+msgstr "Mo"
+
+#: models.py:53
+msgid "Tu"
+msgstr "Di"
+
+#: models.py:54
+msgid "We"
+msgstr "Mi"
+
+#: models.py:55
+msgid "Th"
+msgstr "Do"
+
+#: models.py:56
+msgid "Fr"
+msgstr "Fr"
+
+#: models.py:57
+msgid "Sa"
+msgstr "Sa"
+
+#: models.py:58
+msgid "Su"
+msgstr "So"
+
+#: models.py:60
+msgid "Owner"
+msgstr "Eigentümer"
+
+#: models.py:62 templates/prescription/prescription_detail.html:124
+msgid "Valid from"
+msgstr "Gültig ab"
+
+#: models.py:63 templates/prescription/prescription_detail.html:130
+msgid "Valid until"
+msgstr "Gültig bis"
+
+#: templates/prescription/prescription_confirm_delete.html:6
+msgid "Delete prescription"
+msgstr "Verordnung löschen"
+
+#: templates/prescription/prescription_confirm_delete.html:11
+#, python-format
+msgid "Really delete prescription \"%(object)s\"?"
+msgstr "Verordnung \"%(object)s\" wirklich löschen?"
+
+#: templates/prescription/prescription_confirm_delete.html:16
+#: templates/prescription/prescription_detail.html:145
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/prescription/prescription_detail.html:40
+msgid "Active ingredient"
+msgstr "Wirkstoff"
+
+#: templates/prescription/prescription_detail.html:44
+msgid "Package size"
+msgstr "Packungsgröße"
+
+#: templates/prescription/prescription_detail.html:45
+#: templates/prescription/prescription_detail.html:63
+#: templates/prescription/prescription_detail.html:72
+#: templates/prescription/prescription_detail.html:81
+#: templates/prescription/prescription_detail.html:90
+#: templates/prescription/prescription_list.html:73
+#: templates/prescription/prescription_list.html:79
+#: templates/prescription/prescription_list.html:85
+#: templates/prescription/prescription_list.html:91
+msgid "Tabl."
+msgstr "Tabl."
+
+#: templates/prescription/prescription_detail.html:48
+msgid "Dose"
+msgstr "Dosis"
+
+#: templates/prescription/prescription_detail.html:96
+#: templates/prescription/prescription_list.html:56
+msgid "Weekdays"
+msgstr "Wochentage"
+
+#: templates/prescription/prescription_detail.html:101
+msgid "Mo,"
+msgstr "Mo,"
+
+#: templates/prescription/prescription_detail.html:102
+msgid "Tu,"
+msgstr "Di,"
+
+#: templates/prescription/prescription_detail.html:103
+msgid "We,"
+msgstr "Mi,"
+
+#: templates/prescription/prescription_detail.html:104
+msgid "Th,"
+msgstr "Do,"
+
+#: templates/prescription/prescription_detail.html:105
+msgid "Fr,"
+msgstr "Fr,"
+
+#: templates/prescription/prescription_detail.html:106
+msgid "Sa,"
+msgstr "Sa,"
+
+#: templates/prescription/prescription_detail.html:107
+msgid "Su,"
+msgstr "So,"
+
+#: templates/prescription/prescription_detail.html:132
+msgid "unlimited"
+msgstr "unbegrenzt"
+
+#: templates/prescription/prescription_detail.html:150
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: templates/prescription/prescription_detail.html:153
+msgid "Back"
+msgstr "Zurück"
+
+#: templates/prescription/prescription_form.html:33
+msgid "Tabl. <span id=\"modosis\"></span>"
+msgstr ""
+
+#: templates/prescription/prescription_form.html:34
+msgid "Tabl. <span id=\"nndosis\"></span>"
+msgstr ""
+
+#: templates/prescription/prescription_form.html:35
+msgid "Tabl. <span id=\"evdosis\"></span>"
+msgstr ""
+
+#: templates/prescription/prescription_form.html:36
+msgid "Tabl. <span id=\"ngdosis\"></span>"
+msgstr ""
+
+#: templates/prescription/prescription_form.html:45
+msgid "All"
+msgstr "Alle"
+
+#: templates/prescription/prescription_form.html:48
+msgctxt "medic"
+msgid "None"
+msgstr "Keine"
+
+#: templates/prescription/prescription_form.html:154
+msgid "Ok"
+msgstr ""
+
+#: templates/prescription/prescription_form.html:157
+msgid "Cancel"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:37
+msgid "Home page"
+msgstr "Startseite"
+
+#: templates/prescription/prescription_list.html:40
+msgid "New prescription"
+msgstr "Neue Verordnung"
+
+#: templates/prescription/prescription_list.html:99
+msgid "Mo ,"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:100
+msgid "Tu ,"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:101
+msgid "We ,"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:102
+msgid "Th ,"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:103
+msgid "Fr ,"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:104
+msgid "Sa ,"
+msgstr ""
+
+#: templates/prescription/prescription_list.html:105
+msgid "Su ,"
+msgstr ""
+
+#: views.py:28 views.py:40
+msgid "Prescription saved"
+msgstr "Verordnung gespeichert"
+
+#: views.py:49
+msgid "Prescription deleted"
+msgstr "Verordnung gelöscht"
