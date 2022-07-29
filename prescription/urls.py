@@ -10,4 +10,5 @@ urlpatterns = [
     path('create/', views.PrescriptionCreateView.as_view(), name='create'),
     path('update/<int:pk>/', views.PrescriptionUpdateView.as_view(), name='update'),
     path('delete/<int:pk>/', views.PrescriptionDeleteView.as_view(), name='delete'),
+    # path('print/', views.PrescriptionPrintView.as_view(), name='print'),
 ]

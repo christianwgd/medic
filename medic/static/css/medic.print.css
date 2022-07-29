@@ -35,3 +35,9 @@ svg, .btn-group, .btn , .navbar,
 a {
     color: #333333 !important;
 }
+
+@media print {
+  thead {
+    display: table-header-group;
+  }
+}

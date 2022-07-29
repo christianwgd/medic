@@ -4,29 +4,8 @@
 {% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
 <link rel="stylesheet" type="text/css" href="{% static "presription/css/prescription.css" %}" />
 <link rel="stylesheet" type="text/css" href="{% static "presription/css/prescription.print.css" %}" media="print"/>
-{% endblock %}
-
-{% block bootstrap5_extra_script %}
-{{ block.super }}
-{{ form.media.js }}
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
-<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-
-    $("#create-action").modalForm({
-        formURL: "{% url 'prescription:create' %}",
-        modalID: "#modal",
-        errorClass: '.is-invalid'
-    });
-
-});
-</script>
 {% endblock %}
 
 {% block page_title %}{% endblock %}

@@ -42,6 +42,26 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
         ).prefetch_related('values').all()
 
 
+class MeasurementPrintView(LoginRequiredMixin, ListView):
+    model = Measurement
+    template_name = 'measurement/measurement_print.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['value_types'] = ValueType.objects.active()
+        ctx['min_date'] = datetime.strptime(self.kwargs['von'], '%Y-%m-%d')
+        ctx['max_date'] = datetime.strptime(self.kwargs['bis'], '%Y-%m-%d')
+        return ctx
+
+    def get_queryset(self):
+        measurements = Measurement.objects.filter(
+            owner=self.request.user,
+            date__date__gte=self.kwargs['von'],
+            date__date__lte=self.kwargs['bis'],
+        )
+        return measurements.prefetch_related('values').all()
+
+
 class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
     model = Measurement
     form_class = MeasurementForm

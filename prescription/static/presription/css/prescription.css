@@ -11,6 +11,7 @@ li.weekday {
     border: 1px solid #cccccc;
     border-radius: 5px;
     padding: 0 2px;
+    margin: 1px 0;
     color: #aaaaaa;
     width: 1.8rem;
     text-align: center;

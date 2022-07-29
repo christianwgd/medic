@@ -12,4 +12,5 @@ urlpatterns = [
     path('minmax/<str:von>/<str:bis>/', views.MeasurementMinMaxView.as_view(), name='minmax'),
     path('chart/<str:von>/<str:bis>/', views.MeasurementDiagramView.as_view(), name='diagram'),
     path('chart-json/<str:type>/<str:von>/<str:bis>/', views.ValuesJSONView.as_view(), name='json-values'),
+    path('print/<str:von>/<str:bis>/', views.MeasurementPrintView.as_view(), name='print'),
 ]
