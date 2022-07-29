@@ -2,7 +2,7 @@
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
 
-from werte.models import ValueType, Measurement
+from measurement.models import ValueType, Measurement
 
 
 class MeasurementForm(BSModalModelForm):

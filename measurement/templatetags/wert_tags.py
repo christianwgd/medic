@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import template
 
-from werte.models import Value
+from measurement.models import Value
 
 register = template.Library()
 

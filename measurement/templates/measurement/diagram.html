@@ -6,7 +6,7 @@
 <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
 <script type="text/javascript">
     {% for value_type in value_types %}
-    $.get('{% url "werte:json-values" value_type.slug von bis %}', function(data) {
+    $.get('{% url "measurement:json-values" value_type.slug von bis %}', function(data) {
         var ctx = $("#{{ value_type.slug }}_chart").get(0).getContext("2d");
         new Chart(ctx, {
             type: 'line',
@@ -28,7 +28,7 @@
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
         <i class="far fa-home"></i>
     </a>
-    <a href="{% url 'werte:werte' %}" class="btn btn-primary" role="button" title="{% trans 'Measurements' %}">
+    <a href="{% url 'measurement:list' %}" class="btn btn-primary" role="button" title="{% trans 'Measurements' %}">
         <i class="far fa-list"></i>
     </a>
 </div>

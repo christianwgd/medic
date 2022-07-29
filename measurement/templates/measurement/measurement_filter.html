@@ -19,7 +19,7 @@
 $(document).ready(function() {
 
     $("#create-action").modalForm({
-        formURL: "{% url 'werte:neu' %}",
+        formURL: "{% url 'measurement:neu' %}",
         modalID: "#modal"
     });
 
@@ -64,12 +64,12 @@ $(document).ready(function() {
             title="{% trans 'New measurements' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-plus"></i>
     </button>
-    <a href="{% url 'werte:diagram' min_date max_date %}"
+    <a href="{% url 'measurement:diagram' min_date max_date %}"
         class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-chart-area"></i>
     </a>
-    <a href="{% url 'werte:minmax' min_date max_date %}"
+    <a href="{% url 'measurement:minmax' min_date max_date %}"
         class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-arrows-v"></i>
@@ -118,7 +118,7 @@ $(document).ready(function() {
                 {% for wert in page_obj %}
                 <tr>
                     <td>
-                        <span class="as_link update-action" data-url="{% url 'werte:edit' wert.id %}">
+                        <span class="as_link update-action" data-url="{% url 'measurement:edit' wert.id %}">
                             {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
                         </span>
                     </td>

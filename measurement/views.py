@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta, datetime
+from datetime import datetime
 from logging import getLogger
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from chartjs.views.lines import BaseLineChartView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db.models import Avg, Max, Min
 from django.utils import formats, timezone
@@ -12,10 +13,10 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, TemplateView
 from django_filters.views import FilterView
 
-from werte.filters import MeasurementFilter
+from measurement.filters import MeasurementFilter
 
-from werte.forms import MeasurementForm
-from werte.models import Measurement, ValueType, Value
+from measurement.forms import MeasurementForm
+from measurement.models import Measurement, ValueType, Value
 
 logger = getLogger('medic')
 
@@ -44,30 +45,30 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
 class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
     model = Measurement
     form_class = MeasurementForm
-    template_name = 'werte/measurment_form.html'
+    template_name = 'measurement/measurment_form.html'
     success_message = _('New masurements saved.')
-    success_url = reverse_lazy('werte:werte')
+    success_url = reverse_lazy('measurement:list')
 
     def form_valid(self, form):
         measurement = form.save(commit=False)
         measurement.owner = self.request.user
         measurement.save()
         for value_type in ValueType.objects.active():
-            if value_type.slug in form.cleaned_data:
+            if value_type.slug in form.cleaned_data and form.cleaned_data[value_type.slug]:
                 Value.objects.create(
                     value_type=value_type,
                     measurement=measurement,
                     value=form.cleaned_data[value_type.slug]
                 )
-        return super().form_valid(form)
+        return redirect(self.success_url)
 
 
 class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = Measurement
     form_class = MeasurementForm
-    template_name = 'werte/measurment_form.html'
+    template_name = 'measurement/measurment_form.html'
     success_message = _('Masurements saved.')
-    success_url = reverse_lazy('werte:werte')
+    success_url = reverse_lazy('measurement:list')
 
     def get_initial(self):
         initial = super().get_initial()
@@ -85,6 +86,8 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
     def form_valid(self, form):
         measurement = form.save(commit=False)
         for value_type in ValueType.objects.active():
+            print(value_type.slug, 'in cleaned', value_type.slug in form.cleaned_data)
+            print(value_type.slug, 'in changed', value_type.slug in form.changed_data)
             if value_type.slug in form.cleaned_data and value_type.slug in form.changed_data:
                 value = Value.objects.get(
                     value_type=value_type,
@@ -97,13 +100,13 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
 class MeasurementMinMaxView(LoginRequiredMixin, ListView):
     model = Measurement
-    template_name = 'werte/minmax.html'
+    template_name = 'measurement/minmax.html'
 
     def get_queryset(self):
         measurements = Measurement.objects.filter(
             owner=self.request.user,
             date__date__gte=self.kwargs['von'],
-            date__date___lte=self.kwargs['bis'],
+            date__date__lte=self.kwargs['bis'],
         )
         return measurements.prefetch_related('values').all()
 
@@ -126,7 +129,7 @@ class MeasurementMinMaxView(LoginRequiredMixin, ListView):
 
 
 class MeasurementDiagramView(LoginRequiredMixin, TemplateView):
-    template_name = 'werte/diagram.html'
+    template_name = 'measurement/diagram.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

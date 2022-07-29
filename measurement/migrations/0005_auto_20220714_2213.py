@@ -4,10 +4,10 @@ from django.db import migrations
 
 
 def migrate_werte(apps, schema_editor):
-    wert_model = apps.get_model('werte', 'wert')
-    value_model = apps.get_model('werte', 'value')
-    value_type_model = apps.get_model('werte', 'valuetype')
-    measurement_model = apps.get_model('werte', 'measurement')
+    wert_model = apps.get_model('measurement', 'wert')
+    value_model = apps.get_model('measurement', 'value')
+    value_type_model = apps.get_model('measurement', 'valuetype')
+    measurement_model = apps.get_model('measurement', 'measurement')
 
     rr_sys, created = value_type_model.objects.get_or_create(
         slug='rrsys', defaults={
@@ -98,7 +98,7 @@ def migrate_werte(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('werte', '0004_measurement_valuetype_value'),
+        ('measurement', '0004_measurement_valuetype_value'),
     ]
 
     operations = [

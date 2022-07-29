@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Django settings for werte project.
+# Django settings for measurement project.
 
 import os
 import sys
@@ -119,7 +119,7 @@ INSTALLED_APPS = [
     'chartjs',
     'django_filters',
     'usrprofile.apps.UsrProfileConfig',
-    'werte.apps.WerteConfig',
+    'measurement.apps.WerteConfig',
     'medicament.apps.MedicamentConfig',
     'prescription.apps.PrescriptionConfig',
     'django_otp',

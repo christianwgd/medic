@@ -40,7 +40,7 @@ urlpatterns = [
     ),
     path('logoff/', views.log_off, name='logoff'),
 
-    path('werte/', include('werte.urls')),
+    path('measurement/', include('measurement.urls')),
     path('medicament/', include('medicament.urls')),
     path('prescription/', include('prescription.urls')),
     path('usrprofile/', include('usrprofile.urls')),

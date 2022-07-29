@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('werte', '0003_auto_20190425_2140'),
+        ('measurement', '0003_auto_20190425_2140'),
     ]
 
     operations = [
@@ -48,8 +48,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('value', models.DecimalField(decimal_places=2, max_digits=5, verbose_name='Value', null=True, blank=True)),
-                ('measurement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='values', to='werte.measurement', verbose_name='Value')),
-                ('value_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='werte.valuetype', verbose_name='Value Type')),
+                ('measurement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='values', to='measurement.measurement', verbose_name='Value')),
+                ('value_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='measurement.valuetype', verbose_name='Value Type')),
             ],
             options={
                 'verbose_name': 'Value',

@@ -1,12 +1,12 @@
 from django.urls import path
 
-from werte import views
+from measurement import views
 
 
-app_name = 'werte'
+app_name = 'measurement'
 
 urlpatterns = [
-    path('werte/', views.MeasurementListView.as_view(), name='werte'),
+    path('list/', views.MeasurementListView.as_view(), name='list'),
     path('new/', views.MeasurementCreateView.as_view(), name='neu'),
     path('edit/<int:pk>/', views.MeasurementUpdateView.as_view(), name='edit'),
     path('minmax/<str:von>/<str:bis>/', views.MeasurementMinMaxView.as_view(), name='minmax'),
