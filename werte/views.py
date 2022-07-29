@@ -30,6 +30,9 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['value_types'] = ValueType.objects.active()
+        # change dates because of reversed ordering!
+        ctx['max_date'] = formats.date_format(self.filterset.qs.first().date, 'Y-m-d')
+        ctx['min_date'] = formats.date_format(self.filterset.qs.last().date, 'Y-m-d')
         return ctx
 
     def get_queryset(self):
@@ -99,13 +102,9 @@ class MeasurementMinMaxView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         measurements = Measurement.objects.filter(
             owner=self.request.user,
+            date__date__gte=self.kwargs['von'],
+            date__date___lte=self.kwargs['bis'],
         )
-        von = self.kwargs.get('von', None)
-        if von:
-            measurements = measurements.filter(date__date__gte=von)
-        bis = self.kwargs.get('bis', None)
-        if bis:
-            measurements = measurements.filter(date__date__lte=bis)
         return measurements.prefetch_related('values').all()
 
     def get_context_data(self, **kwargs):
@@ -134,14 +133,8 @@ class MeasurementDiagramView(LoginRequiredMixin, TemplateView):
         context['value_types'] = ValueType.objects.active()
         context['von'] = self.kwargs.get('von', '')
         context['bis'] = self.kwargs.get('bis', '')
-        if context['von'] == 'None' or context['von'] == '':
-            context['first'] = Measurement.objects.order_by('date').first().date
-        else:
-            context['first'] = datetime.strptime(context['von'], '%Y-%m-%d')
-        if context['von'] == 'None' or context['bis'] == '':
-            context['last'] = Measurement.objects.order_by('date').last().date
-        else:
-            context['last'] = datetime.strptime(context['bis'], '%Y-%m-%d')
+        context['first'] = datetime.strptime(context['von'], '%Y-%m-%d')
+        context['last'] = datetime.strptime(context['bis'], '%Y-%m-%d')
         return context
 
 
@@ -151,20 +144,15 @@ class ValuesJSONView(BaseLineChartView):
 
     def get(self, request, *args, **kwargs):
         typus = kwargs.get('type')
-        # date_from = timezone.now() - timedelta(days=4*365)
+        low_date = timezone.make_aware(datetime.strptime(self.kwargs['von'], '%Y-%m-%d'))
+        high_date = timezone.make_aware(datetime.strptime(self.kwargs['bis'], '%Y-%m-%d'))
         self.value_type = ValueType.objects.get(slug=typus)
         self.queryset = Value.objects.filter(
             measurement__owner=self.request.user,
-            value_type__slug=typus
+            value_type__slug=typus,
+            measurement__date__gte=low_date,
+            measurement__date__lte=high_date
         ).order_by('measurement__date')
-        von = self.kwargs.get('von', None)
-        if von:
-            low_date = timezone.make_aware(datetime.strptime(von, '%Y-%m-%d'))
-            self.queryset = self.queryset.filter(measurement__date__gte=low_date)
-        bis = self.kwargs.get('bis', None)
-        if bis:
-            high_date = timezone.make_aware(datetime.strptime(bis, '%Y-%m-%d'))
-            self.queryset = self.queryset.filter(measurement__date__lte=high_date)
         return super().get(request, *args, **kwargs)
 
     def get_providers(self):

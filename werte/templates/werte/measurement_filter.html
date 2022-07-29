@@ -64,22 +64,16 @@ $(document).ready(function() {
             title="{% trans 'New measurements' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-plus"></i>
     </button>
-{#    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"#}
-    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"
+    <a href="{% url 'werte:diagram' min_date max_date %}"
         class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-chart-area"></i>
     </a>
-    <a href="{% url 'werte:minmax' filter.form.date.value.0 filter.form.date.value.1 %}"
+    <a href="{% url 'werte:minmax' min_date max_date %}"
         class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-arrows-v"></i>
     </a>
-{#    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}"#}
-{#        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}"#}
-{#        data-toggle="tooltip" data-placement="bottom">#}
-{#        <i class="far fa-envelope"></i>#}
-{#    </a>#}
 </div>
 
 <div class="row mt-3">
