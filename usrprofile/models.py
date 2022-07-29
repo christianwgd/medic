@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import formats, dateparse
+from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -61,16 +61,22 @@ class UserProfile(models.Model):
         StartUrl, on_delete=models.PROTECT,
         verbose_name=_("My home page"), blank=True, null=True
     )
+    measurements_items_per_page = models.PositiveSmallIntegerField(
+        verbose_name=_('Items per page'), default=16
+    )
+    medicaments_items_per_page = models.PositiveSmallIntegerField(
+        verbose_name=_('Items per page'), default=16
+    )
 
     @property
-    def usrinf(self):
+    def usr_inf(self):
         if self.gebdat is None:
             return '{}, {}'.format(
                 self.ref_usr.last_name,
                 self.ref_usr.first_name
             )
         else:
-            userinf = '{}, {} - {} {}'.format(
+            userinfo = '{}, {} - {} {}'.format(
                 self.ref_usr.last_name,
                 self.ref_usr.first_name,
                 _('born'),
@@ -80,4 +86,4 @@ class UserProfile(models.Model):
                     use_l10n=True
                 )
             )
-            return userinf
+            return userinfo

@@ -17,47 +17,29 @@
     </a>
 </div>
 
-<div class="v-offset">
-    
-    <table class="table table-bordered">
-        <thead>
-            <th></th>
-            <th><i class="far fa-arrow-to-bottom" title="{% trans 'Minimum' %}"></i></th>
-            <th><i class="far fa-arrow-to-top" title="{% trans 'Maximum' %}"></i></th>
-            <th><i class="far fa-arrows-v" title="{% trans 'Average' %}"></i></th>
-        </thead>
-        <tbody>
-            <tr>
-                <th>{% trans 'RR sys' %}</th>
-                <td>{{ minrrsys }} mm/Hg</td>
-                <td>{{ maxrrsys }} mm/Hg</td>
-                <td>{{ medrrsys|floatformat:1 }} mm/Hg</td>
-            </tr>
-            <tr>
-                <th>{% trans 'RR dia' %}</th>
-                <td>{{ minrrdia }} mm/Hg</td>
-                <td>{{ maxrrdia }} mm/Hg</td>
-                <td>{{ medrrdia|floatformat:1 }} mm/Hg</td>
-            </tr>
-            <tr>
-                <th>{% trans 'Pulse' %}</th>
-                <td>{{ minpuls }} /min</td>
-                <td>{{ maxpuls }} /min</td>
-                <td>{{ medpuls|floatformat:1 }} /min</td>
-            </tr>
-            <tr>
-                <th>{% trans 'Temperature' %}</th>
-                <td>{{ mintemp|default_if_none:'0'|floatformat:1 }} &deg;C</td>
-                <td>{{ maxtemp|default_if_none:'0'|floatformat:1 }} &deg;C</td>
-                <td>{{ medtemp|default_if_none:'0'|floatformat:1 }} &deg;C</td>
-            </tr>
-            <tr>
-                <th>{% trans 'Weight' %}</th>
-                <td>{{ mingew|default_if_none:'0'|floatformat:1 }} Kg</td>
-                <td>{{ maxgew|default_if_none:'0'|floatformat:1 }} Kg</td>
-                <td>{{ medgew|default_if_none:'0'|floatformat:1 }} Kg</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="row mt-3">
+    <div class="col-12">
+        <h6>
+            {% trans 'Statistics for measurements' %} {{ von }} - {{ bis }}
+        </h6>
+        <table class="table table-bordered">
+            <thead>
+                <th>{% trans 'Measurement' %}</th>
+                <th><i class="far fa-tachometer-fastest" title="{% trans 'Maximum' %}"></i></th>
+                <th><i class="far fa-tachometer-slowest" title="{% trans 'Minimum' %}"></i></th>
+                <th><i class="far fa-tachometer-average" title="{% trans 'Average' %}"></i></th>
+            </thead>
+            <tbody>
+                {% for key, value in stats.items %}
+                <tr>
+                    <th>{{ value.name }} <small>({{ value.unit }})</small></th>
+                    <td>{{ value.value__max|floatformat:value.decimals }}</td>
+                    <td>{{ value.value__min|floatformat:value.decimals }}</td>
+                    <td>{{ value.value__avg|floatformat:value.decimals }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

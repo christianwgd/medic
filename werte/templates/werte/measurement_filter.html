@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n django_bootstrap5 static usrprofile_tags %}
+{% load i18n django_bootstrap5 static usrprofile_tags wert_tags %}
 
 {% block bootstrap5_extra_head %}
 {{ block.super }}
@@ -64,36 +64,33 @@ $(document).ready(function() {
             title="{% trans 'New measurements' %}" data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-plus"></i>
     </button>
-    <a href="{% url 'werte:diagram' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
+{#    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"#}
+    <a href="{% url 'werte:diagram' filter.form.date.value.0 filter.form.date.value.1 %}"
         class="btn btn-primary" role="button" title="{% trans 'Diagramm' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-chart-area"></i>
     </a>
-    <a href="{% url 'werte:minmax' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
+    <a href="{% url 'werte:minmax' filter.form.date.value.0 filter.form.date.value.1 %}"
         class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-arrows-v"></i>
     </a>
-    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}"
-        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}"
-        data-toggle="tooltip" data-placement="bottom">
-        <i class="far fa-envelope"></i>
-    </a>
+{#    <a href="{% url 'werte:email' von|date:'Y-m-d' bis|date:'Y-m-d' %}"#}
+{#        class="btn btn-primary" role="button" title="{% trans 'Send measurements by email' %}"#}
+{#        data-toggle="tooltip" data-placement="bottom">#}
+{#        <i class="far fa-envelope"></i>#}
+{#    </a>#}
 </div>
 
 <div class="row mt-3">
     <div class="col">
-        <h5>Zeitraum</h5>
-        <form method="post" role="form" >
+        <form method="get" role="form" >
             {% csrf_token %}
-            <div class="row input-group filter">
-                <div class="col-md-3">
-                    {% bootstrap_field form.vonDate %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% bootstrap_field filter.form.date size='sm' %}
                 </div>
-                <div class="col-md-3">
-                    {% bootstrap_field form.bisDate %}
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <button id="id_refresh" type="submit" class="btn btn-secondary">
                         <i class="far fa-sync"></i>
                         {% trans 'Refresh' %}
@@ -104,35 +101,37 @@ $(document).ready(function() {
     </div>
 </div>
 
-<div class="row" style="margin-top: -1rem;">
+<div class="row mt-2">
     <div class="col">
         <table id="wertelist" data-toggle="table" data-classes="table table-striped table-bordered"
-                data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
+                data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
             <thead>
                 <tr>
-                    <th data-sortable="true">{% trans 'Date' %}</th>
-                    <th data-sortable="true">{% trans 'RR sys' %}<br class="opt"><small>(mm/Hg)</small></th>
-                    <th data-sortable="true">{% trans 'RR dia' %}<br class="opt"><small>(mm/Hg)</small></th>
-                    <th data-sortable="true">{% trans 'Pulse' %}<br class="opt"><small>(1/min)</small></th>
-                    <th data-sortable="true">{% trans 'Temp.' %}<br class="opt"><small>(&deg;C)</small></th>
-                    <th data-sortable="true">{% trans 'Weight' %}<br class="opt"><small>(Kg)</small></th>
+                    <th>{% trans 'Date' %}</th>
+                    {% for value_type in value_types %}
+                    <th>
+                        {{ value_type.name }}
+                        <br class="opt">
+                        <small>
+                            ({{ value_type.unit }})
+                        </small>
+                    </th>
+                    {% endfor %}
                     <th>{% trans 'Peculiarity' %}</th>
                 </tr>
             </thead>
             <tbody>
-                {% for wert in wertelist %}
+                {% for wert in page_obj %}
                 <tr>
                     <td>
                         <span class="as_link update-action" data-url="{% url 'werte:edit' wert.id %}">
                             {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
                         </span>
                     </td>
-                    <td class="sortable">{{ wert.rrsys|default_if_none:"" }}</td>
-                    <td>{{ wert.rrdia|default_if_none:"" }}</td>
-                    <td>{{ wert.puls|default_if_none:"" }}</td>
-                    <td>{{ wert.temp|floatformat:1 }}</td>
-                    <td>{{ wert.gew|floatformat:1 }}</td>
-                    <td>{{ wert.bemerkung|default_if_none:"" }}</td>
+                    {% for value_type in value_types %}
+                        <td>{% format_value wert value_type %}</td>
+                    {% endfor %}
+                    <td>{{ wert.comment|default_if_none:"" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -140,6 +139,13 @@ $(document).ready(function() {
     </div>
 </div>
 
+<div class="row mt-3">
+    <div class="col-12">
+    {% if is_paginated %}
+        {% bootstrap_pagination page_obj extra=request.GET.urlencode size="sm" %}
+    {% endif %}
+    </div>
+</div>
 
 {% endblock %}
 

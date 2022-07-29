@@ -5,6 +5,7 @@
 {{ block.super }}
 {{ form.media.css }}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/filter.css' %}">
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
@@ -43,10 +44,29 @@ $(document).ready(function() {
     </button>
 </div>
 
+<div class="row mt-3">
+    <div class="col">
+        <form method="get" role="form" >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% bootstrap_form filter.form size='sm' %}
+                </div>
+                <div class="col-md-6">
+                    <button id="id_refresh" type="submit" class="btn btn-sm btn-secondary">
+                        <i class="far fa-sync"></i>
+                        {% trans 'Refresh' %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="row">
     <div class="col">
     <table data-toggle="table" data-classes="table table-striped table-bordered"
-           data-locale="de-DE" data-search="true" data-mobile-responsive="true" data-min-width="768">
+           data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>
                 <th>{% trans 'Medicament' %}</th>
@@ -80,6 +100,14 @@ $(document).ready(function() {
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+    {% if is_paginated %}
+        {% bootstrap_pagination page_obj extra=request.GET.urlencode size="sm" %}
+    {% endif %}
     </div>
 </div>
 

@@ -78,3 +78,33 @@ td > a {
         display: none;
     }
 }
+
+@media (min-width: 769px) {
+    span.hidden { display: none; }
+}
+
+/* pagination */
+.pagination .page-item .page-info {
+	pointer-events: none;
+	cursor: pointer;
+    color: rgb(33, 37, 41);
+}
+
+@media (max-width: 768px) {
+    .pagination .page-item .page-info {
+        display: none;
+    }
+}
+
+.page-item a.page-link {
+    color: #19699d;
+}
+
+.page-item.active a.page-link {
+    background-color: #19699d;
+    color: #ffffff;
+}
+
+.page-item.disabled a.page-link {
+    color: #cccccc;
+}

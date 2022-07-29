@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -113,7 +114,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'axes',
     'mail_templated',
+    'adminsortable2',
     'medic',
+    'chartjs',
+    'django_filters',
     'usrprofile.apps.UsrProfileConfig',
     'werte.apps.WerteConfig',
     'medikamente.apps.MedikamenteConfig',
@@ -121,9 +125,9 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
     'two_factor',
+    'two_factor.plugins.phonenumber',
     'django_bootstrap5',
     'bootstrap_modal_forms',
-    'bootstrap_datepicker_plus',
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 3

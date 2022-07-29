@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static django_bootstrap5 l10n i18n usrprofile_tags %}
+
+{% block bootstrap5_extra_head %}
+{{ block.super }}
+{{ form.media.css }}
+<link rel="stylesheet" type="text/css" href="{% static "css/usrprofile.css" %}" />
+{% endblock %}
+
+{% block bootstrap5_extra_script %}
+{{ block.super }}
+{{ form.media.js }}
+{% endblock %}
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+
+{% trans 'Settings for' as user_title %}
+{% user_header user_title object.ref_usr %}
+<div class="row mt-3">
+    <div class="col-12">
+        <form role="form" method="post" novalidate>
+            {% csrf_token %}
+
+            {% bootstrap_form_errors form type='non_fields' %}
+
+            <div class="accordion" id="settings">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="personal_data">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse_personal_data" aria-expanded="true"
+                                aria-controls="collapse_personal_data">
+                            <h4>{% trans 'Personal data' %}</h4>
+                        </button>
+                    </h2>
+                    <div id="collapse_personal_data" class="accordion-collapse collapse show" aria-labelledby="personal_data"
+                         data-bs-parent="#settings">
+                        <div class="accordion-body">
+                            {% bootstrap_field form.email layout='floating' %}
+                            {% bootstrap_field form.gebdat layout='floating' %}
+                            {% bootstrap_field form.myStartPage layout='floating' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="measurements">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse_measurements" aria-expanded="true" aria-controls="collapse_measurements">
+                            <h4>{% trans 'Measurements' %}</h4>
+                        </button>
+                    </h2>
+                    <div id="collapse_measurements" class="accordion-collapse collapse show" aria-labelledby="measurements"
+                         data-bs-parent="#settings">
+                        <div class="accordion-body">
+                            {% bootstrap_field form.werteLetzteTage layout='floating' %}
+                            {% bootstrap_field form.measurements_items_per_page layout='floating' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="medicaments">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse_medicaments" aria-expanded="true"
+                                aria-controls="collapse_medicaments">
+                            <h4>{% trans 'Medicaments' %}</h4>
+                        </button>
+                    </h2>
+                    <div id="collapse_medicaments" class="accordion-collapse collapse show" aria-labelledby="medicaments"
+                         data-bs-parent="#settings">
+                        <div class="accordion-body">
+                            {% bootstrap_field form.warnenTageVorher layout='floating' %}
+                            {% bootstrap_field form.medicaments_items_per_page layout='floating' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="doctor">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse_doctor" aria-expanded="true" aria-controls="collapse_doctor">
+                            <h4>{% trans 'Doctor' %}</h4>
+                        </button>
+                    </h2>
+                    <div id="collapse_doctor" class="accordion-collapse collapse show" aria-labelledby="doctor"
+                         data-bs-parent="#settings">
+                        <div class="accordion-body">
+                            {% bootstrap_field form.email_arzt layout='floating' %}
+                            {% bootstrap_field form.zeigeArztWerte wrapper_class="form-check form-switch" %}
+                            {% bootstrap_field form.zeigeArztMed wrapper_class="form-check form-switch" %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                {% trans 'Ok' %}
+            </button>
+            <a href="{% url 'startpage' %}" class="btn btn-secondary">
+                {% trans 'Cancel' %}
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

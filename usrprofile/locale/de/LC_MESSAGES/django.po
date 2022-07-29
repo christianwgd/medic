@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 09:27+0200\n"
+"POT-Creation-Date: 2022-07-20 15:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,137 +18,123 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\apps.py:7
+#: apps.py:7
 msgid "User profile"
 msgstr "Benutzerprofil"
 
-#: .\forms.py:14
+#: forms.py:18
 msgid "email adress"
 msgstr "Email Adresse"
 
-#: .\forms.py:33
+#: forms.py:45
 msgid "Recipient"
 msgstr "Empfänger"
 
-#: .\forms.py:34
+#: forms.py:46
 msgid "Subject"
 msgstr "Betreff"
 
-#: .\models.py:20
+#: models.py:13
 msgid "Home page"
 msgstr "Startseite"
 
-#: .\models.py:21
+#: models.py:14
 msgid "Home pages"
 msgstr "Startseiten"
 
-#: .\models.py:26
+#: models.py:20
 msgid "Name"
 msgstr "Name"
 
-#: .\models.py:27
+#: models.py:21
 msgid "URL pattern"
 msgstr "URL-Pattern"
 
-#: .\models.py:34
+#: models.py:28
 msgid "User setting"
 msgstr "Benutzereinstellung"
 
-#: .\models.py:35
+#: models.py:29
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: .\models.py:41
+#: models.py:35
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: .\models.py:44
+#: models.py:38
 msgid "Hold medicaments inventory for at least"
 msgstr "Medikamente vorhalten für mindestens"
 
-#: .\models.py:46 .\models.py:51
+#: models.py:40 models.py:45
 msgid "days"
 msgstr "Tage"
 
-#: .\models.py:49
+#: models.py:43
 msgid "Show readings for"
 msgstr "Standart Zeitraum Messwerte anzeigen"
 
-#: .\models.py:54
+#: models.py:48
 msgid "Doctor is allowed to see measurements"
 msgstr "Arzt darf Messwerte sehen"
 
-#: .\models.py:57
+#: models.py:51
 msgid "Doctor is allowed to see prescription"
 msgstr "Arzt darf Medikamente sehen"
 
-#: .\models.py:61
+#: models.py:55
 msgid "User"
 msgstr "Benutzer"
 
-#: .\models.py:64
+#: models.py:58
 msgid "Doctor's email address"
 msgstr "Email-Adresse Arzt"
 
-#: .\models.py:68
+#: models.py:62
 msgid "My home page"
 msgstr "Meine Startseite"
 
-#: .\models.py:82
+#: models.py:65
+msgid "Items per page"
+msgstr "Zeilen pro Seite"
+
+#: models.py:79
 msgid "born"
 msgstr "geb."
 
-#: .\templates\usrprofile\usrprof.html:16
+#: templates/usrprofile/userprofile_form.html:19
 msgid "Settings for"
 msgstr "Einstellungen für"
 
-#: .\templates\usrprofile\usrprof.html:25
+#: templates/usrprofile/userprofile_form.html:34
 msgid "Personal data"
 msgstr "Persönliche Daten"
 
-#: .\templates\usrprofile\usrprof.html:30
+#: templates/usrprofile/userprofile_form.html:52
 msgid "Periods"
 msgstr "Zeiträume"
 
-#: .\templates\usrprofile\usrprof.html:34
-msgid "Visibility of data for doctor"
-msgstr "Sichtbarkeit der Daten für den Arzt"
+#: templates/usrprofile/userprofile_form.html:67
+msgid "Measurements"
+msgstr ""
 
-#: .\templates\usrprofile\usrprof.html:38
+#: templates/usrprofile/userprofile_form.html:83
 msgid "Doctor"
 msgstr "Arzt"
 
-#: .\templates\usrprofile\usrprof.html:41
+#: templates/usrprofile/userprofile_form.html:99
 msgid "Ok"
 msgstr ""
 
-#: .\templates\usrprofile\usrprof.html:42
+#: templates/usrprofile/userprofile_form.html:102
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: .\templatetags\usrprofile_tags.py:19
+#: templatetags/usrprofile_tags.py:17
 msgid "unknown"
 msgstr "unbekannt"
 
-#: .\views.py:24
-msgid "Edit cancelled."
-msgstr "Bearbeitung abgebrochen"
-
-#: .\views.py:31
-msgid "User does not exist."
-msgstr "Der Benutzer ist nicht bekannt."
-
-#: .\views.py:35
-#, python-brace-format
-msgid "User {user} has no user profile."
-msgstr "Der Benutzer {user} hat kein Profil."
-
-#: .\views.py:48
+#: views.py:28
 #, python-brace-format
 msgid "Settings for user {user} saved."
 msgstr "Einstellungen für Benutzer {user} gespeichert."
-
-#: .\views.py:54
-#, python-brace-format
-msgid "Error saving settings for user {user}"
-msgstr "Fehler beim Speichern der Einstellungen für Benutzer {user}"

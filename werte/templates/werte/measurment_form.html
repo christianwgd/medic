@@ -13,7 +13,12 @@
     </div>
 
     <div class="modal-body">
-        {% bootstrap_form form layout='floating' %}
+        {% for field in form %}
+            {% if field.name != 'comment' %}
+                {% bootstrap_field field layout='floating' %}
+            {% endif %}
+        {% endfor %}
+        {% bootstrap_field form.comment layout='floating' %}
         <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
     </div>
 

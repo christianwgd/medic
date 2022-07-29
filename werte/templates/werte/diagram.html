@@ -3,196 +3,21 @@
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "css/flot.css" %}">
-<script type="text/javascript" src="{% static "js/jquery.flot.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery.flot.time.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery.flot.resize.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery.flot.navigate.min.js" %}"></script>
-
+<script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
 <script type="text/javascript">
-$(function() {
-	var sys = {{ sys|safe }};
-	var dia = {{ dia|safe }};
-	var puls = {{ puls|safe }};
-	var tmp = {{ tmp|safe }};
-	var gew = {{ gew|safe }};
-
-	var monthNames = {{ loc_months|safe }};
-
-	var d_sys = new Array(sys.length);
-	for (i=0; i < sys.length; i++) {
-		var wert = new Array(2);
-		wert[0] = new Date(sys[i][0])
-		wert[1] = sys[i][1]
-		d_sys.push(wert)
-	}
-	
-	var d_dia = new Array(dia.length);
-	for (i=0; i < dia.length; i++) {
-		var wert = new Array(2);
-		wert[0] = new Date(dia[i][0])
-		wert[1] = dia[i][1]
-		d_dia.push(wert)
-	}
-	
-	var d_puls = new Array(puls.length);
-	for (i=0; i < puls.length; i++) {
-		var wert = new Array(2);
-		wert[0] = new Date(puls[i][0])
-		wert[1] = puls[i][1]
-		d_puls.push(wert)
-	}
-	
-	var d_tmp = new Array(tmp.length);
-	for (i=0; i < tmp.length; i++) {
-		var wert = new Array(2);
-		wert[0] = new Date(tmp[i][0])
-		wert[1] = tmp[i][1]
-		d_tmp.push(wert)
-	}
-	
-	var d_gew = new Array(gew.length);
-	for (i=0; i < gew.length; i++) {
-		var wert = new Array(2);
-		wert[0] = new Date(gew[i][0])
-		wert[1] = gew[i][1]
-		d_gew.push(wert)
-	}
-	
-	function labelFormatter(v, axis) {
-		switch (axis.n) {
-		  case 1:
-			symbol = " mm Hg";
-			break;
-		  case 2:
-			symbol = "&deg;C";
-			break;
-		  case 3:
-			symbol = " Kg";
-			break;
-		  case 4:
-			symbol = " /min";
-			break;
-		  default:
-			symbol = "";
-			break;
-		}
-		return v.toFixed(axis.tickDecimals) + symbol;
-	}
-	
-	var datasets = {
-			"sys": {label: "RR sys", data: d_sys, xaxis: 1, yaxis: 1 },
-        	"dia": {label: "RR dia", data: d_dia, xaxis: 1, yaxis: 1 },
-        	"pls": {label: "Puls", data: d_puls, xaxis: 1, yaxis: 4 },
-        	"gew": {label: "Gewicht", data: d_gew, xaxis: 1, yaxis: 3 },
-        	"tmp": {label: "Temperatur", data: d_tmp, xaxis: 1, yaxis: 2 }
-	};
-
-	options = {
-	        series: {
-	        	lines: { show: true },
-	          	points: { show: false }
-			},
-			xaxis: { 
-				mode: "time",
-				monthNames: monthNames,
-			    timeformat: null,
-			    timezone: 'browser',
-	        	minTickSize: [1, "day"]
-	        },
-	        yaxis: {
-	        	mode: null,
-	    		panRange: false,
-				zoomRange: false,
-				ticks: 10,
-				tickDecimals: 0,
-				tickFormatter: labelFormatter
-	    	},
-			yaxes: [
-				{
-	        		min: 30,
-					max: 150,
-					position: "left"
-	        	},
-	         	{
-	         		min: 34,
-	         		max: 39,
-	        		position: "right"
-	         	},
-	        	{
-	         		min: 70,
-	         		max: 90,
-	        		position: "right"
-	         	},
-	         	{
-	         		min: 40,
-	         		max: 120,
-	        		position: "left"
-	         	}
-			],
-	        grid: {
-	          	borderWidth: .5
-	        },
-	        pan: {
-				interactive: true
-			},
-			zoom: {
-				interactive: true
-			},
-			legend: {
-			    show: true,
-			    noColumns: 5,
-			    position: "ne"
-			}
-	};
-	
-	var placeholder = $("#placeholder");
-	
-	var i = 0;
-	$.each(datasets, function(key, val) {
-		val.color = i;
-		++i;
-	});
-
-	// insert checkboxes 
-	var choiceContainer = $("#choices");
-	$.each(datasets, function(key, val) {
-		choiceContainer.append("<input type='checkbox' name='" + key +
-			"' checked='checked' id='id" + key + "'></input>" +
-			"<label for='id" + key + "'>"
-			+ val.label + "</label>");
-	});
-
-	choiceContainer.find("input").click(plotAccordingToChoices);
-
-	function plotAccordingToChoices() {
-
-		var data = [];
-
-		choiceContainer.find("input:checked").each(function () {
-			var key = $(this).attr("name");
-			if (key && datasets[key]) {
-				data.push(datasets[key]);
-			}
-		});
-
-		if (data.length > 0) {
-			$.plot("#placeholder", data, options);
-		}
-	}
-
-	plotAccordingToChoices();
-
-    window.onresize = function(event) {
-        plotAccordingToChoices();
-    }
-});
-
+    {% for value_type in value_types %}
+    $.get('{% url "werte:json-values" value_type.slug von bis %}', function(data) {
+        var ctx = $("#{{ value_type.slug }}_chart").get(0).getContext("2d");
+        new Chart(ctx, {
+            type: 'line',
+            data: data
+        });
+    });
+    {% endfor %}
 </script>
 {% endblock %}
 
 {% block page_title %}{% endblock %}
-
 
 {% block content %}
 
@@ -208,12 +33,17 @@ $(function() {
     </a>
 </div>
 
-<div class="demo-container container">
-    <div id="placeholder" class="demo-placeholder" style="width: 100%;"></div>
-</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <h6>
+            {% trans 'Diagrams for measurements' %}
+            {{ first|date:'DATE_FORMAT' }} - {{ last|date:'DATE_FORMAT' }}
+        </h6>
 
-<div class="col-md-12 centered">
-    <div id="choices"></div>
-</div>
+        {% for value_type in value_types %}
+            <canvas id="{{ value_type.slug }}_chart" width="800" height="200"></canvas>
+        {% endfor %}
 
+    </div>
+</div>
 {% endblock %}
