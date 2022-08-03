@@ -3,6 +3,7 @@ from datetime import datetime
 from logging import getLogger
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
+from bootstrap_modal_forms.utils import is_ajax
 from chartjs.views.lines import BaseLineChartView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -70,16 +71,17 @@ class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
     success_url = reverse_lazy('measurement:list')
 
     def form_valid(self, form):
-        measurement = form.save(commit=False)
-        measurement.owner = self.request.user
-        measurement.save()
-        for value_type in ValueType.objects.active():
-            if value_type.slug in form.cleaned_data and form.cleaned_data[value_type.slug]:
-                Value.objects.create(
-                    value_type=value_type,
-                    measurement=measurement,
-                    value=form.cleaned_data[value_type.slug]
-                )
+        if not is_ajax(self.request.META):
+            measurement = form.save(commit=False)
+            measurement.owner = self.request.user
+            measurement.save()
+            for value_type in ValueType.objects.active():
+                if value_type.slug in form.cleaned_data and form.cleaned_data[value_type.slug]:
+                    Value.objects.create(
+                        value_type=value_type,
+                        measurement=measurement,
+                        value=form.cleaned_data[value_type.slug]
+                    )
         return redirect(self.success_url)
 
 
@@ -98,7 +100,8 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
                     value_type=value_type,
                     measurement=self.object,
                 )
-                initial[value_type.slug] = f'{value.value:.{value_type.decimals}f}'
+                if value.value is not None:
+                    initial[value_type.slug] = f'{value.value:.{value_type.decimals}f}'
             except Value.DoesNotExist:
                 pass
         return initial
@@ -106,10 +109,8 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
     def form_valid(self, form):
         measurement = form.save(commit=False)
         for value_type in ValueType.objects.active():
-            print(value_type.slug, 'in cleaned', value_type.slug in form.cleaned_data)
-            print(value_type.slug, 'in changed', value_type.slug in form.changed_data)
             if value_type.slug in form.cleaned_data and value_type.slug in form.changed_data:
-                value = Value.objects.get(
+                value, created = Value.objects.get_or_create(
                     value_type=value_type,
                     measurement=measurement,
                 )
