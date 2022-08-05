@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='prescription',
             name='weekdays',
-            field=models.JSONField(blank=True, default=prescription.models.get_weekdays_default, verbose_name='Weekdays'),
+            field=models.JSONField(blank=True, verbose_name='Weekdays'),
         ),
         migrations.AlterField(
             model_name='prescription',

@@ -48,30 +48,21 @@
                 <i class="far fa-square"></i> {% trans 'None' context 'medic' %}
             </button>
         </div>
-        <table class="table table-bordered weekdays">
-            <thead>
-                <tr>
-                    <th>{{form.mo.label}}</th>
-                    <th>{{form.tu.label}}</th>
-                    <th>{{form.we.label}}</th>
-                    <th>{{form.th.label}}</th>
-                    <th>{{form.fr.label}}</th>
-                    <th>{{form.sa.label}}</th>
-                    <th>{{form.su.label}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{form.mo}}</td>
-                    <td>{{form.tu}}</td>
-                    <td>{{form.we}}</td>
-                    <td>{{form.th}}</td>
-                    <td>{{form.fr}}</td>
-                    <td>{{form.sa}}</td>
-                    <td>{{form.su}}</td>
-                </tr>
-            </tbody>
-        </table>
+{#        {% bootstrap_field form.weekdays size='sm' %}#}
+        {{ form.weekdays }}
+{#        <table class="table table-bordered weekdays">#}
+{#            {% for key in form.weekdays.field.widget %}#}
+{#            <tr>#}
+{#                <td>{{ key }} {{ choice }}</td>#}
+{#                <td>#}
+{#                    <input  class="form-check-input" type="checkbox"#}
+{#                            id="id_weekdays_{{ forloop.counter0 }}"#}
+{#                            value="{{ key }}" name="weekdays"#}
+{#                            checked="{{ key }}"/>#}
+{#                </td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#        </table>#}
 
         <div class="row">
             <div class="col-6">
@@ -91,23 +82,23 @@
         });
 
         function checkall() {
-            $('#id_mo').prop('checked', true);
-            $('#id_tu').prop('checked', true);
-            $('#id_we').prop('checked', true);
-            $('#id_th').prop('checked', true);
-            $('#id_fr').prop('checked', true);
-            $('#id_sa').prop('checked', true);
-            $('#id_su').prop('checked', true);
+            $('#id_weekdays_0').prop('checked', true);
+            $('#id_weekdays_1').prop('checked', true);
+            $('#id_weekdays_2').prop('checked', true);
+            $('#id_weekdays_3').prop('checked', true);
+            $('#id_weekdays_4').prop('checked', true);
+            $('#id_weekdays_5').prop('checked', true);
+            $('#id_weekdays_6').prop('checked', true);
         }
 
         function checknone() {
-            $('#id_mo').prop('checked', false);
-            $('#id_tu').prop('checked', false);
-            $('#id_we').prop('checked', false);
-            $('#id_th').prop('checked', false);
-            $('#id_fr').prop('checked', false);
-            $('#id_sa').prop('checked', false);
-            $('#id_su').prop('checked', false);
+            $('#id_weekdays_0').prop('checked', false);
+            $('#id_weekdays_1').prop('checked', false);
+            $('#id_weekdays_2').prop('checked', false);
+            $('#id_weekdays_3').prop('checked', false);
+            $('#id_weekdays_4').prop('checked', false);
+            $('#id_weekdays_5').prop('checked', false);
+            $('#id_weekdays_6').prop('checked', false);
         }
 
         function calcdosis (tabl_id, dosis_id) {

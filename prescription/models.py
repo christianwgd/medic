@@ -1,3 +1,4 @@
+from bitfield import BitField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Manager, Q
@@ -6,22 +7,22 @@ from django.utils.translation import gettext_lazy as _
 
 from medicament.models import Medicament
 
+#
+# WEEK_DAYS = {
+#     '0': 'mo',
+#     '1': 'tu',
+#     '2': 'we',
+#     '3': 'th',
+#     '4': 'fr',
+#     '5': 'sa',
+#     '6': 'su',
+# }
 
-WEEK_DAYS = {
-    '0': 'mo',
-    '1': 'tu',
-    '2': 'we',
-    '3': 'th',
-    '4': 'fr',
-    '5': 'sa',
-    '6': 'su',
-}
 
-
-def get_weekdays_default():
-    return {
-        '0': True, '1': True, '2': True, '3': True, '4': True, '5': True, '6': True
-    }
+# def get_weekdays_default():
+#     return {
+#         '0': True, '1': True, '2': True, '3': True, '4': True, '5': True, '6': True
+#     }
 
 
 class ActivePrescriptionManager(Manager):
@@ -66,10 +67,7 @@ class Prescription(models.Model):
         verbose_name=_('Night'), max_digits=3,
         decimal_places=2, null=True, blank=True
     )
-    weekdays = models.JSONField(
-        verbose_name=_('Weekdays'), default=get_weekdays_default,
-        blank=True
-    )
+    weekdays = BitField(flags=('mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'), default=0)
     owner = models.ForeignKey(
         User, verbose_name=_('Owner'), on_delete=models.PROTECT
     )

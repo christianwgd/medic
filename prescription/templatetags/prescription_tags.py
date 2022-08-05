@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from django import template
 from django.utils import formats
-from django.utils.translation import gettext as _, pgettext
+from django.utils.translation import gettext as _
 
-from prescription.models import Prescription, WEEK_DAYS
+from prescription.models import Prescription
 
 register = template.Library()
 
@@ -17,5 +17,5 @@ def calc_dosis(value, vo_id):
 
 @register.inclusion_tag('prescription/includes/weekdays.html')
 def weekday_disp(weekdays):
-    wds = [(_(WEEK_DAYS[key].capitalize()), weekdays[key]) for key, name in WEEK_DAYS.items()]
+    wds = [(_(wd[0].capitalize()), wd[1]) for wd in weekdays]
     return {'weekdays': wds}

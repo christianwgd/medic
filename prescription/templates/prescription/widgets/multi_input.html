@@ -1,0 +1,33 @@
+{% load i18n %}
+{% with id=widget.attrs.id %}
+<div{% if id %} id="{{ id }}"{% endif %}
+    {% if widget.attrs.class %} class="{{ widget.attrs.class }}"{% endif %}>
+
+    <table class="table table-bordered weekdays">
+        <thead>
+            <tr>
+                <th>{% trans 'Mo' %}</th>
+                <th>{% trans 'Tu' %}</th>
+                <th>{% trans 'We' %}</th>
+                <th>{% trans 'Th' %}</th>
+                <th>{% trans 'Fr' %}</th>
+                <th>{% trans 'Sa' %}</th>
+                <th>{% trans 'Su' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for group, options, index in widget.optgroups %}
+                    {% for option in options %}
+
+                        <td>
+                            {% include option.template_name with widget=option %}
+                        </td>
+                    {% endfor %}
+
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+</div>{% endwith %}

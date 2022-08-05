@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 
 from medic.mixins import ModalDeleteMessageMixin
 from prescription.forms import PrescriptionForm
-from prescription.models import Prescription, WEEK_DAYS
+from prescription.models import Prescription
 
 
 class PrescriptionListView(LoginRequiredMixin, ListView):
@@ -30,8 +30,6 @@ class PrescriptionCreateView(LoginRequiredMixin, BSModalCreateView):
 
     def form_valid(self, form):
         new_prescription = form.save(commit=False)
-        for key, name in WEEK_DAYS.items():
-            new_prescription.weekdays[key] = form.cleaned_data[name]
         new_prescription.owner = self.request.user
         return super().form_valid(form)
 
@@ -43,12 +41,6 @@ class PrescriptionUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
     def get_success_url(self):
         return reverse('prescription:detail', kwargs={'pk': self.object.id})
-
-    def form_valid(self, form):
-        prescription = form.save(commit=False)
-        for key, name in WEEK_DAYS.items():
-            prescription.weekdays[key] = form.cleaned_data[name]
-        return super().form_valid(form)
 
 
 class PrescriptionDeleteView(LoginRequiredMixin, ModalDeleteMessageMixin, DeleteView):
