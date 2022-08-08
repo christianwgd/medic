@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
-from measurement.models import Wert, ValueType, Value, Measurement
+from measurement.models import ValueType, Value, Measurement
 
 
 @admin.register(ValueType)
