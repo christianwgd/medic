@@ -1,0 +1,76 @@
+{% load django_bootstrap5 i18n %}
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">
+            {% trans 'Stock change' %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="{% if form.non_field_errors %}is-invalid{% endif %}"></div>
+        {% bootstrap_form form layout='floating' %}
+    </div>
+
+    <div class="modal-footer">
+        <button id="id_calc" type="button" class="btn btn-secondary me-auto">
+            <i class="far fa-calculator"></i>
+            {% trans 'Consumption' %}
+        </button>
+        <button type="submit" class="btn btn-primary">
+            {% trans 'Ok' %}
+        </button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button" aria-label="Close">
+            {% trans 'Cancel' %}
+        </button>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    let default_amount = 1;
+    $("#id_reason").change(function () {
+        let package = "{{ package|safe }}";
+        let default_amount = "{{ dose|safe }}";
+        let reason = $(this).children(":selected").val();
+        console.log(reason);
+        if (reason !== '') {
+            switch (reason) {
+                case "00":
+                    $("#id_amount").val('');
+                    $('#id_calc').removeAttr('disabled');
+                    break;
+                case "01": // neue Packung
+                    $("#id_amount").val(package);
+                    $('#id_calc').prop('disabled', true);
+                    break;
+                case "02": // Einnahme vergessen
+                    $("#id_amount").val(default_amount);
+                    $('#id_calc').prop('disabled', true);
+                    break;
+                case "03": // Einnahme ausgesetzt
+                    $("#id_amount").val(default_amount);
+                    $('id_calc').prop('disabled', true);
+                    break;
+                default:
+                    $("#id_amount").val('');
+                    $('id_calc').prop('disabled', true);
+                    break;
+            }
+        }
+    });
+
+    $('#id_calc').click(function () {
+       $.get({
+           url: "{% url 'medicament:stock-calc' medicament.id %}",
+           success: function (response) {
+               let consumption = response['consumption'];
+               $("#id_amount").val(consumption);
+           }
+       });
+    });
+});
+</script>

@@ -15,7 +15,7 @@ class MedicamentForm(BSModalModelForm):
         fields = ['name', 'producer', 'ingredient', 'package', 'strength', 'unit']
 
 
-class StockChangeForm(forms.ModelForm):
+class StockChangeForm(BSModalModelForm):
     class Meta(object):
         model = StockChange
         fields = ['date', 'reason', 'amount', 'text']

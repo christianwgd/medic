@@ -19,6 +19,12 @@ $(document).ready(function() {
         errorClass: '.is-invalid'
     });
 
+    $("#id_stock_change").modalForm({
+        formURL: "{% url 'medicament:stock-change' medicament.id %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
 });
 </script>
 {% endblock %}
@@ -48,12 +54,29 @@ $(document).ready(function() {
                     <th>{% trans 'Dose' %}</th>
                     <td>{{ medicament.strength|floatformat:2 }} {{ medicament.unit }}</td>
                 </tr>
+                <tr>
+                    <th>{% trans 'Stock' %}</th>
+                    <td>{{ medicament.stock|floatformat:2 }} {% trans 'Tabl.' %}</td>
+                </tr>
             </tbody>
         </table>
     </div>
 </div>
 
 <div class="row">
+    <div class="col text-end">
+        <button id="id_stock_change" type="button" class="btn btn-sm btn-secondary">
+            <i class="far fa-exchange"></i>
+            {% trans 'Stock change' %}
+        </button>
+        <a href="{% url 'medicament:stock-history' object.id %}" class="btn btn-sm btn-secondary">
+            <i class="far fa-history"></i>
+            {% trans 'Stock changes history' %}
+        </a>
+    </div>
+</div>
+
+<div class="row mt-3">
     <div class="col-4">
         <button id="id_delete" type="button" class="btn btn-danger"
                 data-url="{% url 'medicament:delete' object.id %}">

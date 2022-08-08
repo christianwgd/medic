@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
-import datetime
 import logging
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from bootstrap_modal_forms.utils import is_ajax
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core import serializers
-from django.http import HttpResponse
+from django.http import JsonResponse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
+from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView, DeleteView
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django_filters.views import FilterView
 
-from medic.mixins import ModalDeleteMessageMixin
 from medicament.models import Medicament, StockChange
-from medicament.filter import MedicamentFilter
-from medicament.forms import MedicamentForm
-
+from medicament.filter import MedicamentFilter, StockChangeFilter
+from medicament.forms import MedicamentForm, StockChangeForm
 
 logger = logging.getLogger('medic')
 
@@ -76,220 +73,75 @@ class MedicamentDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return redirect(self.success_url)
 
 
-@login_required(login_url='/login/')
-def getmed(request, med_id):
-    med = Medicament.objects.get(id=med_id)
-    serialized_med = serializers.serialize('json', [med, ])
-    return HttpResponse(serialized_med, content_type='application/json')
+class StockChangeCreateView(LoginRequiredMixin, BSModalCreateView):
+    model = StockChange
+    form_class = StockChangeForm
+    success_message = _('Stock update saved.')
+
+    def get_success_url(self):
+        return reverse('medicament:detail', kwargs={'pk': self.kwargs['med_id']})
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['medicament'] = Medicament.objects.get(id=self.kwargs['med_id'])
+        initial['date'] = timezone.now()
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        med = Medicament.objects.get(id=self.kwargs['med_id'])
+        context['medicament'] = med
+        context['package'] = med.package
+        prescription = med.get_active_prescription(for_user=self.request.user)
+        if prescription is None:
+            context['dose'] = 1.0
+        else:
+            context['dose'] = prescription.get_default_dose(for_user=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        if form.cleaned_data['amount'] > 0.0:
+            stock_change = form.save(commit=False)
+            stock_change.owner = self.request.user
+            stock_change.medicament = Medicament.objects.get(id=self.kwargs['med_id'])
+            if form.cleaned_data['reason'] == '00':
+                stock_change.medicament.last_calc = timezone.now()
+                stock_change.medicament.save()
+            return super().form_valid(form)
+        return redirect(self.get_success_url())
 
 
-# def berechne_tpt(vo):
-#     tpt = 0.0
-#     if vo.morgen is not None:
-#         tpt = float(vo.morgen)
-#     if vo.mittag is not None:
-#         tpt += float(vo.mittag)
-#     if vo.abend is not None:
-#         tpt += float(vo.abend)
-#     if vo.nacht is not None:
-#         tpt += float(vo.nacht)
-#
-#     if vo.mo and vo.di and vo.mi and vo.do and vo.fr and vo.sa and vo.so:
-#         zeitraum = _('Days')
-#     else:
-#         zeitraum = _('Week(s)')
-#         # tage = 0
-#         tpw = 0.0
-#         if vo.mo:
-#             tpw += float(tpt)
-#         if vo.di:
-#             tpw += float(tpt)
-#         if vo.mi:
-#             tpw += float(tpt)
-#         if vo.do:
-#             tpw += float(tpt)
-#         if vo.fr:
-#             tpw += float(tpt)
-#         if vo.sa:
-#             tpw += float(tpt)
-#         if vo.so:
-#             tpw += float(tpt)
-#         tpt = tpw
-#
-#     return tpt, zeitraum
+class StockChangeHistoryView(LoginRequiredMixin, FilterView):
+    model = StockChange
+    filterset_class = StockChangeFilter
+    template_name = 'medicament/stockchange_filter.html'
 
-# @login_required(login_url='/login/')
-# def bestandedit(request, med_id):
-#     if 'cancel' in request.POST:
-#         messages.info(request, _('Function canceled.'))
-#         return redirect(reverse_lazy('medikamente:medikamente'))
-#
-#     try:
-#         medikament = Medicament.objects.get(id=med_id)
-#         vo = Prescription.objects.get(ref_medikament=medikament, ref_usr=request.user)
-#         if vo.morgen is not None:
-#             defmenge = vo.morgen
-#         elif vo.mittag is not None:
-#             defmenge = vo.mittag
-#         elif vo.abend is not None:
-#             defmenge = vo.abend
-#         elif vo.nacht is not None:
-#             defmenge = vo.nacht
-#         else:
-#             defmenge = 0
-#     except Medicament.DoesNotExist:
-#         defmenge = 0
-#     except Prescription.DoesNotExist:
-#         defmenge = 0
-#
-#     if request.method == 'POST':
-#         form = bestEditForm(request.POST)
-#         if form.is_valid():
-#             try:
-#                 delta = form.save(commit=False)
-#                 if delta.menge == 0:
-#                     messages.error(request, _('No amount provided.'))
-#                 else:
-#                     delta.ref_medikament = medikament
-#                     delta.ref_usr = request.user
-#                     if delta.grund in ['04', '05', '99']:  # Verfallsdatum erreicht, Dosiserhöhung oder sonstige -
-#                         if delta.menge > 0:
-#                             delta.menge = delta.menge * -1
-#                     medikament.bestand += delta.menge
-#                     medikament.save()
-#                     delta.save()
-#                     msg = _('Inventory change of {med} saved ({amount}).').format(
-#                         med=delta.ref_medikament,
-#                         amount=delta.menge
-#                     )
-#                     messages.success(request, msg)
-#                     return redirect(reverse_lazy('medikamente:medikamente'))
-#             except:
-#                 message = _('Error saving {}.').format(delta.ref_medikament)
-#                 logger.exception(message)
-#                 messages.error(request, message)
-#     else:  # GET
-#         now = timezone.localtime()
-#         form = bestEditForm(initial={
-#             'ref_usr': request.user,
-#             'ref_medikament': medikament,
-#             'date': now
-#         })
-#
-#     return render(request, 'medikamente/bestandedit.html', {
-#         'form': form,
-#         'medikament': medikament,
-#         'defmenge': defmenge
-#     })
+    def get_paginate_by(self, queryset):
+        return self.request.user.profile.medicaments_items_per_page
+
+    def get_queryset(self):
+        return StockChange.objects.filter(
+            owner=self.request.user,
+            medicament=Medicament.objects.get(id=self.kwargs['med_id'])
+        )
 
 
-# @login_required(login_url='/login/')
-# def besthistory(request, med_id):
-#     try:
-#         medikament = Medicament.objects.get(id=med_id)
-#         bestchangelist = StockChange.objects.filter(
-#             ref_usr=request.user,
-#             ref_medikament=medikament
-#         ).order_by('-date')
-#     except:
-#         message = _('Error reading inventory history.')
-#         logger.exception(message)
-#         messages.error(request, message)
-#
-#     return render(request, 'medikamente/besthistory.html', {
-#         'bestchangelist': bestchangelist,
-#         'medikament': medikament
-#     })
+@require_http_methods(['GET'])
+def calc_consumption(request, med_id):
+    medicament = Medicament.objects.get(id=med_id)
+    today = timezone.now().date()
+    if medicament.last_calc is None or medicament.last_calc < today:
+        prescription = medicament.get_active_prescription(for_user=request.user)
+        if medicament.last_calc is None:
+            last_calc = prescription.valid_from
+        else:
+            last_calc = medicament.last_calc
+        consumption = prescription.get_amount_for_time(
+            start_date=last_calc,
+            end_date=today,
+            user=request.user
+        )
+    else:
+        consumption = 0
+    return JsonResponse({'consumption': consumption})
 
-
-# @login_required(login_url='/login/')
-# def vrdfutchange(request):
-#     vrdfutlist = VrdFuture.objects.none()
-#     user = None
-#
-#     try:
-#         vrdfutlist = VrdFuture.objects.filter(ref_usr=request.user, erledigt=False)
-#         user = User.objects.get(username=request.user.username)
-#     except Exception as e:
-#         message = 'Benutzer {} konnte nicht gelesen werden ({}).'.format(user.username, e)
-#         messages.error(request, message)
-#         logger.exception(message)
-#
-#     return render(request, 'medikamente/vrdfutchange.html', {'vrdfutlist': vrdfutlist, 'user': user})
-
-
-# @login_required(login_url='/login/')
-# def vrdfutnew(request):
-#     if request.method == 'POST':
-#         form = vrdFutForm(request.POST)
-#         if form.is_valid():
-#             try:
-#                 new_vrdfut = form.save(commit=False)
-#                 if new_vrdfut.morgen == None and new_vrdfut.mittag == None and new_vrdfut.abend == None and new_vrdfut.nacht == None:
-#                     messages.warning(request, 'Die Prescription enthält keine Werte.')
-#                 else:
-#                     med = Medicament.objects.get(id=new_vrdfut.ref_medikament.id)
-#                     med.bestand_vom = timezone.now().date()
-#                     med.save()
-#                     new_vrdfut.ref_usr = request.user
-#                     new_vrdfut.erledigt = False
-#                     new_vrdfut.save()
-#                     msg = u'%s gespeichert.' % new_vrdfut.ref_medikament
-#                     messages.success(request, msg)
-#                     return redirect(reverse_lazy('medikamente:vrdfutchange'))
-#             except Exception as e:
-#                 logger.exception('Fehler beim Speichern von Verordnungsänderung {} für Benutzer {} ({})'.format(
-#                                  new_vrdfut.ref_medikament, request.user.username, e))
-#                 messages.error(request, 'Fehler beim Speichern der Verordnungsänderung {}}: {}'.format(
-#                                      new_vrdfut.ref_medikament, e))
-#     else:  # GET
-#         form = vrdFutForm(initial={'ref_usr': request.user, 'gueltig_ab': datetime.datetime.today(),
-#                                    'mo': True, 'di': True, 'mi': True, 'do': True, 'fr': True, 'sa': True, 'so': True})
-#
-#     return render(request, 'medikamente/vrdfutedit.html', {'form': form})
-
-
-# @login_required(login_url='/login/')
-# def vrdfutedit(request, vrdfut_id):
-#     form = None
-#
-#     try:
-#         vrdfut = VrdFuture.objects.get(id=vrdfut_id, ref_usr=request.user)
-#     except Exception as e:
-#         message = 'Lesen Prescription {} für Benutzer {} fehlgeschlagen: {}'.format(id, request.user, e)
-#         messages.error(request, message)
-#         logger.exception(message)
-#
-#     if request.method == 'POST':
-#         form = vrdFutForm(request.POST, instance=vrdfut)
-#         if form.is_valid():
-#             try:
-#                 form.save()
-#                 msg = '{} gespeichert.'.format(vrdfut.ref_medikament)
-#                 messages.success(request, msg)
-#                 return redirect(reverse_lazy('medikamente:vrdfutchange'))
-#             except Exception as e:
-#                 logger.exception('Fehler beim Speichern von Verordnungsänderung {} für Benutzer {} ({})'.format(
-#                                  vrdfut.ref_medikament, request.user.username, e))
-#                 messages.error(request, 'Fehler beim Speichern der Verordnungsänderung {}: {}'.format(
-#                                      vrdfut.ref_medikament, e))
-#     else:  # GET
-#         form = vrdFutForm(instance=vrdfut)
-#
-#     return render(request, 'medikamente/vrdfutedit.html', {'form': form, 'vrdfut': vrdfut})
-
-
-# @login_required(login_url='/login/')
-# def vrdfuthistory(request):
-#     vrdfutlist = VrdFuture.objects.none()
-#     user = None
-#
-#     try:
-#         vrdfutlist = VrdFuture.objects.filter(ref_usr=request.user, erledigt=True)
-#         user = User.objects.get(username=request.user.username)
-#     except Exception as e:
-#         message = 'Benutzer {} konnte nicht gelesen werden ({}).'.format(user.username, e)
-#         messages.error(request, message)
-#         logger.exception(message)
-#
-#     return render(request, 'medikamente/vrdfuthistory.html', {'vrdfutlist': vrdfutlist, 'user': user})

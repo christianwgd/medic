@@ -1,6 +1,6 @@
 from django_filters import FilterSet, AllValuesFilter, CharFilter
 
-from medicament.models import Medicament
+from medicament.models import Medicament, StockChange
 
 
 class MedicamentFilter(FilterSet):
@@ -9,3 +9,10 @@ class MedicamentFilter(FilterSet):
         fields = ['name', ]
 
     name = CharFilter(lookup_expr='icontains')
+
+
+class StockChangeFilter(FilterSet):
+
+    class Meta:
+        model = StockChange
+        fields = ['reason']

@@ -15,5 +15,6 @@ class MedicamentAdmin(admin.ModelAdmin):
 @admin.register(StockChange)
 class StockChangeAdmin (admin.ModelAdmin):
 
-    list_display = ['medicament', 'amount', 'reason', 'text']
+    list_display = ['medicament', 'amount', 'date', 'reason']
     list_filter = ['medicament', 'owner']
+    date_hierarchy = 'date'

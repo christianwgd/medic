@@ -10,5 +10,7 @@ urlpatterns = [
     path('create/', views.MedicamentCreateView.as_view(), name='create'),
     path('update/<int:pk>/', views.MedicamentUpdateView.as_view(), name='update'),
     path('delete/<int:pk>/', views.MedicamentDeleteView.as_view(), name='delete'),
-    path('get/<int:med_id>/', views.getmed, name='get'),
+    path('stock-change/<int:med_id>/', views.StockChangeCreateView.as_view(), name='stock-change'),
+    path('stock-history/<int:med_id>/', views.StockChangeHistoryView.as_view(), name='stock-history'),
+    path('stock-calc/<int:med_id>/', views.calc_consumption, name='stock-calc'),
 ]

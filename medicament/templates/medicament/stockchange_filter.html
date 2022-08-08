@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load i18n static django_bootstrap5 usrprofile_tags %}
+
+{% block bootstrap5_extra_head %}
+{{ block.super }}
+{{ form.media.css }}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/filter.css' %}">
+{% endblock %}
+
+{% block bootstrap5_extra_script %}
+{{ block.super }}
+{{ form.media.js }}
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+{% endblock %}
+
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+{% trans 'Stock changes history' as user_title %}
+{% user_header user_title request.user %}
+
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
+        <i class="far fa-home"></i>
+    </a>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+        <form method="get" role="form" >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% bootstrap_form filter.form size='sm' %}
+                </div>
+                <div class="col-md-6">
+                    <button id="id_refresh" type="submit" class="btn btn-sm btn-secondary">
+                        <i class="far fa-sync"></i>
+                        {% trans 'Refresh' %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+    <table data-toggle="table" data-classes="table table-striped table-bordered"
+           data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
+        <thead>
+            <tr>
+                <th>{% trans 'Medicament' %}</th>
+                <th>{% trans 'Amount' %}</th>
+                <th>{% trans 'Date' %}</th>
+                <th>{% trans 'Reason' %}</th>
+                <th>{% trans 'Note' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for stockchange in stockchange_list %}
+                <tr>
+                    <td>{{ stockchange.medicament }}</td>
+                    <td>{{ stockchange.amount }} {% trans 'Tabl.' %}</td>
+                    <td>{{ stockchange.date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>{{ stockchange.reason }}</td>
+                    <td>{{ stockchange.text }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+    {% if is_paginated %}
+        {% bootstrap_pagination page_obj extra=request.GET.urlencode size="sm" %}
+    {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+

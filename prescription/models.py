@@ -50,6 +50,17 @@ class Prescription(models.Model):
             return self.morning + self.noon + self.evening + self.night
         return 0.0
 
+    def get_default_dose(self, for_user):
+        # Find first intake to get default dose
+        if self.morning:
+            return self.morning
+        if self.noon:
+            return self.noon
+        if self.evening:
+            return self.evening
+        if self.nigth:
+            return self.night
+
     def get_amount_for_time(self, start_date, end_date, user):
         needed = Decimal(0.0)
         for day in daterange(start_date, end_date):

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
 from django.utils import formats, timezone
 from django.utils.translation import gettext as _
 
@@ -23,6 +25,12 @@ class Medicament(models.Model):
     def __str__(self):
         dose = formats.localize(self.strength, use_l10n=True)
         return f'{self.name} {dose} {self.unit}'
+
+    def get_active_prescription(self, for_user):
+        try:
+            return self.prescriptions.active(for_user=for_user).first()
+        except ObjectDoesNotExist:
+            return None
 
     name = models.CharField(
         verbose_name=_('Denomination'), max_length=50
@@ -47,10 +55,18 @@ class Medicament(models.Model):
     owner = models.ForeignKey(
         User, verbose_name=_('Owner'), on_delete=models.PROTECT
     )
+    stock = models.DecimalField(
+        verbose_name=_('Stock'), max_digits=6, decimal_places=2,
+        default=0.0
+    )
+    last_calc = models.DateField(
+        verbose_name=_('Last stock calculation'),
+        auto_now_add=False, null=True
+    )
 
 
 REASON_CHOICES = (
-    ('', _('choose ...')),
+    ('00', _('Consumption (-)')),
     ('01', _('New Package (+)')),
     ('02', _('Intake missed (+)')),
     ('03', _('Intake skipped (+)')),
@@ -66,9 +82,10 @@ class StockChange(models.Model):
     class Meta:
         verbose_name = _('Stock change')
         verbose_name_plural = _('Stock changes')
+        ordering = ['-date']
 
     def __str__(self):
-        return self.medicament
+        return str(self.medicament)
 
     medicament = models.ForeignKey(
         Medicament, on_delete=models.PROTECT, verbose_name=_('Medicament'),
@@ -86,3 +103,19 @@ class StockChange(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT, verbose_name=_('Owner'),
     )
+
+
+@receiver(models.signals.post_save, sender=StockChange)
+def update_medicament_stock(sender, instance, **kwargs):  # pylint: disable=unused-argument
+    """
+        Function to update the medicament stock.
+        sender is the model class that sends the signal,
+        while instance is an actual instance of that class
+    """
+
+    medicament = instance.medicament
+    if instance.reason in ['00', '04', '99']:  # Amount is negative
+        medicament.stock -= instance.amount
+    else:
+        medicament.stock += instance.amount
+    medicament.save()
