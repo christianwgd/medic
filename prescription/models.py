@@ -1,3 +1,6 @@
+import datetime
+from decimal import Decimal
+
 from bitfield import BitField
 from django.contrib.auth.models import User
 from django.db import models
@@ -7,22 +10,10 @@ from django.utils.translation import gettext_lazy as _
 
 from medicament.models import Medicament
 
-#
-# WEEK_DAYS = {
-#     '0': 'mo',
-#     '1': 'tu',
-#     '2': 'we',
-#     '3': 'th',
-#     '4': 'fr',
-#     '5': 'sa',
-#     '6': 'su',
-# }
 
-
-# def get_weekdays_default():
-#     return {
-#         '0': True, '1': True, '2': True, '3': True, '4': True, '5': True, '6': True
-#     }
+def daterange(start_date, end_date):
+    for n in range(int((end_date - start_date).days)):
+        yield start_date + datetime.timedelta(n)
 
 
 class ActivePrescriptionManager(Manager):
@@ -45,6 +36,27 @@ class Prescription(models.Model):
     def __str__(self):
         return str(self.medicament)
 
+    def active(self, date, for_user):
+        valid_from = True
+        if self.valid_from is not None:
+            valid_from = self.valid_from <= date
+        valid_until = True
+        if self.valid_until is not None:
+            valid_until = date <= self.valid_until
+        return valid_from and valid_until and self.owner == for_user
+
+    def get_dose_per_day(self, date, user):
+        if self.active(date, user) and self.weekdays.items()[date.weekday()][1]:
+            return self.morning + self.noon + self.evening + self.night
+        return 0.0
+
+    def get_amount_for_time(self, start_date, end_date, user):
+        needed = Decimal(0.0)
+        for day in daterange(start_date, end_date):
+            dpd = self.get_dose_per_day(day, user)
+            needed += Decimal(dpd)
+        return needed
+
     objects = ActivePrescriptionManager()
 
     medicament = models.ForeignKey(
@@ -53,19 +65,19 @@ class Prescription(models.Model):
     )
     morning = models.DecimalField(
         verbose_name=_('Morning'), max_digits=3,
-        decimal_places=2, null=True, blank=True
+        decimal_places=2, default=0.0, blank=True
     )
     noon = models.DecimalField(
         verbose_name=_('Noon'), max_digits=3,
-        decimal_places=2, null=True, blank=True
+        decimal_places=2, default=0.0, blank=True
     )
     evening = models.DecimalField(
         verbose_name=_('Evening'), max_digits=3,
-        decimal_places=2, null=True, blank=True
+        decimal_places=2, default=0.0, blank=True
     )
     night = models.DecimalField(
         verbose_name=_('Night'), max_digits=3,
-        decimal_places=2, null=True, blank=True
+        decimal_places=2, default=0.0, blank=True
     )
     weekdays = BitField(flags=('mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'), default=0)
     owner = models.ForeignKey(
