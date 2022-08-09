@@ -6,6 +6,7 @@ from django.contrib import auth
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format
+from django.utils.translation import gettext as _
 from faker import Faker
 
 from measurement.forms import MeasurementForm
@@ -114,6 +115,16 @@ class MeasurementFormTests(TestCase):
         self.assertFalse('gewicht' in form.fields)
         self.assertTrue('temp' in form.fields)
 
+    def test_measurement_form_empty(self):
+        form = MeasurementForm({})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 1)
+        self.assertIn(_('No values entered.'), form.errors['__all__'])
+
+    def test_measurement_form_valid(self):
+        form = MeasurementForm({'rrsys': 122, 'rrdia': 77, 'puls': 66})
+        self.assertTrue(form.is_valid())
+
 
 class MeasurementViewTests(TestCase):
 
@@ -160,8 +171,8 @@ class MeasurementViewTests(TestCase):
         measurement.date = last_week
         measurement.save()
         value_type = ValueType.objects.last()
-        value = Value.objects.create(
-            value_type=self.value_type,
+        Value.objects.create(
+            value_type=value_type,
             value=88.1,
             measurement=measurement
         )
@@ -253,3 +264,57 @@ class MeasurementViewTests(TestCase):
         self.assertEqual(self.measurement.values.get(value_type__slug='rrsys').value, 120)
         self.assertEqual(self.measurement.values.get(value_type__slug='rrdia').value, 80)
         self.assertEqual(self.measurement.values.get(value_type__slug='puls').value, 66)
+
+    def test_measurement_minmax_view(self):
+        measurements = Measurement.objects.all()
+        date_min = date_format(
+            measurements.first().date - timedelta(days=1), "Y-m-d"
+        )
+        date_max = date_format(
+            measurements.last().date + timedelta(days=1), "Y-m-d"
+        )
+        self.client.force_login(self.user)
+        list_url = reverse('measurement:minmax', kwargs={'von': date_min, 'bis': date_max})
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, 200)
+        measurements = response.context['measurement_list']
+        self.assertEqual(len(measurements), 1)
+        self.assertIsInstance(measurements[0], Measurement)
+
+    def test_measurement_chart_view(self):
+        measurements = Measurement.objects.all()
+        date_min = date_format(
+            measurements.first().date - timedelta(days=1), "Y-m-d"
+        )
+        date_max = date_format(
+            measurements.last().date + timedelta(days=1), "Y-m-d"
+        )
+        self.client.force_login(self.user)
+        list_url = reverse('measurement:diagram', kwargs={'von': date_min, 'bis': date_max})
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_measurement_chart_json(self):
+        self.client.force_login(self.user)
+        measurements = Measurement.objects.all()
+        date_min = date_format(
+            measurements.first().date - timedelta(days=1), "Y-m-d"
+        )
+        date_max = date_format(
+            measurements.last().date + timedelta(days=1), "Y-m-d"
+        )
+        list_url = reverse(
+            'measurement:json-values',
+            kwargs={'type': 'gewicht', 'von': date_min, 'bis': date_max}
+        )
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, 200)
+        resp = response.json()
+        self.assertEqual(resp['type'], 'gewicht')
+        self.assertEqual(resp['von'], date_min)
+        self.assertEqual(resp['bis'], date_max)
+        self.assertEqual(len(resp['datasets']), 1)
+        self.assertEqual(
+            Decimal(resp['datasets'][0]['data'][0]),
+            round(measurements.first().values.get(value_type__slug='gewicht').value, 1)
+        )
