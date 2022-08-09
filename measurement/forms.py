@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
+from django.utils.translation import gettext as _
 
 from measurement.models import ValueType, Measurement
 
@@ -28,6 +29,16 @@ class MeasurementForm(BSModalModelForm):
                 )
             self.Meta.fields.append(value_type.slug)
         self.Meta.fields.append('comment')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        no_value = True
+        for idx, value_type in enumerate(ValueType.objects.active()):
+            if cleaned_data[value_type.slug]:
+                no_value = False
+        if no_value:
+            raise forms.ValidationError(_('No values entered.'))
+        return cleaned_data
 
     class Meta:
         model = Measurement

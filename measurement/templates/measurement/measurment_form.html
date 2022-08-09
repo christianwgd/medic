@@ -1,4 +1,5 @@
 {% load django_bootstrap5 i18n %}
+
 <form role="form" class="form-horizontal" action="" method="post" novalidate>
     {% csrf_token %}
 
@@ -13,13 +14,14 @@
     </div>
 
     <div class="modal-body">
+        <div class="{% if form.non_field_errors %}is-invalid{% endif %}"></div>
+        {% bootstrap_form_errors form %}
         {% for field in form %}
             {% if field.name != 'comment' %}
                 {% bootstrap_field field layout='floating' %}
             {% endif %}
         {% endfor %}
         {% bootstrap_field form.comment layout='floating' %}
-        <div class="{% if form.non_field_errors %}invalid{% endif %}"></div>
     </div>
 
     <div class="modal-footer">

@@ -20,7 +20,8 @@ $(document).ready(function() {
 
     $("#create-action").modalForm({
         formURL: "{% url 'measurement:neu' %}",
-        modalID: "#modal"
+        modalID: "#modal",
+        errorClass: '.is-invalid'
     });
 
     $(".update-action").each(function() {
