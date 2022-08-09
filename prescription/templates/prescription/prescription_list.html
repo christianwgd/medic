@@ -56,8 +56,8 @@ $(document).ready(function() {
                     <th>{% trans 'Evening' %}</th>
                     <th>{% trans 'Night' %}</th>
                     <th>{% trans 'Weekdays' %}</th>
-                    <!--<th><span style="margin-left: 12px;">Bestand</span></th>-->
-                    <!--<th><span style="margin-left: 15px;">reicht f&uuml;r</span></th>-->
+                    <th>{% trans 'Stock' %}</th>
+                    <th>{% trans 'enough for' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,6 +95,8 @@ $(document).ready(function() {
                         {% endif %}
                     </td>
                     <td>{% weekday_disp prescription.weekdays %}</td>
+                    <td>{{ prescription.medicament.stock }} {% trans 'Tabl.' %}</td>
+                    <td>{% calc_days prescription request.user %} {% trans 'days' %}</td>
                 </tr>
                 {% endfor %}
             </tbody>

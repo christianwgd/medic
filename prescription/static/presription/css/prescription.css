@@ -22,3 +22,7 @@ li.weekday {
     background-color: #19699d;
     border-color: #19699d;
 }
+
+.badge {
+    vertical-align: bottom;
+}

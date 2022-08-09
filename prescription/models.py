@@ -73,6 +73,16 @@ class Prescription(models.Model):
             needed += Decimal(dpd)
         return needed
 
+    def get_days_before_empty(self, user):
+        amount = self.medicament.stock
+        date = timezone.now().date()
+        days = 0
+        while amount > 0:
+            amount -= Decimal(self.get_dose_per_day(date, user))
+            date += datetime.timedelta(days=1)
+            days += 1
+        return days
+
     objects = ActivePrescriptionManager()
 
     medicament = models.ForeignKey(
