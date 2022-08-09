@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib import auth
 from django.dispatch import receiver
-from django.utils import formats, timezone
+from django.utils import formats
 from django.utils.translation import gettext as _
+
+
+User = auth.get_user_model()
 
 
 UNIT_CHOICES = (
@@ -28,6 +31,7 @@ class Medicament(models.Model):
 
     def get_active_prescription(self, for_user):
         try:
+            # pylint: disable=no-member
             return self.prescriptions.active(for_user=for_user).first()
         except ObjectDoesNotExist:
             return None

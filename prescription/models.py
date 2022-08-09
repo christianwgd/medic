@@ -2,7 +2,7 @@ import datetime
 from decimal import Decimal
 
 from bitfield import BitField
-from django.contrib.auth.models import User
+from django.contrib import auth
 from django.db import models
 from django.db.models import Manager, Q
 from django.utils import timezone
@@ -11,9 +11,12 @@ from django.utils.translation import gettext_lazy as _
 from medicament.models import Medicament
 
 
+User = auth.get_user_model()
+
+
 def daterange(start_date, end_date):
-    for n in range(int((end_date - start_date).days)):
-        yield start_date + datetime.timedelta(n)
+    for index in range(int((end_date - start_date).days)):
+        yield start_date + datetime.timedelta(index)
 
 
 class ActivePrescriptionManager(Manager):
@@ -28,7 +31,7 @@ class ActivePrescriptionManager(Manager):
 
 class Prescription(models.Model):
 
-    class Meta(object):
+    class Meta:
         verbose_name = _('Prescription')
         verbose_name_plural = _('Prescriptions')
         ordering = ['medicament__name', 'medicament__strength']
@@ -46,11 +49,12 @@ class Prescription(models.Model):
         return valid_from and valid_until and self.owner == for_user
 
     def get_dose_per_day(self, date, user):
+        # pylint: disable=no-member
         if self.active(date, user) and self.weekdays.items()[date.weekday()][1]:
             return self.morning + self.noon + self.evening + self.night
         return 0.0
 
-    def get_default_dose(self, for_user):
+    def get_default_dose(self):
         # Find first intake to get default dose
         if self.morning:
             return self.morning
@@ -58,8 +62,9 @@ class Prescription(models.Model):
             return self.noon
         if self.evening:
             return self.evening
-        if self.nigth:
+        if self.night:
             return self.night
+        return None
 
     def get_amount_for_time(self, start_date, end_date, user):
         needed = Decimal(0.0)

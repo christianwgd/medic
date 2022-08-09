@@ -18,7 +18,7 @@ class UsrProfForm(ModelForm):
         widget=EmailInput(attrs={"autofocus": "autofocus"})
     )
 
-    class Meta(object):
+    class Meta:
         model = UserProfile
         fields = [
             'warnenTageVorher', 'medicaments_items_per_page',

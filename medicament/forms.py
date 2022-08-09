@@ -16,7 +16,8 @@ class MedicamentForm(BSModalModelForm):
 
 
 class StockChangeForm(BSModalModelForm):
-    class Meta(object):
+
+    class Meta:
         model = StockChange
         fields = ['date', 'reason', 'amount', 'text']
 

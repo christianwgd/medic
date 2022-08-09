@@ -203,9 +203,8 @@ LOGGING = {
 
 f = os.path.join(PROJECT_APP_PATH, "localsettings.py")
 if os.path.exists(f):
-    import sys
     import importlib
-    module_name = "%s.localsettings" % PROJECT_APP
+    module_name = f"{PROJECT_APP}.localsettings"
     module = importlib.import_module(module_name)
     module.__file__ = f
     sys.modules[module_name] = module

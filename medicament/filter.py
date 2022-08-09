@@ -1,4 +1,4 @@
-from django_filters import FilterSet, AllValuesFilter, CharFilter
+from django_filters import FilterSet, CharFilter
 
 from medicament.models import Medicament, StockChange
 

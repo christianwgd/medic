@@ -96,7 +96,7 @@ class StockChangeCreateView(LoginRequiredMixin, BSModalCreateView):
         if prescription is None:
             context['dose'] = 1.0
         else:
-            context['dose'] = prescription.get_default_dose(for_user=self.request.user)
+            context['dose'] = prescription.get_default_dose()
         return context
 
     def form_valid(self, form):
@@ -144,4 +144,3 @@ def calc_consumption(request, med_id):
     else:
         consumption = 0
     return JsonResponse({'consumption': consumption})
-

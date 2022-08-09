@@ -110,6 +110,7 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
         measurement = form.save(commit=False)
         for value_type in ValueType.objects.active():
             if value_type.slug in form.cleaned_data and value_type.slug in form.changed_data:
+                # pylint: disable=unused-variable
                 value, created = Value.objects.get_or_create(
                     value_type=value_type,
                     measurement=measurement,

@@ -10,9 +10,9 @@ register = template.Library()
 
 @register.simple_tag(name='calc_dosis')
 def calc_dosis(value, vo_id):
-    vo = Prescription.objects.get(pk=vo_id)
-    dose = formats.localize(round(vo.medicament.strength * value, 2), use_l10n=True)
-    return f'{dose}{vo.medicament.unit}'
+    prescription = Prescription.objects.get(pk=vo_id)
+    dose = formats.localize(round(prescription.medicament.strength * value, 2), use_l10n=True)
+    return f'{dose}{prescription.medicament.unit}'
 
 
 @register.inclusion_tag('prescription/includes/weekdays.html')

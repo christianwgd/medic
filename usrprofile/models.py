@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib import auth
 from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
+
+
+User = auth.get_user_model()
 
 
 class StartUrl(models.Model):
@@ -71,19 +74,16 @@ class UserProfile(models.Model):
     @property
     def usr_inf(self):
         if self.gebdat is None:
-            return '{}, {}'.format(
-                self.ref_usr.last_name,
-                self.ref_usr.first_name
+            return f'{self.ref_usr.last_name}, {self.ref_usr.first_name}'
+        # pylint: disable=consider-using-f-string
+        userinfo = '{}, {} - {} {}'.format(
+            self.ref_usr.last_name,
+            self.ref_usr.first_name,
+            _('born'),
+            formats.date_format(
+                self.gebdat,
+                format='SHORT_DATE_FORMAT',
+                use_l10n=True
             )
-        else:
-            userinfo = '{}, {} - {} {}'.format(
-                self.ref_usr.last_name,
-                self.ref_usr.first_name,
-                _('born'),
-                formats.date_format(
-                    self.gebdat,
-                    format='SHORT_DATE_FORMAT',
-                    use_l10n=True
-                )
-            )
-            return userinfo
+        )
+        return userinfo
