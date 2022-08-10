@@ -75,7 +75,7 @@ class MeasurementModelTests(TestCase):
         self.assertEqual(Value.objects.count(), 3)
 
 
-class MeasurementTemplageTagTests(TestCase):
+class MeasurementTemplateTagTests(TestCase):
 
     def setUp(self):
         self.fake = Faker('de_DE')

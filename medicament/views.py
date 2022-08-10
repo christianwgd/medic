@@ -3,6 +3,7 @@ import logging
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from bootstrap_modal_forms.utils import is_ajax
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
@@ -132,6 +133,7 @@ class StockChangeHistoryView(LoginRequiredMixin, FilterView):
 
 
 @require_http_methods(['GET'])
+@login_required
 def calc_consumption(request, med_id):
     medicament = Medicament.objects.get(id=med_id)
     today = timezone.now().date()

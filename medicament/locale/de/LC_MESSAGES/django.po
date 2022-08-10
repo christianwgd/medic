@@ -149,7 +149,7 @@ msgstr "Grund"
 
 #: templates/medicament/medicament_confirm_delete.html:6
 msgid "Delete medicament"
-msgstr "Medicament löschen"
+msgstr "Medikament löschen"
 
 #: templates/medicament/medicament_confirm_delete.html:11
 #, python-format
