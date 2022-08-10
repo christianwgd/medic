@@ -21,6 +21,7 @@ def weekday_disp(weekdays):
     wds = [(_(wd[0].capitalize()), wd[1]) for wd in weekdays]
     return {'weekdays': wds}
 
+
 @register.simple_tag(name='calc_days')
 def calc_days(prescription, user):
     if prescription.medicament.stock > 28:
