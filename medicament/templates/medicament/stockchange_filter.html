@@ -21,7 +21,7 @@
 
 {% block content %}
 {% trans 'Stock changes history' as user_title %}
-{% user_header user_title request.user %}
+{% user_header user_title request.user name=medicament %}
 
 <div class="btn-group" role="group" >
     <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
@@ -54,7 +54,6 @@
            data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
         <thead>
             <tr>
-                <th>{% trans 'Medicament' %}</th>
                 <th>{% trans 'Amount' %}</th>
                 <th>{% trans 'Date' %}</th>
                 <th>{% trans 'Reason' %}</th>
@@ -64,10 +63,9 @@
             <tbody>
                 {% for stockchange in stockchange_list %}
                 <tr>
-                    <td>{{ stockchange.medicament }}</td>
                     <td>{{ stockchange.amount }} {% trans 'Tabl.' %}</td>
                     <td>{{ stockchange.date|date:"SHORT_DATE_FORMAT" }}</td>
-                    <td>{{ stockchange.reason }}</td>
+                    <td>{{ stockchange.get_reason_display }}</td>
                     <td>{{ stockchange.text }}</td>
                 </tr>
                 {% endfor %}

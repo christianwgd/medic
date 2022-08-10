@@ -116,6 +116,11 @@ class StockChangeHistoryView(LoginRequiredMixin, FilterView):
     filterset_class = StockChangeFilter
     template_name = 'medicament/stockchange_filter.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['medicament'] = Medicament.objects.get(id=self.kwargs['med_id'])
+        return context
+
     def get_paginate_by(self, queryset):
         return self.request.user.profile.medicaments_items_per_page
 

@@ -1,4 +1,6 @@
 <div class="card text-white bg-primary user-header">
-    <h4 class="card-header">{{ title }}</h4>
+    <h4 class="card-header">
+        {% if name %}{{ name }} {% endif %}{{ title }}
+    </h4>
     <p class="card-text">{{ userinfo }}</p>
 </div>

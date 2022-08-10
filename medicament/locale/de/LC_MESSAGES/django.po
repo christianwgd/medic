@@ -25,7 +25,7 @@ msgstr ""
 #: templates/medicament/medicament_form.html:7
 #: templates/medicament/stockchange_filter.html:57
 msgid "Medicament"
-msgstr "Medicament"
+msgstr "Medikament"
 
 #: forms.py:24 models.py:93 templates/medicament/stockchange_filter.html:59
 msgid "Date"

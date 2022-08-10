@@ -9,10 +9,10 @@ register = template.Library()
 
 
 @register.inclusion_tag('usrprofile/includes/userheader.html')
-def user_header(title, user, *args, **kwargs):
+def user_header(title, user, name=None):
     try:
         user_profile = UserProfile.objects.get(ref_usr=user)
         user_info = user_profile.usr_inf
     except UserProfile.DoesNotExist:
         user_info = _('unknown')
-    return {'userinfo': user_info, 'title': title}
+    return {'userinfo': user_info, 'title': title, 'name': name}

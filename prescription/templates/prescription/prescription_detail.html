@@ -31,7 +31,8 @@ $(document).ready(function() {
 {% block page_title %}{% endblock %}
 
 {% block content %}
-{% user_header prescription request.user %}
+{% trans 'Prescription' as prsc %}
+{% user_header prescription request.user name=prsc %}
 
 <div class="row mt-3">
     <div class="col-12">

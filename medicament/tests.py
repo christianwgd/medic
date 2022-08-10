@@ -9,8 +9,7 @@ from medicament.models import Medicament, UNIT_CHOICES, StockChange
 from prescription.models import Prescription
 
 
-class MedicamentModelTest(TestCase):
-
+class MedicamentTestCase(TestCase):
     def setUp(self):
         self.fake = Faker('de_DE')
         user_model = auth.get_user_model()
@@ -24,6 +23,9 @@ class MedicamentModelTest(TestCase):
             unit=UNIT_CHOICES[self.fake.random_int(min=0, max=3)][0],
             owner=self.user
         )
+
+
+class MedicamentModelTest(MedicamentTestCase):
 
     def test_medicament_str(self):
         dose = formats.localize(self.medicament.strength, use_l10n=True)
