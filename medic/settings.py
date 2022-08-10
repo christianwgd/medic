@@ -159,48 +159,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'root' : {'level': 'DEBUG',
-              'handlers': None},
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(name)s %(funcName)s %(message)s'
-            },
-        },
-
-    'handlers': {
-        'default': {
-            'level':'DEBUG',
-            'class':'logging.handlers.TimedRotatingFileHandler',
-            'formatter': 'verbose',
-            'filename' : LOG_FILE,
-            'when': 'd',
-            'interval' : 10,
-            'backupCount': 5,  # 5 Generationen aufheben
-            },
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
-            'formatter': 'verbose',
-            }
-        },
-    'loggers': {
-        'django.db.backends' : {
-            'level': 'CRITICAL',
-            # 'level': 'DEBUG',
-        },
-        'medic' : {
-            'handlers': ['default', 'console'],
-            'level': 'DEBUG',
-        }
-    }
-
-}
-
 ##################
 # LOCAL SETTINGS #
 ##################
