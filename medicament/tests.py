@@ -76,3 +76,9 @@ class MedicamentModelTest(MedicamentTestCase):
         self.assertEqual(str(stock_change), str(self.medicament))
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.stock, med_stock + self.medicament.package)
+
+
+class MedicamentViewsTest(MedicamentTestCase):
+
+    def test_medicament_list_view(self):
+        pass
