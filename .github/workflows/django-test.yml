@@ -45,13 +45,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r test-requirements.txt
-        pip install coverage
     - name: Create coverage report
       run: |
         coverage run --source='.' manage.py test
         coverage xml
     - name: Upload to codecov.io
       uses: codecov/codecov-action@v2
+      env:
+          CODECOV_TOKEN: 'b67b497d-dda3-4f98-a5b6-b7bcc3f8ee4c'
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
