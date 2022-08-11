@@ -21,14 +21,14 @@ class UsrProfForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = [
-            'warnenTageVorher', 'medicaments_items_per_page',
-            'werteLetzteTage', 'measurements_items_per_page',
-            'zeigeArztWerte', 'zeigeArztMed', 'email_arzt',
-            'myStartPage', 'gebdat',
+            'warn_days_before', 'medicaments_items_per_page',
+            'show_measurement_days', 'measurements_items_per_page',
+            'doc_can_see_msm', 'doc_can_see_med', 'email_arzt',
+            'my_start_page', 'gebdat',
         ]
         widgets = {
-            'warnenTageVorher': forms.NumberInput(attrs={'step': 1.0, 'min': 0}),
-            'werteLetzteTage': forms.NumberInput(attrs={'step': 10.0, 'min': 0}),
+            'warn_days_before': forms.NumberInput(attrs={'step': 1.0, 'min': 0}),
+            'show_measurement_days': forms.NumberInput(attrs={'step': 10.0, 'min': 0}),
             'gebdat': forms.DateInput(
                 format='%Y-%m-%d',
                 attrs={'type': 'date'}

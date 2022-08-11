@@ -37,20 +37,20 @@ class UserProfile(models.Model):
     gebdat = models.DateField(
         verbose_name=_("Date of birth"), null=True, blank=True
     )
-    warnenTageVorher = models.IntegerField(
+    warn_days_before = models.IntegerField(
         default=20, verbose_name=_("Hold medicaments inventory for at least"),
         validators=[MinValueValidator(2), MaxValueValidator(30)],
         help_text=_('days')
     )
-    werteLetzteTage = models.IntegerField(
+    show_measurement_days = models.IntegerField(
         default=30, verbose_name=_("Show readings for"),
         validators=[MinValueValidator(10), MaxValueValidator(365)],
         help_text=_('days')
     )
-    zeigeArztWerte = models.BooleanField(
+    doc_can_see_msm = models.BooleanField(
         default=False, verbose_name=_("Doctor is allowed to see measurements")
     )
-    zeigeArztMed = models.BooleanField(
+    doc_can_see_med = models.BooleanField(
         default=False, verbose_name=_("Doctor is allowed to see prescription")
     )
     ref_usr = models.OneToOneField(
@@ -60,7 +60,7 @@ class UserProfile(models.Model):
     email_arzt = models.EmailField(
         verbose_name=_("Doctor's email address"), null=True, blank=True
     )
-    myStartPage = models.ForeignKey(
+    my_start_page = models.ForeignKey(
         StartUrl, on_delete=models.PROTECT,
         verbose_name=_("My home page"), blank=True, null=True
     )
