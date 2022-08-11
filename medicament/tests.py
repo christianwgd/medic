@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.contrib import auth
+from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import formats, timezone
@@ -252,6 +253,26 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.status_code, 302)
         with self.assertRaises(Medicament.DoesNotExist):  # pylint: disable=no-member
             Medicament.objects.get(pk=med_id)
+
+    def test_medicament_delete_view_post_restricted(self):
+        today = timezone.now().date()
+        Prescription.objects.create(
+            medicament=self.medicament,
+            morning=2.0,
+            weekdays=127,
+            owner=self.user,
+            valid_from=today - timedelta(days=60),
+        )
+        self.client.force_login(self.user)
+        delete_url = reverse('medicament:delete', kwargs={'pk': self.medicament.id})
+        response = self.client.post(delete_url)
+        self.assertEqual(response.status_code, 302)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]),
+            _("Could not delete medicament due to existing prescription.")
+        )
 
     def test_stock_change_list_view_no_user(self):
         list_url = reverse('medicament:stock-history', kwargs={'med_id': self.medicament.id})
