@@ -389,6 +389,7 @@ class MedicamentViewsTest(MedicamentTestCase):
     def test_calc_consumption_view_last_calc_set(self):
         today = timezone.now().date()
         self.medicament.last_calc = today - timedelta(days=10)
+        self.medicament.save()
         Prescription.objects.create(
             medicament=self.medicament,
             morning=2.0,
@@ -401,12 +402,13 @@ class MedicamentViewsTest(MedicamentTestCase):
         response = self.client.get(calc_url)
         self.assertEqual(response.status_code, 200)
         consumption = response.json()['consumption']
-        # 2.0 dose * 60 days -> 120
-        self.assertEqual(consumption, f"{120.00:.2f}")
+        # 2.0 dose * 10 days -> 120
+        self.assertEqual(consumption, f"{20.00:.2f}")
 
     def test_calc_consumption_view_last_calc_set_today(self):
         today = timezone.now().date()
         self.medicament.last_calc = today
+        self.medicament.save()
         Prescription.objects.create(
             medicament=self.medicament,
             morning=2.0,
@@ -419,5 +421,5 @@ class MedicamentViewsTest(MedicamentTestCase):
         response = self.client.get(calc_url)
         self.assertEqual(response.status_code, 200)
         consumption = response.json()['consumption']
-        # 2.0 dose * 60 days -> 120
-        self.assertEqual(consumption, f"{120.00:.2f}")
+        # med.last_calc is today, so consumption should be 0
+        self.assertEqual(consumption, 0)
