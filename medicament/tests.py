@@ -350,6 +350,32 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(new_stock_change.amount, self.medicament.package)
         self.assertEqual(new_stock_change.reason, '01')
 
+    def test_stock_change_create_view_post_amount_zero(self):
+        stock_change_count = StockChange.objects.filter(
+            medicament=self.medicament
+        ).count()
+        self.client.force_login(self.user)
+        create_url = reverse('medicament:stock-change', kwargs={'med_id': self.medicament.id})
+        stock_change_date = self.fake.date_time_this_month().date()
+        form_data = {
+            'medicament': self.medicament,
+            'date': stock_change_date,
+            'amount': 0.0,
+            'reason': '01',
+            'text': self.fake.paragraph(nb_sentences=1)[:49],
+        }
+        response = self.client.post(create_url, form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('medicament:detail', kwargs={'pk': self.medicament.id})
+        )
+        new_stock_change_count = StockChange.objects.filter(
+            medicament=self.medicament
+        ).count()
+        # If amount is zero, there shouldn't be any new stock changes
+        self.assertEqual(new_stock_change_count, stock_change_count)
+
     def test_stock_change_create_view_post_with_stock_update(self):
         self.client.force_login(self.user)
         old_stock = self.medicament.stock
