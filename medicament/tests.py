@@ -167,6 +167,37 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertIsInstance(medicament, Medicament)
         self.assertEqual(medicament, self.medicament)
 
+    def test_medicament_create_view_no_user(self):
+        create_url = reverse('medicament:create')
+        response = self.client.get(create_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/accounts/login/?next={create_url}')
+
+    def test_medicament_create_view_get(self):
+        self.client.force_login(self.user)
+        create_url = reverse('medicament:create')
+        response = self.client.get(create_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.templates[0].name, "medicament/medicament_form.html")
+
+    def test_medicament_create_view_post(self):
+        self.client.force_login(self.user)
+        update_url = reverse('medicament:create')
+        form_data = {
+            'name': 'New medicament',
+            'package': 100,
+            'strength': Decimal(2.0),
+            'unit': 'mg',
+        }
+        response = self.client.post(update_url, form_data)
+        self.assertEqual(response.status_code, 302)
+        list_url = reverse('medicament:list')
+        self.assertEqual(response.url, list_url)
+        new_med = Medicament.objects.get(name='New medicament')
+        self.assertEqual(new_med.package, 100)
+        self.assertEqual(new_med.strength, Decimal(2.0))
+        self.assertEqual(new_med.unit, 'mg')
+
     def test_medicament_update_view_no_user(self):
         update_url = reverse('medicament:update', kwargs={'pk': self.medicament.id})
         response = self.client.get(update_url)
