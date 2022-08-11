@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib import auth
 from django.dispatch import receiver
@@ -30,11 +29,8 @@ class Medicament(models.Model):
         return f'{self.name} {dose} {self.unit}'
 
     def get_active_prescription(self, for_user):
-        try:
-            # pylint: disable=no-member
-            return self.prescriptions.active(for_user=for_user).first()
-        except ObjectDoesNotExist:
-            return None
+        # pylint: disable=no-member
+        return self.prescriptions.active(for_user=for_user).first()
 
     name = models.CharField(
         verbose_name=_('Denomination'), max_length=50

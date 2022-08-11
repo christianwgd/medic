@@ -83,6 +83,19 @@ class MedicamentModelTest(MedicamentTestCase):
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.stock, med_stock + self.medicament.package)
 
+    def test_stock_change_update_negative(self):
+        med_stock = self.medicament.stock
+        stock_change = StockChange.objects.create(
+            medicament=self.medicament,
+            date=timezone.now().date(),
+            amount=5,
+            reason='99',
+            text=self.fake.paragraph(nb_sentences=1)[:49],
+            owner=self.user
+        )
+        self.medicament.refresh_from_db()
+        self.assertEqual(self.medicament.stock, med_stock - 5)
+
 
 class MedicamentFormTests(MedicamentTestCase):
 
