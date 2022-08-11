@@ -75,18 +75,19 @@ class UserProfile(models.Model):
     @property
     def usr_inf(self):
         if self.gebdat is None:
-            return f'{self.ref_usr.last_name}, {self.ref_usr.first_name}'
-        # pylint: disable=consider-using-f-string
-        userinfo = '{}, {} - {} {}'.format(
-            self.ref_usr.last_name,
-            self.ref_usr.first_name,
-            _('born'),
-            formats.date_format(
+            born = ''
+        else:
+            birth_date = formats.date_format(
                 self.gebdat,
                 format='SHORT_DATE_FORMAT',
                 use_l10n=True
             )
-        )
+            born = f"{_('born')} {birth_date}"
+        if self.ref_usr.first_name and self.ref_usr.last_name:
+            user_full_name = self.ref_usr.get_full_name()
+        else:
+            user_full_name = self.ref_usr.username
+        userinfo = f'{user_full_name} {born}'
         return userinfo
 
 
