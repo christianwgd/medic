@@ -124,5 +124,3 @@ class UserProfileTagsTest(TestCase):
         object_name = self.fake.word()
         header = user_header(title='title', user=self.user, name=object_name)
         self.assertEqual(header['name'].strip(), object_name)
-
-
