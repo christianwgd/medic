@@ -85,7 +85,7 @@ class MedicamentModelTest(MedicamentTestCase):
 
     def test_stock_change_update_negative(self):
         med_stock = self.medicament.stock
-        stock_change = StockChange.objects.create(
+        StockChange.objects.create(
             medicament=self.medicament,
             date=timezone.now().date(),
             amount=5,
