@@ -385,3 +385,39 @@ class MedicamentViewsTest(MedicamentTestCase):
         consumption = response.json()['consumption']
         # 2.0 dose * 60 days -> 120
         self.assertEqual(consumption, f"{120.00:.2f}")
+
+    def test_calc_consumption_view_last_calc_set(self):
+        today = timezone.now().date()
+        self.medicament.last_calc = today - timedelta(days=10)
+        Prescription.objects.create(
+            medicament=self.medicament,
+            morning=2.0,
+            weekdays=127,
+            owner=self.user,
+            valid_from=today - timedelta(days=60),
+        )
+        self.client.force_login(self.user)
+        calc_url = reverse('medicament:stock-calc', kwargs={'med_id': self.medicament.id})
+        response = self.client.get(calc_url)
+        self.assertEqual(response.status_code, 200)
+        consumption = response.json()['consumption']
+        # 2.0 dose * 60 days -> 120
+        self.assertEqual(consumption, f"{120.00:.2f}")
+
+    def test_calc_consumption_view_last_calc_set_today(self):
+        today = timezone.now().date()
+        self.medicament.last_calc = today
+        Prescription.objects.create(
+            medicament=self.medicament,
+            morning=2.0,
+            weekdays=127,
+            owner=self.user,
+            valid_from=today - timedelta(days=60),
+        )
+        self.client.force_login(self.user)
+        calc_url = reverse('medicament:stock-calc', kwargs={'med_id': self.medicament.id})
+        response = self.client.get(calc_url)
+        self.assertEqual(response.status_code, 200)
+        consumption = response.json()['consumption']
+        # 2.0 dose * 60 days -> 120
+        self.assertEqual(consumption, f"{120.00:.2f}")
