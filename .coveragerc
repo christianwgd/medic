@@ -1,5 +1,6 @@
 [run]
 omit =
     ./manage.py
+    ../*migrations*
     medic/wsgi.py
     medic/settings.py
