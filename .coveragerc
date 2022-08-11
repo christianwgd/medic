@@ -1,0 +1,5 @@
+[run]
+omit =
+    ./manage.py
+    medic/wsgi.py
+    medic/settings.py
