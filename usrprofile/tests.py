@@ -1,10 +1,12 @@
 from django.contrib import auth
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 from faker import Faker
 
+from usrprofile.admin import StartUrlAdminForm
 from usrprofile.models import StartUrl
 from usrprofile.templatetags.usrprofile_tags import user_header
 
@@ -135,3 +137,33 @@ class UserProfileTagsTest(TestCase):
         object_name = self.fake.word()
         header = user_header(title='title', user=self.user, name=object_name)
         self.assertEqual(header['name'].strip(), object_name)
+
+
+class StartUrlAdminFormFormTests(TestCase):
+
+    def setUp(self):
+        self.fake = Faker('de_DE')
+
+    def test_medicament_form_test_invalid(self):
+        form = StartUrlAdminForm({})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 2)
+        self.assertIn(_('This field is required.'), form.errors['name'])
+        self.assertIn(_('This field is required.'), form.errors['url'])
+
+    def test_medicament_form_test_invalid_url_name(self):
+        form = StartUrlAdminForm({
+            'name': self.fake.word(),
+            'url': self.fake.word(),
+        })
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 1)
+        self.assertIn(_("Not a valid url name"), form.errors['url'])
+
+    def test_medicament_form_test_valid(self):
+        form = StartUrlAdminForm({
+            'name': self.fake.word(),
+            'url': 'medicament:list',
+        })
+        self.assertTrue(form.is_valid())
+        self.assertEqual(len(form.errors), 0)
