@@ -16,11 +16,11 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_filter = ['ref_usr']
 
 
-class StartUrlForm(forms.ModelForm):
+class StartUrlAdminForm(forms.ModelForm):
 
     class Meta:
         model = StartUrl
-        fields = '__all__'
+        fields = ['name', 'url']
 
     def clean_url(self):
         url_name = self.cleaned_data['url']
@@ -37,4 +37,4 @@ class StartUrlAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['name']
     ordering = ['sort_order']
     exclude = ('sort_order',)
-    form = StartUrlForm
+    form = StartUrlAdminForm
