@@ -14,6 +14,9 @@ from measurement.models import Measurement, ValueType, Value
 from measurement.templatetags.wert_tags import format_value
 
 
+user_model = auth.get_user_model()
+
+
 class ValueTypeModelTest(TestCase):
 
     def setUp(self):
@@ -37,7 +40,6 @@ class MeasurementModelTests(TestCase):
 
     def setUp(self):
         self.fake = Faker('de_DE')
-        user_model = auth.get_user_model()
         self.user = user_model.objects.create(username=self.fake.user_name())
         self.today = timezone.now()
         self.measurement = Measurement.objects.create(
@@ -78,7 +80,6 @@ class MeasurementTemplateTagTests(TestCase):
 
     def setUp(self):
         self.fake = Faker('de_DE')
-        user_model = auth.get_user_model()
         self.user = user_model.objects.create(username=self.fake.user_name())
         self.today = timezone.now()
         self.measurement = Measurement.objects.create(
@@ -129,7 +130,6 @@ class MeasurementViewTests(TestCase):
 
     def setUp(self):
         self.fake = Faker('de_DE')
-        user_model = auth.get_user_model()
         self.user = user_model.objects.create(username=self.fake.user_name())
         self.today = timezone.now()
         self.measurement = Measurement.objects.create(
@@ -197,6 +197,15 @@ class MeasurementViewTests(TestCase):
         page_obj = response.context['page_obj']
         measurement = page_obj[0]
         self.assertEqual(measurement.values.first().value, Decimal('88.10'))
+
+    def test_measurement_list_view_empty_qs(self):
+        blank_user = user_model.objects.create(username=self.fake.user_name())
+        self.client.force_login(blank_user)
+        list_url = reverse('measurement:list')
+        response = self.client.get(list_url)
+        self.assertEqual(response.status_code, 200)
+        page_obj = response.context['page_obj']
+        self.assertEqual(len(page_obj), 0)
 
     def test_measurement_print_view(self):
         measurements = Measurement.objects.all()
