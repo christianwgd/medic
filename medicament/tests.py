@@ -311,6 +311,21 @@ class MedicamentViewsTest(MedicamentTestCase):
         response = self.client.get(create_url)
         self.assertEqual(response.status_code, 200)
 
+    def test_stock_change_create_view_get_from_default_dose(self):
+        today = timezone.now().date()
+        Prescription.objects.create(
+            medicament=self.medicament,
+            morning=1.0,
+            evening=1.0,
+            weekdays=127,
+            owner=self.user,
+            valid_from=today - timedelta(days=60),
+        )
+        self.client.force_login(self.user)
+        create_url = reverse('medicament:stock-change', kwargs={'med_id': self.medicament.id})
+        response = self.client.get(create_url)
+        self.assertEqual(response.status_code, 200)
+
     def test_stock_change_create_view_post(self):
         self.client.force_login(self.user)
         create_url = reverse('medicament:stock-change', kwargs={'med_id': self.medicament.id})
