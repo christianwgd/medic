@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.forms import EmailInput
+from django.forms import TextInput
 from django.forms.models import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -13,9 +13,15 @@ date_format = getattr(settings, "MOMENT_DATE_FORMAT", 'MM/DD/YYYY')
 
 
 class UsrProfForm(ModelForm):
+    first_name = forms.CharField(
+        label=_('first name'), required=False,
+        widget=TextInput(attrs={"autofocus": "autofocus"})
+    )
+    last_name = forms.CharField(
+        label=_('last name'), required=False,
+    )
     email = forms.EmailField(
         label=_('email adress'), required=False,
-        widget=EmailInput(attrs={"autofocus": "autofocus"})
     )
 
     class Meta:

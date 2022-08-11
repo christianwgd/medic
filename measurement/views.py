@@ -33,8 +33,12 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
         ctx = super().get_context_data(**kwargs)
         ctx['value_types'] = ValueType.objects.active()
         # change dates because of reversed ordering!
-        ctx['max_date'] = formats.date_format(self.filterset.qs.first().date, 'Y-m-d')
-        ctx['min_date'] = formats.date_format(self.filterset.qs.last().date, 'Y-m-d')
+        if self.filterset.qs.all():
+            ctx['max_date'] = formats.date_format(self.filterset.qs.first().date, 'Y-m-d')
+            ctx['min_date'] = formats.date_format(self.filterset.qs.last().date, 'Y-m-d')
+        else:
+            today = formats.date_format(timezone.now().date())
+            ctx['max_date'] = ctx['min_date'] = today
         return ctx
 
     def get_queryset(self):

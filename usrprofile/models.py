@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib import auth
+from django.dispatch import receiver
 from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -87,3 +88,20 @@ class UserProfile(models.Model):
             )
         )
         return userinfo
+
+
+@receiver(models.signals.post_save, sender=User)
+def create_user_profile(sender, instance, **kwargs):  # pylint: disable=unused-argument
+    """
+        Function to create user profile.
+        sender is the model class that sends the signal,
+        while instance is an actual instance of that class
+    """
+
+    user = instance
+    try:
+        UserProfile.objects.get(ref_usr=user)
+    except UserProfile.DoesNotExist:  # pylint: disable=no-member
+        profile = UserProfile()
+        profile.ref_usr = user  # link the profile to the user
+        profile.save()

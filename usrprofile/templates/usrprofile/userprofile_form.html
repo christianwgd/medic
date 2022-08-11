@@ -18,9 +18,9 @@
 
 {% trans 'Settings' as user_title %}
 {% user_header user_title object.ref_usr %}
-<div class="row mt-3">
-    <div class="col-12">
-        <form role="form" method="post" novalidate>
+<form role="form" method="post" novalidate>
+    <div class="row mt-3">
+        <div class="col-12">
             {% csrf_token %}
 
             {% bootstrap_form_errors form type='non_fields' %}
@@ -37,9 +37,11 @@
                     <div id="collapse_personal_data" class="accordion-collapse collapse show" aria-labelledby="personal_data"
                          data-bs-parent="#settings">
                         <div class="accordion-body">
+                            {% bootstrap_field form.first_name layout='floating' %}
+                            {% bootstrap_field form.last_name layout='floating' %}
                             {% bootstrap_field form.email layout='floating' %}
                             {% bootstrap_field form.gebdat layout='floating' %}
-                            {% bootstrap_field form.myStartPage layout='floating' %}
+                            {% bootstrap_field form.my_start_page layout='floating' %}
                         </div>
                     </div>
                 </div>
@@ -54,7 +56,7 @@
                     <div id="collapse_measurements" class="accordion-collapse collapse show" aria-labelledby="measurements"
                          data-bs-parent="#settings">
                         <div class="accordion-body">
-                            {% bootstrap_field form.werteLetzteTage layout='floating' %}
+                            {% bootstrap_field form.show_measurement_days layout='floating' %}
                             {% bootstrap_field form.measurements_items_per_page layout='floating' %}
                         </div>
                     </div>
@@ -71,7 +73,7 @@
                     <div id="collapse_medicaments" class="accordion-collapse collapse show" aria-labelledby="medicaments"
                          data-bs-parent="#settings">
                         <div class="accordion-body">
-                            {% bootstrap_field form.warnenTageVorher layout='floating' %}
+                            {% bootstrap_field form.warn_days_before layout='floating' %}
                             {% bootstrap_field form.medicaments_items_per_page layout='floating' %}
                         </div>
                     </div>
@@ -88,21 +90,26 @@
                          data-bs-parent="#settings">
                         <div class="accordion-body">
                             {% bootstrap_field form.email_arzt layout='floating' %}
-                            {% bootstrap_field form.zeigeArztWerte wrapper_class="form-check form-switch" %}
-                            {% bootstrap_field form.zeigeArztMed wrapper_class="form-check form-switch" %}
+                            {% bootstrap_field form.doc_can_see_msm wrapper_class="form-check form-switch" %}
+                            {% bootstrap_field form.doc_can_see_med wrapper_class="form-check form-switch" %}
                         </div>
                     </div>
                 </div>
 
             </div>
 
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
             <button class="btn btn-primary" type="submit">
                 {% trans 'Ok' %}
             </button>
             <a href="{% url 'startpage' %}" class="btn btn-secondary">
                 {% trans 'Cancel' %}
             </a>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 {% endblock %}

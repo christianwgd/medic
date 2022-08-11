@@ -12,7 +12,6 @@ from faker import Faker
 from measurement.forms import MeasurementForm
 from measurement.models import Measurement, ValueType, Value
 from measurement.templatetags.wert_tags import format_value
-from usrprofile.models import UserProfile
 
 
 class ValueTypeModelTest(TestCase):
@@ -132,7 +131,6 @@ class MeasurementViewTests(TestCase):
         self.fake = Faker('de_DE')
         user_model = auth.get_user_model()
         self.user = user_model.objects.create(username=self.fake.user_name())
-        self.profile = UserProfile.objects.create(ref_usr=self.user)
         self.today = timezone.now()
         self.measurement = Measurement.objects.create(
             owner=self.user,

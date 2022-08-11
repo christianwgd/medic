@@ -11,7 +11,6 @@ from faker import Faker
 from medicament.forms import MedicamentForm, StockChangeForm
 from medicament.models import Medicament, UNIT_CHOICES, StockChange
 from prescription.models import Prescription
-from usrprofile.models import UserProfile
 
 
 class MedicamentTestCase(TestCase):
@@ -19,7 +18,6 @@ class MedicamentTestCase(TestCase):
         self.fake = Faker('de_DE')
         user_model = auth.get_user_model()
         self.user = user_model.objects.create(username=self.fake.user_name())
-        self.profile = UserProfile.objects.create(ref_usr=self.user)
         self.medicament = Medicament.objects.create(
             name=self.fake.word(),
             producer=self.fake.word(),
