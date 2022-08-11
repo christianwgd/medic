@@ -335,6 +335,34 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(new_stock_change.amount, self.medicament.package)
         self.assertEqual(new_stock_change.reason, '01')
 
+    def test_stock_change_create_view_post_with_stock_update(self):
+        self.client.force_login(self.user)
+        old_stock = self.medicament.stock
+        create_url = reverse('medicament:stock-change', kwargs={'med_id': self.medicament.id})
+        stock_change_date = self.fake.date_time_this_month().date()
+        form_data = {
+            'medicament': self.medicament,
+            'date': stock_change_date,
+            'amount': 10.0,
+            'reason': '00',
+            'text': self.fake.paragraph(nb_sentences=1)[:49],
+        }
+        response = self.client.post(create_url, form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('medicament:detail', kwargs={'pk': self.medicament.id})
+        )
+        new_stock_change = StockChange.objects.filter(
+            medicament=self.medicament
+        ).order_by('-date').first()
+        self.assertEqual(new_stock_change.date, stock_change_date)
+        self.assertEqual(new_stock_change.amount, Decimal(10.0))
+        self.assertEqual(new_stock_change.reason, '00')
+        self.medicament.refresh_from_db()
+        self.assertEqual(self.medicament.last_calc, timezone.now().date())
+        self.assertEqual(self.medicament.stock, old_stock - 10.0)
+
     def test_calc_consumption_view_no_user(self):
         calc_url = reverse('medicament:stock-calc', kwargs={'med_id': self.medicament.id})
         response = self.client.get(calc_url)
