@@ -5,6 +5,7 @@ from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 from faker import Faker
 
+from usrprofile.models import StartUrl
 from usrprofile.templatetags.usrprofile_tags import user_header
 
 User = auth.get_user_model()
@@ -17,12 +18,22 @@ class UserProfileModelTest(TestCase):
         self.user = User.objects.create(
             username=self.fake.user_name(),
         )
+        self.start_url = StartUrl.objects.create(
+            name='Test-Start-Url',
+            url='measurement:list'
+        )
 
     def test_profile_created(self):
         self.assertIsNotNone(self.user.profile)
 
     def test_profile_str(self):
         self.assertEqual(str(self.user.profile), self.user.username)
+
+    def test_start_url_str(self):
+        self.assertEqual(str(self.start_url), 'Test-Start-Url')
+
+    def test_start_url_is_valid_url(self):
+        self.assertTrue(reverse(self.start_url.url))
 
 
 class UserProfileViewTest(TestCase):
