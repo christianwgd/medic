@@ -268,7 +268,7 @@ class MedicamentViewsTest(MedicamentTestCase):
             'date': stock_change_date,
             'amount': self.medicament.package,
             'reason': '01',
-            'text': self.fake.paragraph(nb_sentences=1),
+            'text': self.fake.paragraph(nb_sentences=1)[:49],
         }
         response = self.client.post(create_url, form_data)
         self.assertEqual(response.status_code, 302)
