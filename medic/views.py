@@ -13,12 +13,12 @@ User = auth.get_user_model()
 
 
 # Aufruf der Hauptnavigation
-@login_required(login_url='/login/')
+@login_required(login_url='/accounts/login/')
 def index(request):
     return render(request, 'index.html', {})
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/accounts/login/')
 def startpage(request):
     profile = request.user.profile
     if profile.my_start_page:

@@ -19,7 +19,7 @@ urlpatterns = [
 
     # dynamische Startseite
     path('startpage/', views.startpage, name='startpage'),
-    path('', views.startpage),  # Index auch bei leerer Adresse
+    path('', views.startpage, name='startpage'),  # Index auch bei leerer Adresse
 
     path('login/', RedirectView.as_view(url='/account/login/')),
     path('login/', auth_views.LoginView.as_view(), name='medic_login'),
