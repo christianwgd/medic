@@ -12,3 +12,5 @@ db.*
 _versions/
 json/
 *.afdesign
+.coverage
+htmlcov/

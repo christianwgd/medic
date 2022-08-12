@@ -76,6 +76,8 @@ class Prescription(models.Model):
     def get_days_before_empty(self, user):
         amount = self.medicament.stock
         date = timezone.now().date()
+        if not self.active(date, user):
+            return 0
         days = 0
         while amount > 0:
             amount -= Decimal(self.get_dose_per_day(date, user))

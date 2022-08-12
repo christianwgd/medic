@@ -10,8 +10,8 @@ register = template.Library()
 
 
 @register.simple_tag(name='calc_dosis')
-def calc_dosis(value, vo_id):
-    prescription = Prescription.objects.get(pk=vo_id)
+def calc_dosis(value, prescription_id):
+    prescription = Prescription.objects.get(pk=prescription_id)
     dose = formats.localize(round(prescription.medicament.strength * value, 2), use_l10n=True)
     return f'{dose}{prescription.medicament.unit}'
 
