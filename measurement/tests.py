@@ -11,7 +11,7 @@ from faker import Faker
 
 from measurement.forms import MeasurementForm
 from measurement.models import Measurement, ValueType, Value
-from measurement.templatetags.wert_tags import format_value
+from measurement.templatetags.measurement_tags import format_value
 
 
 user_model = auth.get_user_model()
