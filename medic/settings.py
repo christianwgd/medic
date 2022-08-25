@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(BASE_DIR, 'eventreg.db'),  # Or path to database file if using sqlite3.
+        'NAME': os.path.join(BASE_DIR, 'medic.db'),  # Or path to database file if using sqlite3.
     }
 }
 
