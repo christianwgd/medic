@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n static django_bootstrap5 usrprofile_tags %}
+
+{% block bootstrap5_extra_head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock %}
+
+{% block bootstrap5_extra_script %}
+{{ block.super }}
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#id_edit").modalForm({
+        formURL: "{% url 'order:update' order.id %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+    $("#id_delete").modalForm({
+        formURL: "{% url 'order:delete' order.id %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+});
+</script>
+{% endblock %}
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+{% trans 'Order' context 'order' as ord %}
+{% user_header ord request.user name=med %}
+
+<div class="row mt-3">
+    <div class="col-12">
+        <h3>{% trans 'Order' context 'order' %} {{ order }}</h3>
+        {% for med in order.medicaments.all %}
+        <h5>
+            {% if order.done %}
+            <span class="badge bg-secondary">{{ med }}</span>
+            {% else %}
+            <span class="badge bg-primary">{{ med }}</span>
+            {% endif %}
+        </h5>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-4">
+        <button id="id_delete" type="button" class="btn btn-danger">
+            {% trans 'Delete' %}
+        </button>
+    </div>
+    <div class="col-8 text-end">
+        <button id="id_edit" type="button" class="btn btn-primary">
+            {% trans 'Edit' %}
+        </button>
+        {% if not order.done %}
+        <a href="{% url 'order:close' order.id %}" class="btn btn-primary">
+            {% trans 'Close' context 'order' %}
+        </a>
+        {% else %}
+        <a href="{% url 'order:close' order.id %}" class="btn btn-primary disabled">
+            {% trans 'Close' context 'order' %}
+        </a>
+        {% endif %}
+        <a href="{% url 'order:list' %}" class="btn btn-secondary">
+            {% trans 'Back' %}
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+

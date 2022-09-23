@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-08 15:20+0200\n"
+"POT-Creation-Date: 2022-09-23 23:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,40 +18,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps.py:7 models.py:21 models.py:91
+#: apps.py:7 models.py:23 models.py:91
 #: templates/medicament/includes/mediheader.html:2
-#: templates/medicament/medicament_detail.html:42
+#: templates/medicament/medicament_detail.html:35
+#: templates/medicament/medicament_detail.html:43
 #: templates/medicament/medicament_filter.html:72
 #: templates/medicament/medicament_form.html:7
-#: templates/medicament/stockchange_filter.html:57
 msgid "Medicament"
 msgstr "Medikament"
 
-#: forms.py:24 models.py:93 templates/medicament/stockchange_filter.html:59
+#: forms.py:25 models.py:93 templates/medicament/stockchange_filter.html:58
 msgid "Date"
 msgstr "Datum"
 
-#: forms.py:32 models.py:101 templates/medicament/stockchange_filter.html:61
+#: forms.py:33 models.py:101 templates/medicament/stockchange_filter.html:60
 msgid "Note"
 msgstr "Anmerkung"
 
-#: models.py:11
+#: models.py:13
 msgid "Milligram"
 msgstr "Milligramm"
 
-#: models.py:12
+#: models.py:14
 msgid "Microgram"
 msgstr "Microgramm"
 
-#: models.py:13
+#: models.py:15
 msgid "Gram"
 msgstr "Gramm"
 
-#: models.py:14
+#: models.py:16
 msgid "Intern. units"
 msgstr "Intern. Einheiten"
 
-#: models.py:22 templates/medicament/medicament_filter.html:35
+#: models.py:24 templates/medicament/medicament_filter.html:35
 msgid "Medicaments"
 msgstr "Medikamente"
 
@@ -63,12 +63,12 @@ msgstr "Bezeichnung"
 msgid "Producer"
 msgstr "Hersteller"
 
-#: models.py:43 templates/medicament/medicament_detail.html:46
+#: models.py:43 templates/medicament/medicament_detail.html:47
 #: templates/medicament/medicament_filter.html:73
 msgid "Active ingredient"
 msgstr "Wirkstoff"
 
-#: models.py:47 templates/medicament/medicament_detail.html:50
+#: models.py:47 templates/medicament/medicament_detail.html:51
 #: templates/medicament/medicament_filter.html:74
 msgid "Package size"
 msgstr "Packungsgröße"
@@ -90,7 +90,7 @@ msgid "Owner"
 msgstr "Eigentümer"
 
 #: models.py:59 templates/medicament/includes/mediheader.html:3
-#: templates/medicament/medicament_detail.html:58
+#: templates/medicament/medicament_detail.html:59
 msgid "Stock"
 msgstr "Bestand"
 
@@ -130,7 +130,7 @@ msgstr "Sonstiges (+)"
 msgid "Other (-)"
 msgstr "Sonstiges (-)"
 
-#: models.py:83 templates/medicament/medicament_detail.html:70
+#: models.py:83 templates/medicament/medicament_detail.html:71
 #: templates/medicament/stockchange_form.html:7
 msgid "Stock change"
 msgstr "Bestandsveränderung"
@@ -139,11 +139,11 @@ msgstr "Bestandsveränderung"
 msgid "Stock changes"
 msgstr "Bestandsveränderungen"
 
-#: models.py:95 templates/medicament/stockchange_filter.html:58
+#: models.py:95 templates/medicament/stockchange_filter.html:57
 msgid "Amount"
 msgstr "Menge"
 
-#: models.py:98 templates/medicament/stockchange_filter.html:60
+#: models.py:98 templates/medicament/stockchange_filter.html:59
 msgid "Reason"
 msgstr "Grund"
 
@@ -157,32 +157,32 @@ msgid "Really delete \"%(object)s\"?"
 msgstr "\"%(object)s\" wirklich löschen?"
 
 #: templates/medicament/medicament_confirm_delete.html:16
-#: templates/medicament/medicament_detail.html:83
+#: templates/medicament/medicament_detail.html:84
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/medicament/medicament_detail.html:51
-#: templates/medicament/medicament_detail.html:59
+#: templates/medicament/medicament_detail.html:52
+#: templates/medicament/medicament_detail.html:60
 #: templates/medicament/medicament_filter.html:86
-#: templates/medicament/stockchange_filter.html:68
+#: templates/medicament/stockchange_filter.html:66
 msgid "Tabl."
 msgstr "Tabl."
 
-#: templates/medicament/medicament_detail.html:54
+#: templates/medicament/medicament_detail.html:55
 #: templates/medicament/medicament_filter.html:75
 msgid "Dose"
 msgstr "Dosis"
 
-#: templates/medicament/medicament_detail.html:74
+#: templates/medicament/medicament_detail.html:75
 #: templates/medicament/stockchange_filter.html:23
 msgid "Stock changes history"
 msgstr "Bestandsverlauf"
 
-#: templates/medicament/medicament_detail.html:88
+#: templates/medicament/medicament_detail.html:89
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: templates/medicament/medicament_detail.html:91
+#: templates/medicament/medicament_detail.html:92
 msgid "Back"
 msgstr ""
 
@@ -214,33 +214,29 @@ msgstr "Abbrechen"
 msgid "Consumption"
 msgstr "Verbrauch"
 
-#: templatetags/medicament_tags.py:18
-#, python-brace-format
-msgid "{stock} Tablets"
-msgstr "{stock} Tabletten"
+#: tests.py:105 tests.py:106 tests.py:107 tests.py:108 tests.py:126
+#: tests.py:127 tests.py:128
+msgid "This field is required."
+msgstr ""
 
-#: templatetags/medicament_tags.py:22 templatetags/medicament_tags.py:23
-msgid "unknown"
-msgstr "unbekannt"
-
-#: views.py:44
-msgid "New medicament saved."
-msgstr "Neues Medicament gespeichert."
-
-#: views.py:56
-msgid "Medicament saved."
-msgstr "Medicament gespeichert."
-
-#: views.py:65
-msgid "Medicament deleted"
-msgstr "Medicament gelöscht."
-
-#: views.py:72
+#: tests.py:274 views.py:73
 msgid "Could not delete medicament due to existing prescription."
 msgstr ""
 "Medikament konnte nicht gelöscht werden, da es noch eine Verordnung dazu "
 "gibt."
 
-#: views.py:79
+#: views.py:45
+msgid "New medicament saved."
+msgstr "Neues Medicament gespeichert."
+
+#: views.py:57
+msgid "Medicament saved."
+msgstr "Medicament gespeichert."
+
+#: views.py:66
+msgid "Medicament deleted"
+msgstr "Medicament gelöscht."
+
+#: views.py:80
 msgid "Stock update saved."
 msgstr "Bestandsänderung gespeichert"

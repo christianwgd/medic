@@ -109,7 +109,8 @@ class Prescription(models.Model):
     )
     weekdays = BitField(flags=('mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'), default=0)
     owner = models.ForeignKey(
-        User, verbose_name=_('Owner'), on_delete=models.PROTECT
+        User, verbose_name=_('Owner'), on_delete=models.PROTECT,
+        related_name='prescriptions'
     )
     valid_from = models.DateField(verbose_name=_('Valid from'), null=True, blank=True)
     valid_until = models.DateField(verbose_name=_('Valid until'), null=True, blank=True)

@@ -43,5 +43,6 @@ urlpatterns = [
     path('measurement/', include('measurement.urls')),
     path('medicament/', include('medicament.urls')),
     path('prescription/', include('prescription.urls')),
+    path('order/', include('order.urls')),
     path('usrprofile/', include('usrprofile.urls')),
 ]

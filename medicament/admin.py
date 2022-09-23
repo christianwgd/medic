@@ -13,7 +13,7 @@ class MedicamentAdmin(admin.ModelAdmin):
 
 
 @admin.register(StockChange)
-class StockChangeAdmin (admin.ModelAdmin):
+class StockChangeAdmin(admin.ModelAdmin):
 
     list_display = ['medicament', 'amount', 'date', 'reason']
     list_filter = ['medicament', 'owner']

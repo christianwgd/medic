@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n l10n static django_bootstrap5 usrprofile_tags %}
+
+{% block bootstrap5_extra_head %}
+{{ block.super }}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock %}
+
+{% block bootstrap5_extra_script %}
+{{ block.super }}
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-action").modalForm({
+        formURL: "{% url 'order:create' %}",
+        modalID: "#modal",
+        errorClass: '.is-invalid'
+    });
+
+});
+</script>
+{% endblock %}
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+{% trans 'Orders' as user_title %}
+{% user_header user_title request.user %}
+
+<div class="btn-group" role="group" >
+    <a href="{% url 'startpage' %}" class="btn btn-primary" role="button" title="{% trans 'Home page' %}">
+        <i class="far fa-home"></i>
+    </a>
+    <button id="create-action" class="btn btn-primary" role="button" title="{% trans 'New Order' %}">
+        <i class="far fa-plus"></i>
+    </button>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+    <table data-toggle="table" data-classes="table table-striped table-bordered"
+           data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
+        <thead>
+            <tr>
+                <th>{% trans 'Order' context 'order' %}</th>
+                <th>{% trans 'Medicaments' %}</th>
+            </thead>
+            <tbody>
+                {% for order in order_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'order:detail' order.id %}">
+                            {{ order.date|date:"SHORT_DATETIME_FORMAT" }}
+                        </a>
+                    </td>
+                    <td>
+                        {% for med in order.medicaments.all %}
+                            {% if order.done %}
+                            <span class="badge bg-secondary">{{ med }}</span>
+                            {% else %}
+                            <span class="badge bg-primary">{{ med }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+

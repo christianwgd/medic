@@ -1,0 +1,25 @@
+{% load i18n static django_bootstrap5 %}
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">
+            {% trans 'Order' context 'order' %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <h4>{% trans 'Select medicaments to order' %}</h4>
+        {% bootstrap_field form.medicaments show_label=False %}
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+            {% trans 'Ok' %}
+        </button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button" aria-label="Close">
+            {% trans 'Cancel' %}
+        </button>
+    </div>
+</form>

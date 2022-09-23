@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     'measurement.apps.WerteConfig',
     'medicament.apps.MedicamentConfig',
     'prescription.apps.PrescriptionConfig',
+    'order.apps.OrderConfig',
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',

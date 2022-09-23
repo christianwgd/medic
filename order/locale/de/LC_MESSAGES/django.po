@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-24 13:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps.py:9 models.py:16 templates/order/order_detail.html:34
+#: templates/order/order_detail.html:39 templates/order/order_form.html:7
+#: templates/order/order_list.html:50
+msgctxt "order"
+msgid "Order"
+msgstr "Bestellung"
+
+#: models.py:17 templates/order/order_list.html:32
+msgid "Orders"
+msgstr "Bestellungen"
+
+#: models.py:27
+msgid "Owner"
+msgstr ""
+
+#: models.py:30 templates/order/order_list.html:51
+msgid "Medicaments"
+msgstr ""
+
+#: models.py:34
+msgid "Done"
+msgstr "Abgeschlossen"
+
+#: templates/order/order_confirm_delete.html:6
+msgid "Delete order"
+msgstr "Bestellung löschen"
+
+#: templates/order/order_confirm_delete.html:11
+#, python-format
+msgid "Really delete order \"%(object)s\"?"
+msgstr "Bestellung vom %(object)s wirklich löschen?"
+
+#: templates/order/order_confirm_delete.html:16
+#: templates/order/order_detail.html:55
+msgid "Delete"
+msgstr ""
+
+#: templates/order/order_detail.html:60
+msgid "Edit"
+msgstr ""
+
+#: templates/order/order_detail.html:64 templates/order/order_detail.html:68
+msgctxt "order"
+msgid "Close"
+msgstr "Abschließen"
+
+#: templates/order/order_detail.html:72
+msgid "Back"
+msgstr ""
+
+#: templates/order/order_form.html:13
+msgid "Select medicaments to order"
+msgstr "Medikamente auswählen"
+
+#: templates/order/order_form.html:19
+msgid "Ok"
+msgstr ""
+
+#: templates/order/order_form.html:22
+msgid "Cancel"
+msgstr ""
+
+#: templates/order/order_list.html:36
+msgid "Home page"
+msgstr ""
+
+#: templates/order/order_list.html:39
+msgid "New Order"
+msgstr "Neue Bestellung"
+
+#: tests.py:48
+msgid "This field is required."
+msgstr ""
+
+#: views.py:69
+msgid "Order closed"
+msgstr "Bestellungen abgeschlossen"

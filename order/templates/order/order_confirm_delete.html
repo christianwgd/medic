@@ -1,0 +1,20 @@
+{% load static i18n django_bootstrap5 %}
+
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+    <div class="modal-header">
+        <h2 class="modal-title">{% trans 'Delete order' %}</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <h4>{% blocktrans trimmed %}Really delete order "{{ object }}"?{% endblocktrans %}</h4>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-danger">
+            {% trans 'Delete' %}
+        </button>
+    </div>
+
+</form>
