@@ -41,7 +41,7 @@ class MedicamentDetailView(LoginRequiredMixin, DetailView):
 
 class MedicamentReadView(LoginRequiredMixin, BSModalReadView):
     model = Medicament
-    template_name = 'medicament/medicament_detaiL_modal.html'
+    template_name = 'medicament/medicament_detail_modal.html'
 
 
 class MedicamentCreateView(LoginRequiredMixin, BSModalCreateView):
