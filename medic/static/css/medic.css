@@ -108,3 +108,7 @@ td > a {
 .page-item.disabled a.page-link {
     color: #cccccc;
 }
+
+div.label {
+    color: #777777;
+}

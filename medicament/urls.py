@@ -7,6 +7,7 @@ app_name = 'medicament'
 urlpatterns = [
     path('list/', views.MedicamentListView.as_view(), name='list'),
     path('detail/<int:pk>/', views.MedicamentDetailView.as_view(), name='detail'),
+    path('read/<int:pk>/', views.MedicamentReadView.as_view(), name='read'),
     path('create/', views.MedicamentCreateView.as_view(), name='create'),
     path('update/<int:pk>/', views.MedicamentUpdateView.as_view(), name='update'),
     path('delete/<int:pk>/', views.MedicamentDeleteView.as_view(), name='delete'),

@@ -1,0 +1,45 @@
+{% load django_bootstrap5 i18n %}
+<form role="form" class="form-horizontal" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">
+            {% trans 'Medicament' %}
+            {% if object.id %}
+                &dash; {{ object.name }}
+                {{ object.strength }}
+                {{ object.unit }}
+            {% endif %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-6">
+                <div class="label">{% trans 'Medicament' %}</div>
+                <h5 class="value">{{ medicament.name }}</h5>
+
+                <div class="label">{% trans 'Package size' %}</div>
+                <h5 class="value">{{ medicament.package }} {% trans 'Tabl.' %}</h5>
+
+                <div class="label">{% trans 'Dose' %}</div>
+                <h5 class="value">{{ medicament.strength|floatformat:2 }} {{ medicament.unit }}</h5>
+            </div>
+            <div class="col-6">
+                <div class="label">{% trans 'Active ingredient' %}</div>
+                <h5 class="value">{{ medicament.ingredient }}</h5>
+
+                <div class="label">{% trans 'Producer' %}</div>
+                <h5 class="value">{{ medicament.producer }}</h5>
+            </div>
+        </div>
+    </div>
+
+  <div class="modal-footer">
+      <button class="btn btn-primary" data-bs-dismiss="modal" type="button" aria-label="Close">
+          {% trans 'Ok' %}
+      </button>
+  </div>
+
+</form>

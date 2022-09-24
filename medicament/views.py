@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalReadView
 from bootstrap_modal_forms.utils import is_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -37,6 +37,11 @@ class MedicamentListView(LoginRequiredMixin, FilterView):
 
 class MedicamentDetailView(LoginRequiredMixin, DetailView):
     model = Medicament
+
+
+class MedicamentReadView(LoginRequiredMixin, BSModalReadView):
+    model = Medicament
+    template_name = 'medicament/medicament_detaiL_modal.html'
 
 
 class MedicamentCreateView(LoginRequiredMixin, BSModalCreateView):

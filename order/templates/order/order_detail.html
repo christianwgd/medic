@@ -24,6 +24,14 @@ $(document).ready(function() {
         errorClass: '.is-invalid'
     });
 
+    $(".display").each(function() {
+        $(this).modalForm({
+            formURL: $(this).data('url'),
+            modalID: "#modal",
+            errorClass: '.is-invalid'
+        });
+    });
+
 });
 </script>
 {% endblock %}
@@ -38,7 +46,7 @@ $(document).ready(function() {
     <div class="col-12">
         <h3>{% trans 'Order' context 'order' %} {{ order }}</h3>
         {% for med in order.medicaments.all %}
-        <h5>
+        <h5 class="display" data-url="{% url 'medicament:read' med.id %}">
             {% if order.done %}
             <span class="badge bg-secondary">{{ med }}</span>
             {% else %}
