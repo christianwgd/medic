@@ -193,7 +193,7 @@ msgstr "Startseite"
 
 #: templates/medicament/medicament_filter.html:42
 msgid "New medicament"
-msgstr "Neues Medicament"
+msgstr "Neues Medikament"
 
 #: templates/medicament/medicament_filter.html:58
 #: templates/medicament/stockchange_filter.html:43
@@ -227,15 +227,15 @@ msgstr ""
 
 #: views.py:45
 msgid "New medicament saved."
-msgstr "Neues Medicament gespeichert."
+msgstr "Neues Medikament gespeichert."
 
 #: views.py:57
 msgid "Medicament saved."
-msgstr "Medicament gespeichert."
+msgstr "Medikament gespeichert."
 
 #: views.py:66
 msgid "Medicament deleted"
-msgstr "Medicament gelöscht."
+msgstr "Medikament gelöscht."
 
 #: views.py:80
 msgid "Stock update saved."
