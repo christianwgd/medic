@@ -36,33 +36,29 @@ $(document).ready(function() {
 {% user_header medicament request.user name=med %}
 
 <div class="row mt-3">
-    <div class="col-12">
-        <table id="med" class="table table-bordered">
-            <tbody>
-                <tr>
-                    <th class="label">{% trans 'Medicament' %}</th>
-                    <td>{{ medicament.name }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans 'Active ingredient' %}</th>
-                    <td>{{ medicament.ingredient }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans 'Package size' %}</th>
-                    <td>{{ medicament.package }} {% trans 'Tabl.' %}</td>
-                </tr>
-                <tr>
-                    <th>{% trans 'Dose' %}</th>
-                    <td>{{ medicament.strength|floatformat:2 }} {{ medicament.unit }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans 'Stock' %}</th>
-                    <td>{{ medicament.stock|floatformat:2 }} {% trans 'Tabl.' %}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="col-6">
+        <div class="label">{% trans 'Medicament' %}</div>
+        <h5 class="value">{{ medicament.name }}</h5>
+
+        <div class="label">{% trans 'Package size' %}</div>
+        <h5 class="value">{{ medicament.package }} {% trans 'Tabl.' %}</h5>
+
+        <div class="label">{% trans 'Dose' %}</div>
+        <h5 class="value">{{ medicament.strength|floatformat:2 }} {{ medicament.unit }}</h5>
+    </div>
+    <div class="col-6">
+        <div class="label">{% trans 'Active ingredient' %}</div>
+        <h5 class="value">{{ medicament.ingredient }}</h5>
+
+        <div class="label">{% trans 'Producer' %}</div>
+        <h5 class="value">{{ medicament.producer }}</h5>
+
+        <div class="label">{% trans 'Stock' %}</div>
+        <h5 class="value">{{ medicament.stock|floatformat:2 }} {% trans 'Tabl.' %}</h5>
     </div>
 </div>
+
+<hr/>
 
 <div class="row">
     <div class="col text-end">

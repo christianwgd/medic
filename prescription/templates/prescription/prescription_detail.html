@@ -35,97 +35,83 @@ $(document).ready(function() {
 {% user_header prescription request.user name=prsc %}
 
 <div class="row mt-3">
-    <div class="col-12">
-        <table id="med" class="table table-bordered">
-            <tbody>
-                <tr>
-                    <th class="label">{% trans 'Medicament' %}</th>
-                    <td>{{ prescription.medicament.name }}</td>
-                </tr>
-                <tr>
-                    <td>{% trans 'Active ingredient' %}</td>
-                    <td>{{ prescription.medicament.ingredient }}</td>
-                </tr>
-                <tr>
-                    <td>{% trans 'Package size' %}</td>
-                    <td>{{ prescription.medicament.package }} {% trans 'Tabl.' %}</td>
-                </tr>
-                <tr>
-                    <td>{% trans 'Dose' %}</td>
-                    <td>
-                        {{ prescription.medicament.strength|floatformat:2 }}
-                        {{ prescription.medicament.unit }}
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        {% trans 'Prescription' %}
-                    </th>
-                </tr>
-                {% if prescription.morning %}
-                <tr>
-                    <td>{% trans 'Morning' %}</td>
-                    <td>
-                        {{ prescription.morning|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis prescription.morning prescription.id %})</small>
-                    </td>
-                </tr>
-                {% endif %}
-                {% if prescription.noon %}
-                <tr>
-                    <td>{% trans 'Noon' %}</td>
-                    <td>
-                        {{ prescription.noon|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis prescription.noon prescription.id %})</small>
-                    </td>
-                </tr>
-                {% endif %}
-                {% if prescription.evening %}
-                <tr>
-                    <td>{% trans 'Evening' %}</td>
-                    <td>
-                        {{ prescription.evening|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis prescription.evening prescription.id %})</small>
-                    </td>
-                </tr>
-                {% endif %}
-                {% if prescription.night %}
-                <tr>
-                    <td>{% trans 'Night' %}</td>
-                    <td>
-                        {{ prescription.night|floatformat:2 }} {% trans 'Tabl.' %}
-                        <small>({% calc_dosis prescription.night prescription.id %})</small>
-                    </td>
-                </tr>
-                {% endif %}
-                <tr>
-                    <td>{% trans 'Weekdays' %}</td>
-                    <td>
-                        {% weekday_disp prescription.weekdays %}
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        {% trans 'Valid' %}
-                    </th>
-                </tr>
-                <tr>
-                    <td>{% trans 'Valid from' %}</td>
-                    <td>
-                        {{ prescription.valid_from|date:'DATE_FORMAT' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{% trans 'Valid until' %}</td>
-                    <td>
-                        {% trans 'unlimited' as unlimited %}
-                        {{ prescription.valid_until|date:'DATE_FORMAT'|default:unlimited }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <h4>{% trans 'Medicament' %}</h4>
+    <div class="col-6">
+        <div class="label">{% trans 'Medicament' %}</div>
+        <h5 class="value">{{ prescription.medicament.name }}</h5>
+
+        <div class="label">{% trans 'Package size' %}</div>
+        <h5 class="value">{{ prescription.medicament.package }} {% trans 'Tabl.' %}</h5>
+
+        <div class="label">{% trans 'Dose' %}</div>
+        <h5 class="value">{{ prescription.medicament.strength|floatformat:2 }} {{ medicament.unit }}</h5>
+    </div>
+    <div class="col-6">
+        <div class="label">{% trans 'Active ingredient' %}</div>
+        <h5 class="value">{{ prescription.medicament.ingredient }}</h5>
+
+        <div class="label">{% trans 'Producer' %}</div>
+        <h5 class="value">{{ prescription.medicament.producer }}</h5>
+
+        <div class="label">{% trans 'Stock' %}</div>
+        <h5 class="value">{{ prescription.medicament.stock|floatformat:2 }} {% trans 'Tabl.' %}</h5>
     </div>
 </div>
+
+<div class="row mt-3">
+    <h4>{% trans 'Prescription' %}</h4>
+    <div class="col-6">
+        {% if prescription.morning %}
+        <div class="label">{% trans 'Morning' %}</div>
+        <h5 class="value">
+            {{ prescription.morning|floatformat:2 }} {% trans 'Tabl.' %}
+            <small>({% calc_dosis prescription.morning prescription.id %})</small>
+        </h5>
+        {% endif %}
+        {% if prescription.noon %}
+        <div class="label">{% trans 'Noon' %}</div>
+        <h5 class="value">
+            {{ prescription.noon|floatformat:2 }} {% trans 'Tabl.' %}
+            <small>({% calc_dosis prescription.noon prescription.id %})</small>
+        </h5>
+        {% endif %}
+        {% if prescription.evening %}
+        <div class="label">{% trans 'Evening' %}</div>
+        <h5 class="value">
+            {{ prescription.evening|floatformat:2 }} {% trans 'Tabl.' %}
+            <small>({% calc_dosis prescription.evening prescription.id %})</small>
+        </h5>
+        {% endif %}
+        {% if prescription.night %}
+        <div class="label">{% trans 'Night' %}</div>
+        <h5 class="value">
+            {{ prescription.night|floatformat:2 }} {% trans 'Tabl.' %}
+            <small>({% calc_dosis prescription.night prescription.id %})</small>
+        </h5>
+        {% endif %}
+    </div>
+    <div class="col-6">
+        <div class="label">{% trans 'Weekdays' %}</div>
+        <h5 class="value">{% weekday_disp prescription.weekdays %}</h5>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <h4>{% trans 'Valid' %}</h4>
+    <div class="col-6">
+        <div class="label">{% trans 'Valid from' %}</div>
+        <h5 class="value">{{ prescription.valid_from|date:'DATE_FORMAT' }}</h5>
+    </div>
+    <div class="col-6">
+        <div class="label">{% trans 'Valid until' %}</div>
+        <h5 class="value">
+            {% trans 'unlimited' as unlimited %}
+            {{ prescription.valid_until|date:'DATE_FORMAT'|default:unlimited }}
+        </h5>
+    </div>
+</div>
+
+<hr/>
 
 <div class="row">
     <div class="col-4">
