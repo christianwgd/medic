@@ -8,9 +8,9 @@ django-chartjs==2.3.0
 django-filter==22.1
 django-formtools==2.4
 django-mail-templated==2.6.5
-# django-two-factor-auth depends on
+# django-two-factor-auth 1.14 depends on
 # django-phonenumber-field < 7.0.0
-django-phonenumber-field==6.4.0
+django-phonenumber-field < 7.0.0
 django-two-factor-auth==1.14.0
 phonenumbers==8.12.57
-psycopg2-binary==2.9.3
+psycopg2-binary==2.9.4
