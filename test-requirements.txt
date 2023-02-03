@@ -1,5 +1,4 @@
-coverage==6.5.0
-Faker==15.1.1
-# Stick to pylint 2.14 due to https://github.com/PyCQA/pylint-django/issues/370
-pylint==2.14.5
+coverage==7.1.0
+Faker==16.6.1
+pylint==2.16.1
 pylint-django==2.5.3
