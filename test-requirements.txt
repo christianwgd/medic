@@ -1,4 +1,4 @@
 coverage==7.1.0
-Faker==16.6.1
-pylint==2.16.1
+Faker==17.0.0
+pylint==2.16.2
 pylint-django==2.5.3
