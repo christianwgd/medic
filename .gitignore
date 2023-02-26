@@ -14,3 +14,5 @@ json/
 *.afdesign
 .coverage
 htmlcov/
+coverage.xml
+unittest.xml
