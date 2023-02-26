@@ -52,7 +52,7 @@ jobs:
     - name: Upload to codecov.io
       uses: codecov/codecov-action@v3
       env:
-          CODECOV_TOKEN: 'b67b497d-dda3-4f98-a5b6-b7bcc3f8ee4c'
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
