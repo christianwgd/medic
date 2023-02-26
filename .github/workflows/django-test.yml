@@ -29,7 +29,7 @@ jobs:
         python manage.py migrate
     - name: Run Tests
       run: |
-        python manage.py test
+        pytest
 
   Coverage:
     runs-on: ubuntu-latest
@@ -47,8 +47,11 @@ jobs:
         pip install -r test-requirements.txt
     - name: Create coverage report
       run: |
-        coverage run --source='.' manage.py test
-        coverage xml
+        pytest --junitxml=unittest.xml --cov --cov-report=xml
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2.4.1
+      with:
+          files: "./unittest.xml"
     - name: Upload to codecov.io
       uses: codecov/codecov-action@v3
       env:
