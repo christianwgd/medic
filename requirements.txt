@@ -11,7 +11,7 @@ django-mail-templated==2.6.5
 # django-two-factor-auth depends on
 # django-two-factor-auth 1.14 depends on
 # django-phonenumber-field < 7.0.0
-django-phonenumber-field==7.0.2
+django-phonenumber-field==6.4.0
 django-two-factor-auth==1.15.1
 phonenumbers==8.13.8
 psycopg2-binary==2.9.6
