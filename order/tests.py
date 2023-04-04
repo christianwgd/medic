@@ -54,7 +54,7 @@ class OrderFormTests(MedicamentTestCase):
 
     def test_medicament_form_queryset(self):
         form = OrderForm({}, user=self.user)
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             form.fields['medicaments'].queryset,
             Medicament.objects.all()
         )
