@@ -6,13 +6,16 @@ from medicament.models import Medicament, StockChange, REASON_CHOICES
 
 
 class MedicamentForm(BSModalModelForm):
+
+    pzn_no = forms.CharField(max_length=10, required=False, label=_("PZN"))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'].widget = forms.TextInput({"autofocus": "autofocus"})
 
     class Meta:
         model = Medicament
-        fields = ['name', 'producer', 'ingredient', 'package', 'strength', 'unit']
+        fields = ['name', 'producer', 'ingredient', 'package', 'strength', 'unit', 'pzn_no']
 
 
 class StockChangeForm(BSModalModelForm):

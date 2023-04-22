@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 from faker import Faker
 
 from medicament.forms import MedicamentForm, StockChangeForm
-from medicament.models import Medicament, UNIT_CHOICES, StockChange
+from medicament.models import Medicament, UNIT_CHOICES, StockChange, DosageForm, MedPznData
 from prescription.models import Prescription
 
 
@@ -27,6 +27,17 @@ class MedicamentTestCase(TestCase):
             strength=self.fake.random_int(min=1, max=50, step=5),
             unit=UNIT_CHOICES[self.fake.random_int(min=0, max=3)][0],
             owner=self.user
+        )
+        self.dosage_form = DosageForm.objects.create(
+            key='abc', short='abc_short', name=self.fake.word()
+        )
+        self.pzn = MedPznData.objects.create(
+            pzn=12345,
+            name=self.fake.word(),
+            producer=self.fake.word(),
+            dosage_form=self.dosage_form,
+            ref_date=self.fake.date_object(),
+            verification=self.fake.word()[:8]
         )
 
 
@@ -94,6 +105,21 @@ class MedicamentModelTest(MedicamentTestCase):
         )
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.stock, med_stock - 5)
+
+    def test_dosage_form_str(self):
+        self.assertEqual(str(self.dosage_form), self.dosage_form.name)
+
+    def test_pzn_data_str(self):
+        self.assertEqual(str(self.pzn), self.pzn.name)
+
+    def test_pzn_data_as_json(self):
+        self.assertEqual(
+            self.pzn.as_json(),
+            {
+                'id': self.pzn.id, 'pzn': self.pzn.pzn,
+                'name': self.pzn.name, 'producer': self.pzn.producer
+            }
+        )
 
 
 class MedicamentFormTests(MedicamentTestCase):
@@ -199,6 +225,26 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(new_med.strength, Decimal(2.0))
         self.assertEqual(new_med.unit, 'mg')
 
+    def test_medicament_create_view_post_with_pzn(self):
+        self.client.force_login(self.user)
+        update_url = reverse('medicament:create')
+        form_data = {
+            'name': 'New medicament',
+            'package': 100,
+            'strength': Decimal(2.0),
+            'unit': 'mg',
+            'pzn_no': str(self.pzn.pzn),
+        }
+        response = self.client.post(update_url, form_data)
+        self.assertEqual(response.status_code, 302)
+        list_url = reverse('medicament:list')
+        self.assertEqual(response.url, list_url)
+        new_med = Medicament.objects.get(name='New medicament')
+        self.assertEqual(new_med.package, 100)
+        self.assertEqual(new_med.strength, Decimal(2.0))
+        self.assertEqual(new_med.unit, 'mg')
+        self.assertEqual(new_med.pzn, self.pzn)
+
     def test_medicament_update_view_no_user(self):
         update_url = reverse('medicament:update', kwargs={'pk': self.medicament.id})
         response = self.client.get(update_url)
@@ -206,6 +252,18 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.url, f'/accounts/login/?next={update_url}')
 
     def test_medicament_update_view_get(self):
+        self.client.force_login(self.user)
+        update_url = reverse('medicament:update', kwargs={'pk': self.medicament.id})
+        response = self.client.get(update_url)
+        self.assertEqual(response.status_code, 200)
+        medicament = response.context['medicament']
+        self.assertIsInstance(medicament, Medicament)
+        self.assertEqual(medicament, self.medicament)
+
+    def test_medicament_update_view_get_with_pzn(self):
+        self.medicament.pzn = self.pzn
+        self.medicament.save()
+        self.medicament.refresh_from_db()
         self.client.force_login(self.user)
         update_url = reverse('medicament:update', kwargs={'pk': self.medicament.id})
         response = self.client.get(update_url)
@@ -464,3 +522,36 @@ class MedicamentViewsTest(MedicamentTestCase):
         consumption = response.json()['consumption']
         # med.last_calc is today, so consumption should be 0
         self.assertEqual(consumption, 0)
+
+    def test_pzn_search(self):
+        self.client.force_login(self.user)
+        pzn_search_url = reverse('medicament:pzn-search', kwargs={'pzn': self.pzn.pzn})
+        response = self.client.get(pzn_search_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'id': self.pzn.id, 'pzn': self.pzn.pzn,
+                'name': self.pzn.name, 'producer': self.pzn.producer
+            }
+        )
+
+    def test_pzn_search_not_found(self):
+        self.client.force_login(self.user)
+        pzn_search_url = reverse('medicament:pzn-search', kwargs={'pzn': 111})
+        response = self.client.get(pzn_search_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'error': 'PZN not found'}
+        )
+
+    def test_pzn_search_value_error(self):
+        self.client.force_login(self.user)
+        pzn_search_url = reverse('medicament:pzn-search', kwargs={'pzn': 'abc'})
+        response = self.client.get(pzn_search_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'error': 'Value error'}
+        )

@@ -14,4 +14,5 @@ urlpatterns = [
     path('stock-change/<int:med_id>/', views.StockChangeCreateView.as_view(), name='stock-change'),
     path('stock-history/<int:med_id>/', views.StockChangeHistoryView.as_view(), name='stock-history'),
     path('stock-calc/<int:med_id>/', views.calc_consumption, name='stock-calc'),
+    path('pzn-search/<str:pzn>/', views.pzn_search, name='pzn-search'),
 ]
