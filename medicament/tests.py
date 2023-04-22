@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 from faker import Faker
 
 from medicament.forms import MedicamentForm, StockChangeForm
-from medicament.models import Medicament, UNIT_CHOICES, StockChange
+from medicament.models import Medicament, UNIT_CHOICES, StockChange, DosageForm, MedPznData
 from prescription.models import Prescription
 
 
@@ -27,6 +27,9 @@ class MedicamentTestCase(TestCase):
             strength=self.fake.random_int(min=1, max=50, step=5),
             unit=UNIT_CHOICES[self.fake.random_int(min=0, max=3)][0],
             owner=self.user
+        )
+        self.dosage_form = DosageForm.objects.create(
+            key='abc', short='abc_short', name=self.fake.word()
         )
 
 
@@ -94,6 +97,20 @@ class MedicamentModelTest(MedicamentTestCase):
         )
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.stock, med_stock - 5)
+
+    def test_dosage_form_str(self):
+        self.assertEqual(str(self.dosage_form), self.dosage_form.name)
+
+    def test_pzn_data_str(self):
+        pzn = MedPznData.objects.create(
+            pzn='12345',
+            name=self.fake.word(),
+            producer=self.fake.word(),
+            dosage_form=self.dosage_form,
+            ref_date=self.fake.date_object(),
+            verification=self.fake.word()[:8]
+        )
+        self.assertEqual(str(pzn), pzn.name)
 
 
 class MedicamentFormTests(MedicamentTestCase):
