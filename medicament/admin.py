@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from medicament.models import Medicament, StockChange
+from medicament.models import Medicament, StockChange, DosageForm, MedPznData
 
 
 @admin.register(Medicament)
@@ -18,3 +18,17 @@ class StockChangeAdmin(admin.ModelAdmin):
     list_display = ['medicament', 'amount', 'date', 'reason']
     list_filter = ['medicament', 'owner']
     date_hierarchy = 'date'
+
+
+@admin.register(DosageForm)
+class DosageFormAdmin(admin.ModelAdmin):
+
+    list_display = ['key', 'short', 'name']
+    search_fields = ['key', 'short', 'name']
+
+
+@admin.register(MedPznData)
+class MedPznDataAdmin(admin.ModelAdmin):
+
+    list_display = ['pzn', 'name', 'producer']
+    search_fields = ['pzn', 'name']
