@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.db.models import ProtectedError
 from django_filters.views import FilterView
 
-from medicament.models import Medicament, StockChange
+from medicament.models import Medicament, StockChange, MedPznData
 from medicament.filter import MedicamentFilter, StockChangeFilter
 from medicament.forms import MedicamentForm, StockChangeForm
 
@@ -52,6 +52,10 @@ class MedicamentCreateView(LoginRequiredMixin, BSModalCreateView):
 
     def form_valid(self, form):
         new_med = form.save(commit=False)
+        if 'pzn_no' in form.cleaned_data and form.cleaned_data['pzn_no'] != '':
+            new_med.pzn = MedPznData.objects.get(
+                pzn=int(form.cleaned_data['pzn_no'])
+            )
         new_med.owner = self.request.user
         return super().form_valid(form)
 
@@ -60,6 +64,12 @@ class MedicamentUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = Medicament
     form_class = MedicamentForm
     success_message = _('Medicament saved.')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.object.pzn:
+            initial['pzn_no'] = str(self.object.pzn.pzn)
+        return initial
 
     def get_success_url(self):
         return reverse('medicament:detail', kwargs={'pk': self.object.id})
@@ -156,3 +166,16 @@ def calc_consumption(request, med_id):
     else:
         consumption = 0
     return JsonResponse({'consumption': consumption})
+
+
+@require_http_methods(['GET'])
+@login_required
+def pzn_search(request, pzn):
+    try:
+        pzn_int = int(pzn)
+        med = MedPznData.objects.get(pzn=pzn_int)
+        return JsonResponse(med.as_json())
+    except MedPznData.DoesNotExist:
+        return JsonResponse({'error': 'PZN not found'})
+    except ValueError:
+        return JsonResponse({'error': 'Value error'})

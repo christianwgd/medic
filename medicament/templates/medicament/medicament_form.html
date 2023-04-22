@@ -16,7 +16,49 @@
 
     <div class="modal-body">
         <div class="{% if form.non_field_errors %}is-invalid{% endif %}"></div>
-        {% bootstrap_form form layout='floating' %}
+        <div class="row">
+            <div class="col-10">
+                {% bootstrap_field form.pzn_no layout='floating' wrapper_class='mb-0' %}
+            </div>
+            <div class="col-2 p-1">
+                <button class="btn btn-lg btn-secondary" type="button" id="id_search_pzn">
+                    <i class="far fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <script>
+            $('#id_search_pzn').click(function() {
+                let pzn = $('#id_pzn_no').val();
+                if (pzn.length > 0) {
+                    $.get({
+                        url: `/medicament/pzn-search/${pzn}/`,
+                        success: function (data) {
+                            if (!('error' in data)) {
+                                const REGEX = /\d+/g;
+                                let strength_str = data.name.match(REGEX);
+                                let strength = parseInt(strength_str);
+                                if ($('#id_name').val().length === 0) {
+                                    $('#id_name').val(data.name);
+                                    $('#id_strength').val(strength);
+                                }
+                                if ($('#id_producer').val().length === 0) {
+                                    $('#id_producer').val(data.producer);
+                                }
+                            } else {
+                                alert(data.error);
+                            }
+                        },
+                    });
+                }
+            });
+        </script>
+        <hr/>
+        {% bootstrap_field form.name layout='floating' %}
+        {% bootstrap_field form.producer layout='floating' %}
+        {% bootstrap_field form.ingredient layout='floating' %}
+        {% bootstrap_field form.package layout='floating' %}
+        {% bootstrap_field form.strength layout='floating' %}
+        {% bootstrap_field form.unit layout='floating' %}
     </div>
 
   <div class="modal-footer">

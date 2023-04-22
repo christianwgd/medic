@@ -36,7 +36,6 @@ $(document).ready(function () {
         let package = "{{ package|safe }}";
         let default_amount = "{{ dose|safe }}";
         let reason = $(this).children(":selected").val();
-        console.log(reason);
         if (reason !== '') {
             switch (reason) {
                 case "00":
