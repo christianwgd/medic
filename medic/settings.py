@@ -37,8 +37,6 @@ MANAGERS = ADMINS
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-LOGIN_REDIRECT_URL = '/'
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -135,7 +133,6 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
     'two_factor',
-    'two_factor.plugins.phonenumber',
     'django_bootstrap5',
     'bootstrap_modal_forms',
 ]
