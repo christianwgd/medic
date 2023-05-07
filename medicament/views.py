@@ -2,7 +2,6 @@
 import logging
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalReadView
-from bootstrap_modal_forms.utils import is_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -50,6 +49,9 @@ class MedicamentCreateView(LoginRequiredMixin, BSModalCreateView):
     success_message = _('New medicament saved.')
     success_url = reverse_lazy('medicament:list')
 
+    # def get_success_url(self):
+    #     return reverse('medicament:list')
+
     def form_valid(self, form):
         new_med = form.save(commit=False)
         if 'pzn_no' in form.cleaned_data and form.cleaned_data['pzn_no'] != '':
@@ -71,8 +73,8 @@ class MedicamentUpdateView(LoginRequiredMixin, BSModalUpdateView):
             initial['pzn_no'] = str(self.object.pzn.pzn)
         return initial
 
-    def get_success_url(self):
-        return reverse('medicament:detail', kwargs={'pk': self.object.id})
+    # def get_success_url(self):
+    #     return reverse('medicament:detail', kwargs={'pk': self.object.id})
 
 
 class MedicamentDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
@@ -82,14 +84,15 @@ class MedicamentDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def form_valid(self, form):
         try:
-            if not is_ajax(self.request.META):
-                super().form_valid(form)
+            super().form_valid(form)
         except ProtectedError:
             messages.error(self.request, _('Could not delete medicament due to existing prescription.'))
         return redirect(self.success_url)
 
 
-class StockChangeCreateView(LoginRequiredMixin, BSModalCreateView):
+# def form_valid(self, form):
+# def form_valid(self, form):
+class StockChangeCreateView(LoginRequiredMixin, SuccessMessageMixin, BSModalCreateView):
     model = StockChange
     form_class = StockChangeForm
     success_message = _('Stock update saved.')
