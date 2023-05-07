@@ -209,14 +209,14 @@ class MedicamentViewsTest(MedicamentTestCase):
 
     def test_medicament_create_view_post(self):
         self.client.force_login(self.user)
-        update_url = reverse('medicament:create')
+        create_url = reverse('medicament:create')
         form_data = {
             'name': 'New medicament',
             'package': 100,
             'strength': Decimal(2.0),
             'unit': 'mg',
         }
-        response = self.client.post(update_url, form_data)
+        response = self.client.post(create_url, form_data)
         self.assertEqual(response.status_code, 302)
         list_url = reverse('medicament:list')
         self.assertEqual(response.url, list_url)
@@ -227,7 +227,7 @@ class MedicamentViewsTest(MedicamentTestCase):
 
     def test_medicament_create_view_post_with_pzn(self):
         self.client.force_login(self.user)
-        update_url = reverse('medicament:create')
+        create_url = reverse('medicament:create')
         form_data = {
             'name': 'New medicament',
             'package': 100,
@@ -235,7 +235,7 @@ class MedicamentViewsTest(MedicamentTestCase):
             'unit': 'mg',
             'pzn_no': str(self.pzn.pzn),
         }
-        response = self.client.post(update_url, form_data)
+        response = self.client.post(create_url, form_data)
         self.assertEqual(response.status_code, 302)
         list_url = reverse('medicament:list')
         self.assertEqual(response.url, list_url)

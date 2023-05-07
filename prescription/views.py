@@ -1,8 +1,6 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
-from bootstrap_modal_forms.utils import is_ajax
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, DeleteView
 from django.utils.translation import gettext as _
@@ -50,7 +48,7 @@ class PrescriptionDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView
     success_url = reverse_lazy('prescription:list')
     success_message = _('Prescription deleted')
 
-    def form_valid(self, form):
-        if not is_ajax(self.request.META):
-            super().form_valid(form)
-        return redirect(self.success_url)
+    # def form_valid(self, form):
+    #     if not is_ajax(self.request.META):
+    #         super().form_valid(form)
+    #     return redirect(self.success_url)

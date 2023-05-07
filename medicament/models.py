@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib import auth
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils import formats
 from django.utils.translation import gettext as _
 
@@ -70,6 +71,9 @@ class Medicament(models.Model):
     def __str__(self):
         dose = formats.localize(self.strength, use_l10n=True)
         return f'{self.name} {dose} {self.unit}'
+
+    def get_absolute_url(self):
+        return reverse('medicament:detail', kwargs={'pk': self.pk})
 
     def get_active_prescription(self, for_user):
         # pylint: disable=no-member
