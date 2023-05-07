@@ -2,6 +2,7 @@ from gettext import pgettext
 
 from django.contrib import auth
 from django.db import models
+from django.urls import reverse
 from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -22,6 +23,9 @@ class Order(models.Model):
             timezone.localtime(self.date),
             format='SHORT_DATETIME_FORMAT',
         )
+
+    def get_absolute_url(self):
+        return reverse('order:detail', kwargs={'pk': self.pk})
 
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT, verbose_name=_('Owner'),

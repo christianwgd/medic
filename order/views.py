@@ -1,11 +1,10 @@
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
-from bootstrap_modal_forms.utils import is_ajax
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.urls import reverse
-from django.views.generic import ListView, DetailView, DeleteView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView
 from django.utils.translation import gettext as _
 
 from order.forms import OrderForm
@@ -23,9 +22,11 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 class OrderCreateView(LoginRequiredMixin, BSModalCreateView):
     model = Order
     form_class = OrderForm
+    success_message = _('Order created.')
+    success_url = reverse_lazy('order:list')
 
-    def get_success_url(self):
-        return reverse('order:list')
+    # def get_success_url(self):
+    #     return reverse('order:list')
 
     def get_form_kwargs(self, *args, **kwargs):
         form_kwargs = super().get_form_kwargs()
@@ -41,9 +42,7 @@ class OrderCreateView(LoginRequiredMixin, BSModalCreateView):
 class OrderUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = Order
     form_class = OrderForm
-
-    def get_success_url(self):
-        return reverse('order:detail', kwargs={'pk': self.object.id})
+    success_message = _('Order saved.')
 
     def get_form_kwargs(self, *args, **kwargs):
         form_kwargs = super().get_form_kwargs()
@@ -51,16 +50,12 @@ class OrderUpdateView(LoginRequiredMixin, BSModalUpdateView):
         return form_kwargs
 
 
-class OrderDeleteView(LoginRequiredMixin, DeleteView):
+class OrderDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = Order
+    success_message = _('Order deleted.')
 
     def get_success_url(self):
         return reverse('order:list')
-
-    def form_valid(self, form):
-        if not is_ajax(self.request.META):
-            super().form_valid(form)
-        return redirect(self.get_success_url())
 
 
 @login_required
