@@ -239,9 +239,11 @@ class MeasurementViewTests(TestCase):
             'rrdia': 80,
             'puls': 66
         }
+        measurements_count = Measurement.objects.count()
         response = self.client.post(create_url, form_data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('measurement:list'))
+        self.assertEqual(Measurement.objects.count(), measurements_count + 1)
         # Get the newly created measurement, first because reverse ordering
         new_measurement = Measurement.objects.first()
         self.assertEqual(new_measurement.values.get(value_type__slug='rrsys').value, 120)
