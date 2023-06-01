@@ -4,6 +4,7 @@
 import os
 import sys
 
+import sentry_sdk
 # turn warnings into exception...
 # import warnings
 # warnings.filterwarnings(
@@ -16,6 +17,15 @@ from django.contrib import messages
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
+
+sentry_sdk.init(
+    dsn="https://examplePublicKey@o0.ingest.sentry.io/0",
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+)
 
 # Settings for tests, override in production with localsettings!
 DEBUG = True

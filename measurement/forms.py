@@ -34,7 +34,7 @@ class MeasurementForm(BSModalModelForm):
         cleaned_data = super().clean()
         no_value = True
         # pylint: disable=unused-variable
-        for idx, value_type in enumerate(ValueType.objects.active()):
+        for _idx, value_type in enumerate(ValueType.objects.active()):
             if cleaned_data[value_type.slug]:
                 no_value = False
         if no_value:

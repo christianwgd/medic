@@ -1,0 +1,9 @@
+# Enable flake8-bugbear (`B`) rules.
+select = ["E", "F", "B"]
+
+line-length = 120
+
+# Ignore `E501` (line length) in all `__init__.py`  and migration files
+[per-file-ignores]
+"__init__.py" = ["E501"]
+"**/migrations/*.py" = ["E501"]
