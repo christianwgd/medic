@@ -92,7 +92,7 @@ class MedicamentDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
 # def form_valid(self, form):
 # def form_valid(self, form):
-class StockChangeCreateView(LoginRequiredMixin, SuccessMessageMixin, BSModalCreateView):
+class StockChangeCreateView(LoginRequiredMixin, BSModalCreateView):
     model = StockChange
     form_class = StockChangeForm
     success_message = _('Stock update saved.')
