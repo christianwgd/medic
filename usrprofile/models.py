@@ -87,8 +87,7 @@ class UserProfile(models.Model):
             user_full_name = self.ref_usr.get_full_name()
         else:
             user_full_name = self.ref_usr.username
-        userinfo = f'{user_full_name} {born}'
-        return userinfo
+        return f'{user_full_name} {born}'
 
 
 @receiver(models.signals.post_save, sender=User)

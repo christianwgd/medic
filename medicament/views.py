@@ -54,7 +54,7 @@ class MedicamentCreateView(LoginRequiredMixin, BSModalCreateView):
 
     def form_valid(self, form):
         new_med = form.save(commit=False)
-        if 'pzn_no' in form.cleaned_data and form.cleaned_data['pzn_no'] != '':
+        if 'pzn_no' in form.cleaned_data and form.cleaned_data['pzn_no']:
             new_med.pzn = MedPznData.objects.get(
                 pzn=int(form.cleaned_data['pzn_no'])
             )
