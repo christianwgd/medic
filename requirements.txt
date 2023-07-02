@@ -1,6 +1,6 @@
 Django==4.2.2
 django-admin-sortable2==2.1.8
-django-axes==6.0.4
+django-axes==6.0.5
 django-bitfield==2.2.0
 django-bootstrap-modal-forms==3.0.4
 django-bootstrap5==23.3
@@ -12,6 +12,6 @@ django-mail-templated==2.6.5
 # django-two-factor-auth 1.14 depends on
 # django-phonenumber-field < 7.0.0
 django-phonenumber-field==6.4.0
-django-two-factor-auth==1.15.2
+django-two-factor-auth==1.15.3
 phonenumbers==8.13.15
 psycopg2-binary==2.9.6
