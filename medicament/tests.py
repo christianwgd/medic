@@ -1,6 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 
+import pytest
 from django.contrib import auth
 from django.contrib.messages import get_messages
 from django.test import TestCase
@@ -309,7 +310,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         delete_url = reverse('medicament:delete', kwargs={'pk': self.medicament.id})
         response = self.client.post(delete_url)
         self.assertEqual(response.status_code, 302)
-        with self.assertRaises(Medicament.DoesNotExist):  # pylint: disable=no-member
+        with pytest.raises(Medicament.DoesNotExist):  # pylint: disable=no-member
             Medicament.objects.get(pk=med_id)
 
     def test_medicament_delete_view_post_restricted(self):

@@ -1,3 +1,4 @@
+import pytest
 from django.urls import reverse
 from django.utils import formats, timezone
 from django.utils.translation import gettext as _
@@ -157,7 +158,7 @@ class OrderViewTests(MedicamentTestCase):
         delete_url = reverse('order:delete', kwargs={'pk': self.order.id})
         response = self.client.post(delete_url)
         self.assertEqual(response.status_code, 302)
-        with self.assertRaises(Order.DoesNotExist):  # pylint: disable=no-member
+        with pytest.raises(Order.DoesNotExist):  # pylint: disable=no-member
             Order.objects.get(pk=order_id)
 
     def test_order_close(self):
