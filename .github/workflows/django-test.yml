@@ -27,7 +27,7 @@ jobs:
         pip install -r requirements.txt
         python manage.py migrate
     - name: Run Ruff
-      run: ruff check --format=github .
+      run: ruff check --output-format=github .
     - name: Run Tests
       run: pytest
 
