@@ -1,6 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 
+import pytest
 from django.contrib import auth
 from django.test import TestCase
 from django.urls import reverse
@@ -310,5 +311,5 @@ class PrescriptionViewsTest(PrescriptionTestCase):
         delete_url = reverse('prescription:delete', kwargs={'pk': self.prescription.id})
         response = self.client.post(delete_url)
         self.assertEqual(response.status_code, 302)
-        with self.assertRaises(Prescription.DoesNotExist):  # pylint: disable=no-member
+        with pytest.raises(Prescription.DoesNotExist):  # pylint: disable=no-member
             Prescription.objects.get(pk=prescription_id)
