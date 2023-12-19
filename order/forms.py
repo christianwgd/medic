@@ -16,5 +16,5 @@ class OrderForm(BSModalModelForm):
         super().__init__(*args, **kwargs)
         self.fields['medicaments'].widget = forms.CheckboxSelectMultiple()
         self.fields['medicaments'].queryset = Medicament.objects.filter(
-            id__in=user.prescriptions.values_list('medicament__id', flat=True)
+            id__in=user.prescriptions.values_list('medicament__id', flat=True),
         )

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
 from django.utils.translation import gettext as _
@@ -16,16 +16,16 @@ class MeasurementForm(BSModalModelForm):
                 label=value_type.name,
                 max_digits=5,
                 decimal_places=2,
-                required=False
+                required=False,
             )
             self.fields[value_type.slug].localize = True
             if idx == 0:
                 self.fields[value_type.slug].widget = forms.NumberInput(
-                    attrs={'min': 0, "autofocus": "autofocus"}
+                    attrs={'min': 0, "autofocus": "autofocus"},
                 )
             else:
                 self.fields[value_type.slug].widget = forms.NumberInput(
-                    attrs={'min': 0}
+                    attrs={'min': 0},
                 )
             self.Meta.fields.append(value_type.slug)
         self.Meta.fields.append('comment')

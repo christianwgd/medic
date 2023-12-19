@@ -6,7 +6,7 @@ from medicament.models import Medicament, StockChange
 class MedicamentFilter(FilterSet):
     class Meta:
         model = Medicament
-        fields = ['name', ]
+        fields = ['name' ]
 
     name = CharFilter(lookup_expr='icontains')
 

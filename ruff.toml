@@ -1,7 +1,8 @@
 # Enable flake8-bugbear (`B`) rules.
 select = [
-    "E", "F", "B", "PL", "S", "W", "N", "G", "C4", "EM",
-    "ISC", "ICN", "PIE", "T20", "PYI", "PT", "RET", "INT", "RUF"
+    "A", "B", "E", "F", "S", "W", "N", "G", "C4", "EM", "PL", "UP", "YTT", "INT",
+    "ISC", "ICN", "PIE", "T20", "PYI", "PT", "RET", "INT", "RUF", "FBT", "SIM", "TID",
+    "PTH",
 ]
 
 line-length = 120

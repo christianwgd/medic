@@ -15,8 +15,8 @@ def migrate_werte(apps, schema_editor):
             'name': 'RR sys',
             'unit': 'mm/Hg',
             'decimals': 0,
-            'sort_order': 0
-        }
+            'sort_order': 0,
+        },
     )
     rr_dia, created = value_type_model.objects.get_or_create(
         slug='rrdia', defaults={
@@ -24,8 +24,8 @@ def migrate_werte(apps, schema_editor):
             'name': 'RR dia',
             'unit': 'mm/Hg',
             'decimals': 0,
-            'sort_order': 1
-        }
+            'sort_order': 1,
+        },
     )
     puls, created = value_type_model.objects.get_or_create(
         slug='puls', defaults={
@@ -33,8 +33,8 @@ def migrate_werte(apps, schema_editor):
             'name': 'Puls',
             'unit': '1/min',
             'decimals': 0,
-            'sort_order': 2
-        }
+            'sort_order': 2,
+        },
     )
     temp, created = value_type_model.objects.get_or_create(
         slug='temp', defaults={
@@ -42,8 +42,8 @@ def migrate_werte(apps, schema_editor):
             'name': 'Temp.',
             'unit': '°C',
             'decimals': 1,
-            'sort_order': 3
-        }
+            'sort_order': 3,
+        },
     )
     gew, created = value_type_model.objects.get_or_create(
         slug='gewicht', defaults={
@@ -51,14 +51,14 @@ def migrate_werte(apps, schema_editor):
             'name': 'Gewicht',
             'unit': 'Kg',
             'decimals': 1,
-            'sort_order': 4
-        }
+            'sort_order': 4,
+        },
     )
 
     for wert in wert_model.objects.all():
         measurement = measurement_model.objects.create(
             owner=wert.ref_usr,
-            comment=wert.bemerkung
+            comment=wert.bemerkung,
         )
         measurement.date = wert.date
         measurement.save()
@@ -67,31 +67,31 @@ def migrate_werte(apps, schema_editor):
             value_model.objects.create(
                 measurement=measurement,
                 value_type=rr_sys,
-                value=wert.rrsys
+                value=wert.rrsys,
             )
         if wert.rrdia:
             value_model.objects.create(
                 measurement=measurement,
                 value_type=rr_dia,
-                value=wert.rrdia
+                value=wert.rrdia,
             )
         if wert.puls:
             value_model.objects.create(
                 measurement=measurement,
                 value_type=puls,
-                value=wert.puls
+                value=wert.puls,
             )
         if wert.temp:
             value_model.objects.create(
                 measurement=measurement,
                 value_type=temp,
-                value=wert.temp
+                value=wert.temp,
             )
         if wert.gew:
             value_model.objects.create(
                 measurement=measurement,
                 value_type=gew,
-                value=wert.gew
+                value=wert.gew,
             )
 
 
@@ -102,5 +102,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(migrate_werte)
+        migrations.RunPython(migrate_werte),
     ]
