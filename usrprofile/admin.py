@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
 from django import forms

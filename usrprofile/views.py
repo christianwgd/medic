@@ -1,4 +1,3 @@
-# encoding: utf-8
 from logging import getLogger
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,7 +20,7 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView)
     def get_object(self, queryset=None):
         # pylint: disable=unused-variable
         user, created = UserProfile.objects.get_or_create(
-            ref_usr=self.request.user, defaults={'email': self.request.user.email}
+            ref_usr=self.request.user, defaults={'email': self.request.user.email},
         )
         return user
 

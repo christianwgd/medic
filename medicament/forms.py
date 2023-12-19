@@ -28,8 +28,8 @@ class StockChangeForm(BSModalModelForm):
         label=_('Date'),
         widget=forms.DateInput(
             format='%Y-%m-%d',
-            attrs={'type': 'date'}
-        )
+            attrs={'type': 'date'},
+        ),
     )
     amount = forms.DecimalField(help_text=" Tablet(s)")
     reason = forms.ChoiceField(choices=REASON_CHOICES)
