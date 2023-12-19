@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from logging import getLogger
 
@@ -43,7 +43,7 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
 
     def get_queryset(self):
         return Measurement.objects.filter(
-            owner=self.request.user
+            owner=self.request.user,
         ).prefetch_related('values').all()
 
 
@@ -54,8 +54,8 @@ class MeasurementPrintView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['value_types'] = ValueType.objects.active()
-        ctx['min_date'] = datetime.strptime(self.kwargs['von'], '%Y-%m-%d')
-        ctx['max_date'] = datetime.strptime(self.kwargs['bis'], '%Y-%m-%d')
+        ctx['min_date'] = datetime.strptime(self.kwargs['von'], '%Y-%m-%d').astimezone()
+        ctx['max_date'] = datetime.strptime(self.kwargs['bis'], '%Y-%m-%d').astimezone()
         return ctx
 
     def get_queryset(self):
@@ -84,7 +84,7 @@ class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
                     Value.objects.create(
                         value_type=value_type,
                         measurement=measurement,
-                        value=form.cleaned_data[value_type.slug]
+                        value=form.cleaned_data[value_type.slug],
                     )
             return redirect(self.success_url)
         return super().form_valid(form)
@@ -144,7 +144,7 @@ class MeasurementMinMaxView(LoginRequiredMixin, ListView):
         stats = {}
         for value_type in value_types:
             stats[value_type.slug] = Value.objects.filter(
-                value_type__slug=value_type.slug, measurement__in=values
+                value_type__slug=value_type.slug, measurement__in=values,
             ).aggregate(Avg('value'), Max('value'), Min('value'))
             stats[value_type.slug]['unit'] = value_type.unit
             stats[value_type.slug]['name'] = value_type.name
@@ -163,8 +163,8 @@ class MeasurementDiagramView(LoginRequiredMixin, TemplateView):
         context['value_types'] = ValueType.objects.active()
         context['von'] = self.kwargs.get('von', '')
         context['bis'] = self.kwargs.get('bis', '')
-        context['first'] = datetime.strptime(context['von'], '%Y-%m-%d')
-        context['last'] = datetime.strptime(context['bis'], '%Y-%m-%d')
+        context['first'] = datetime.strptime(context['von'], '%Y-%m-%d').astimezone()
+        context['last'] = datetime.strptime(context['bis'], '%Y-%m-%d').astimezone()
         return context
 
 
@@ -181,7 +181,7 @@ class ValuesJSONView(BaseLineChartView):
             measurement__owner=self.request.user,
             value_type__slug=typus,
             measurement__date__gte=low_date,
-            measurement__date__lte=high_date
+            measurement__date__lte=high_date,
         ).order_by('measurement__date')
         return super().get(request, *args, **kwargs)
 

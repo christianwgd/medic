@@ -13,6 +13,6 @@ class MeasurementFilter(FilterSet):
     date = DateTimeFromToRangeFilter(
         label=_('Time range'),
         widget=RangeWidget(
-            attrs={'type': 'date'}
-        )
+            attrs={'type': 'date'},
+        ),
     )

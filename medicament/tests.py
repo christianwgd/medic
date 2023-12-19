@@ -27,10 +27,10 @@ class MedicamentTestCase(TestCase):
             package=self.fake.random_int(min=50, max=250, step=50),
             strength=self.fake.random_int(min=1, max=50, step=5),
             unit=UNIT_CHOICES[self.fake.random_int(min=0, max=3)][0],
-            owner=self.user
+            owner=self.user,
         )
         self.dosage_form = DosageForm.objects.create(
-            key='abc', short='abc_short', name=self.fake.word()
+            key='abc', short='abc_short', name=self.fake.word(),
         )
         self.pzn = MedPznData.objects.create(
             pzn=12345,
@@ -38,7 +38,7 @@ class MedicamentTestCase(TestCase):
             producer=self.fake.word(),
             dosage_form=self.dosage_form,
             ref_date=self.fake.date_object(),
-            verification=self.fake.word()[:8]
+            verification=self.fake.word()[:8],
         )
 
 
@@ -48,13 +48,13 @@ class MedicamentModelTest(MedicamentTestCase):
         dose = formats.localize(self.medicament.strength, use_l10n=True)
         self.assertEqual(
             str(self.medicament),
-            f'{self.medicament.name} {dose} {self.medicament.unit}'
+            f'{self.medicament.name} {dose} {self.medicament.unit}',
         )
 
     def test_medicament_active_prescription_none(self):
         self.assertEqual(
             self.medicament.get_active_prescription(for_user=self.user),
-            None
+            None,
         )
 
     def test_medicament_active_prescription(self):
@@ -65,7 +65,7 @@ class MedicamentModelTest(MedicamentTestCase):
             weekdays=17,  # Mo and Fr
             owner=self.user,
             valid_from=today-timedelta(days=90),
-            valid_until=today-timedelta(days=61)
+            valid_until=today-timedelta(days=61),
         )
         prescription_active = Prescription.objects.create(
             medicament=self.medicament,
@@ -88,7 +88,7 @@ class MedicamentModelTest(MedicamentTestCase):
             amount=self.medicament.package,
             reason='01',
             text=self.fake.paragraph(nb_sentences=1)[:49],
-            owner=self.user
+            owner=self.user,
         )
         self.assertEqual(str(stock_change), str(self.medicament))
         self.medicament.refresh_from_db()
@@ -102,7 +102,7 @@ class MedicamentModelTest(MedicamentTestCase):
             amount=5,
             reason='99',
             text=self.fake.paragraph(nb_sentences=1)[:49],
-            owner=self.user
+            owner=self.user,
         )
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.stock, med_stock - 5)
@@ -118,8 +118,8 @@ class MedicamentModelTest(MedicamentTestCase):
             self.pzn.as_json(),
             {
                 'id': self.pzn.id, 'pzn': self.pzn.pzn,
-                'name': self.pzn.name, 'producer': self.pzn.producer
-            }
+                'name': self.pzn.name, 'producer': self.pzn.producer,
+            },
         )
 
 
@@ -330,7 +330,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(
             str(messages[0]),
-            _("Could not delete medicament due to existing prescription.")
+            _("Could not delete medicament due to existing prescription."),
         )
 
     def test_stock_change_list_view_no_user(self):
@@ -346,7 +346,7 @@ class MedicamentViewsTest(MedicamentTestCase):
             amount=self.medicament.package,
             reason='01',
             text=self.fake.paragraph(nb_sentences=1)[:49],
-            owner=self.user
+            owner=self.user,
         )
         self.client.force_login(self.user)
         list_url = reverse('medicament:stock-history', kwargs={'med_id': self.medicament.id})
@@ -400,10 +400,10 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
-            reverse('medicament:detail', kwargs={'pk': self.medicament.id})
+            reverse('medicament:detail', kwargs={'pk': self.medicament.id}),
         )
         new_stock_change = StockChange.objects.filter(
-            medicament=self.medicament
+            medicament=self.medicament,
         ).order_by('-date').first()
         self.assertEqual(new_stock_change.date, stock_change_date)
         self.assertEqual(new_stock_change.amount, self.medicament.package)
@@ -411,7 +411,7 @@ class MedicamentViewsTest(MedicamentTestCase):
 
     def test_stock_change_create_view_post_amount_zero(self):
         stock_change_count = StockChange.objects.filter(
-            medicament=self.medicament
+            medicament=self.medicament,
         ).count()
         self.client.force_login(self.user)
         create_url = reverse('medicament:stock-change', kwargs={'med_id': self.medicament.id})
@@ -427,10 +427,10 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
-            reverse('medicament:detail', kwargs={'pk': self.medicament.id})
+            reverse('medicament:detail', kwargs={'pk': self.medicament.id}),
         )
         new_stock_change_count = StockChange.objects.filter(
-            medicament=self.medicament
+            medicament=self.medicament,
         ).count()
         # If amount is zero, there shouldn't be any new stock changes
         self.assertEqual(new_stock_change_count, stock_change_count)
@@ -451,10 +451,10 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
-            reverse('medicament:detail', kwargs={'pk': self.medicament.id})
+            reverse('medicament:detail', kwargs={'pk': self.medicament.id}),
         )
         new_stock_change = StockChange.objects.filter(
-            medicament=self.medicament
+            medicament=self.medicament,
         ).order_by('-date').first()
         self.assertEqual(new_stock_change.date, stock_change_date)
         self.assertEqual(new_stock_change.amount, Decimal(10.0))
@@ -533,8 +533,8 @@ class MedicamentViewsTest(MedicamentTestCase):
             response.json(),
             {
                 'id': self.pzn.id, 'pzn': self.pzn.pzn,
-                'name': self.pzn.name, 'producer': self.pzn.producer
-            }
+                'name': self.pzn.name, 'producer': self.pzn.producer,
+            },
         )
 
     def test_pzn_search_not_found(self):
@@ -544,7 +544,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {'error': 'PZN not found'}
+            {'error': 'PZN not found'},
         )
 
     def test_pzn_search_value_error(self):
@@ -554,5 +554,5 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {'error': 'Value error'}
+            {'error': 'Value error'},
         )

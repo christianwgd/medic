@@ -46,7 +46,7 @@ class MedicViewTest(TestCase):
         profile = self.user.profile
         profile.my_start_page = StartUrl.objects.create(
             name='measurements list',
-            url='measurement:list'
+            url='measurement:list',
         )
         profile.save()
         self.client.force_login(self.user)
