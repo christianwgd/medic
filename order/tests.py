@@ -57,7 +57,7 @@ class OrderFormTests(MedicamentTestCase):
         form = OrderForm({}, user=self.user)
         self.assertQuerySetEqual(
             form.fields['medicaments'].queryset,
-            Medicament.objects.all()
+            Medicament.objects.all(),
         )
 
 class OrderViewTests(MedicamentTestCase):

@@ -51,7 +51,7 @@ class MeasurementModelTests(TestCase):
         self.value = Value.objects.create(
             value_type=self.value_type,
             value=54.3,
-            measurement=self.measurement
+            measurement=self.measurement,
         )
 
     def test_measurement_str(self):
@@ -66,10 +66,10 @@ class MeasurementModelTests(TestCase):
         value_type_inactive.save()
         value_type_active = ValueType.objects.last()
         Value.objects.create(
-            value_type=value_type_inactive, value='55', measurement=self.measurement
+            value_type=value_type_inactive, value='55', measurement=self.measurement,
         )
         Value.objects.create(
-            value_type=value_type_active, value='12.3', measurement=self.measurement
+            value_type=value_type_active, value='12.3', measurement=self.measurement,
         )
         active_values = Value.objects.active()
         self.assertEqual(active_values.count(), 2)
@@ -91,7 +91,7 @@ class MeasurementTemplateTagTests(TestCase):
         self.value = Value.objects.create(
             value_type=self.value_type,
             value=54.3333,
-            measurement=self.measurement
+            measurement=self.measurement,
         )
 
     def test_format_value_tag(self):
@@ -141,7 +141,7 @@ class MeasurementViewTests(TestCase):
         self.value = Value.objects.create(
             value_type=self.value_type,
             value=54.3333,
-            measurement=self.measurement
+            measurement=self.measurement,
         )
 
     def test_measurement_list_view_no_user(self):
@@ -172,7 +172,7 @@ class MeasurementViewTests(TestCase):
         Value.objects.create(
             value_type=value_type,
             value=88.1,
-            measurement=measurement
+            measurement=measurement,
         )
         self.client.force_login(self.user)
         list_url = reverse('measurement:list')
@@ -181,7 +181,7 @@ class MeasurementViewTests(TestCase):
         self.assertEqual(len(response.context['page_obj']), 2)
 
         response = self.client.get(
-            f'{list_url}?date_min={date_format(limit_date, "Y-m-d")}'
+            f'{list_url}?date_min={date_format(limit_date, "Y-m-d")}',
         )
         self.assertEqual(response.status_code, 200)
         page_obj = response.context['page_obj']
@@ -190,7 +190,7 @@ class MeasurementViewTests(TestCase):
         self.assertEqual(measurement.values.first().value, Decimal('54.33'))
 
         response = self.client.get(
-            f'{list_url}?date_max={date_format(limit_date, "Y-m-d")}'
+            f'{list_url}?date_max={date_format(limit_date, "Y-m-d")}',
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['page_obj']), 1)
@@ -210,10 +210,10 @@ class MeasurementViewTests(TestCase):
     def test_measurement_print_view(self):
         measurements = Measurement.objects.all()
         date_min = date_format(
-            measurements.first().date - timedelta(days=1), "Y-m-d"
+            measurements.first().date - timedelta(days=1), "Y-m-d",
         )
         date_max = date_format(
-            measurements.last().date + timedelta(days=1), "Y-m-d"
+            measurements.last().date + timedelta(days=1), "Y-m-d",
         )
         self.client.force_login(self.user)
         list_url = reverse('measurement:print', kwargs={'von': date_min, 'bis': date_max})
@@ -237,7 +237,7 @@ class MeasurementViewTests(TestCase):
         form_data = {
             'rrsys': 120,
             'rrdia': 80,
-            'puls': 66
+            'puls': 66,
         }
         measurements_count = Measurement.objects.count()
         response = self.client.post(create_url, form_data)
@@ -264,7 +264,7 @@ class MeasurementViewTests(TestCase):
         form_data = {
             'rrsys': 120,
             'rrdia': 80,
-            'puls': 66
+            'puls': 66,
         }
         response = self.client.post(update_url, form_data)
         self.assertEqual(response.status_code, 302)
@@ -277,10 +277,10 @@ class MeasurementViewTests(TestCase):
     def test_measurement_minmax_view(self):
         measurements = Measurement.objects.all()
         date_min = date_format(
-            measurements.first().date - timedelta(days=1), "Y-m-d"
+            measurements.first().date - timedelta(days=1), "Y-m-d",
         )
         date_max = date_format(
-            measurements.last().date + timedelta(days=1), "Y-m-d"
+            measurements.last().date + timedelta(days=1), "Y-m-d",
         )
         self.client.force_login(self.user)
         list_url = reverse('measurement:minmax', kwargs={'von': date_min, 'bis': date_max})
@@ -293,10 +293,10 @@ class MeasurementViewTests(TestCase):
     def test_measurement_chart_view(self):
         measurements = Measurement.objects.all()
         date_min = date_format(
-            measurements.first().date - timedelta(days=1), "Y-m-d"
+            measurements.first().date - timedelta(days=1), "Y-m-d",
         )
         date_max = date_format(
-            measurements.last().date + timedelta(days=1), "Y-m-d"
+            measurements.last().date + timedelta(days=1), "Y-m-d",
         )
         self.client.force_login(self.user)
         list_url = reverse('measurement:diagram', kwargs={'von': date_min, 'bis': date_max})
@@ -307,14 +307,14 @@ class MeasurementViewTests(TestCase):
         self.client.force_login(self.user)
         measurements = Measurement.objects.all()
         date_min = date_format(
-            measurements.first().date - timedelta(days=1), "Y-m-d"
+            measurements.first().date - timedelta(days=1), "Y-m-d",
         )
         date_max = date_format(
-            measurements.last().date + timedelta(days=1), "Y-m-d"
+            measurements.last().date + timedelta(days=1), "Y-m-d",
         )
         list_url = reverse(
             'measurement:json-values',
-            kwargs={'type': 'gewicht', 'von': date_min, 'bis': date_max}
+            kwargs={'type': 'gewicht', 'von': date_min, 'bis': date_max},
         )
         response = self.client.get(list_url)
         self.assertEqual(response.status_code, 200)
@@ -325,5 +325,5 @@ class MeasurementViewTests(TestCase):
         self.assertEqual(len(resp['datasets']), 1)
         self.assertEqual(
             Decimal(resp['datasets'][0]['data'][0]),
-            round(measurements.first().values.get(value_type__slug='gewicht').value, 1)
+            round(measurements.first().values.get(value_type__slug='gewicht').value, 1),
         )

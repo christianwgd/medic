@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from django import forms
 from django.forms import TextInput
 from django.forms.models import ModelForm
@@ -15,7 +15,7 @@ date_format = getattr(settings, "MOMENT_DATE_FORMAT", 'MM/DD/YYYY')
 class UsrProfForm(ModelForm):
     first_name = forms.CharField(
         label=_('first name'), required=False,
-        widget=TextInput(attrs={"autofocus": "autofocus"})
+        widget=TextInput(attrs={"autofocus": "autofocus"}),
     )
     last_name = forms.CharField(
         label=_('last name'), required=False,
@@ -37,6 +37,6 @@ class UsrProfForm(ModelForm):
             'show_measurement_days': forms.NumberInput(attrs={'step': 10.0, 'min': 0}),
             'gebdat': forms.DateInput(
                 format='%Y-%m-%d',
-                attrs={'type': 'date'}
+                attrs={'type': 'date'},
             ),
         }

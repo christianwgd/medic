@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 import logging
 
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalReadView
@@ -56,7 +56,7 @@ class MedicamentCreateView(LoginRequiredMixin, BSModalCreateView):
         new_med = form.save(commit=False)
         if 'pzn_no' in form.cleaned_data and form.cleaned_data['pzn_no']:
             new_med.pzn = MedPznData.objects.get(
-                pzn=int(form.cleaned_data['pzn_no'])
+                pzn=int(form.cleaned_data['pzn_no']),
             )
         new_med.owner = self.request.user
         return super().form_valid(form)
@@ -146,7 +146,7 @@ class StockChangeHistoryView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return StockChange.objects.filter(
             owner=self.request.user,
-            medicament=Medicament.objects.get(id=self.kwargs['med_id'])
+            medicament=Medicament.objects.get(id=self.kwargs['med_id']),
         )
 
 
@@ -157,14 +157,11 @@ def calc_consumption(request, med_id):
     today = timezone.now().date()
     if medicament.last_calc is None or medicament.last_calc < today:
         prescription = medicament.get_active_prescription(for_user=request.user)
-        if medicament.last_calc is None:
-            last_calc = prescription.valid_from
-        else:
-            last_calc = medicament.last_calc
+        last_calc = prescription.valid_from if medicament.last_calc is None else medicament.last_calc
         consumption = prescription.get_amount_for_time(
             start_date=last_calc,
             end_date=today,
-            user=request.user
+            user=request.user,
         )
     else:
         consumption = 0

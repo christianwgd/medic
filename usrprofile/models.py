@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 from django.db import models
 from django.contrib import auth
@@ -16,7 +16,7 @@ class StartUrl(models.Model):
     class Meta:
         verbose_name = _("Home page")
         verbose_name_plural = _("Home pages")
-        ordering = ['sort_order', ]
+        ordering = ['sort_order' ]
 
     def __str__(self):
         return self.name
@@ -36,40 +36,40 @@ class UserProfile(models.Model):
         return self.ref_usr.username
 
     gebdat = models.DateField(
-        verbose_name=_("Date of birth"), null=True, blank=True
+        verbose_name=_("Date of birth"), null=True, blank=True,
     )
     warn_days_before = models.IntegerField(
         default=20, verbose_name=_("Hold medicaments inventory for at least"),
         validators=[MinValueValidator(2), MaxValueValidator(30)],
-        help_text=_('days')
+        help_text=_('days'),
     )
     show_measurement_days = models.IntegerField(
         default=30, verbose_name=_("Show readings for"),
         validators=[MinValueValidator(10), MaxValueValidator(365)],
-        help_text=_('days')
+        help_text=_('days'),
     )
     doc_can_see_msm = models.BooleanField(
-        default=False, verbose_name=_("Doctor is allowed to see measurements")
+        default=False, verbose_name=_("Doctor is allowed to see measurements"),
     )
     doc_can_see_med = models.BooleanField(
-        default=False, verbose_name=_("Doctor is allowed to see prescription")
+        default=False, verbose_name=_("Doctor is allowed to see prescription"),
     )
     ref_usr = models.OneToOneField(
         User, on_delete=models.CASCADE,
-        verbose_name=_("User"), related_name='profile'
+        verbose_name=_("User"), related_name='profile',
     )
     email_arzt = models.EmailField(
-        verbose_name=_("Doctor's email address"), null=True, blank=True
+        verbose_name=_("Doctor's email address"), null=True, blank=True,
     )
     my_start_page = models.ForeignKey(
         StartUrl, on_delete=models.PROTECT,
-        verbose_name=_("My home page"), blank=True, null=True
+        verbose_name=_("My home page"), blank=True, null=True,
     )
     measurements_items_per_page = models.PositiveSmallIntegerField(
-        verbose_name=_('Items per page'), default=16
+        verbose_name=_('Items per page'), default=16,
     )
     medicaments_items_per_page = models.PositiveSmallIntegerField(
-        verbose_name=_('Items per page'), default=16
+        verbose_name=_('Items per page'), default=16,
     )
 
     @property
@@ -80,7 +80,7 @@ class UserProfile(models.Model):
             birth_date = formats.date_format(
                 self.gebdat,
                 format='SHORT_DATE_FORMAT',
-                use_l10n=True
+                use_l10n=True,
             )
             born = f"{_('born')} {birth_date}"
         if self.ref_usr.first_name and self.ref_usr.last_name:

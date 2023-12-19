@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from django.contrib import admin
 
 from medicament.models import Medicament, StockChange, DosageForm, MedPznData

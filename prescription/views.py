@@ -13,7 +13,7 @@ class PrescriptionListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Prescription.objects.active(
-            for_user=self.request.user
+            for_user=self.request.user,
         ).order_by('medicament__name', 'medicament__strength')
 
 
