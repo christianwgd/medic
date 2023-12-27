@@ -1,6 +1,6 @@
-coverage==7.3.3
+coverage==7.3.4
 Faker==21.0.0
 pytest==7.4.3
 pytest-cov==4.1.0
 pytest-django==4.7.0
-ruff==0.1.8
+ruff==0.1.9
