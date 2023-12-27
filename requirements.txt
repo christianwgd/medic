@@ -1,6 +1,6 @@
 Django==5.0
 django-admin-sortable2==2.1.10
-django-axes==6.2.0
+django-axes==6.3.0
 django-bitfield==2.2.0
 django-bootstrap-modal-forms==3.0.4
 django-bootstrap5==23.3
@@ -13,5 +13,5 @@ django-mail-templated==2.6.5
 # django-phonenumber-field < 7.0.0
 django-phonenumber-field==6.4.0
 django-two-factor-auth==1.15.5
-phonenumbers==8.13.26
+phonenumbers==8.13.27
 psycopg2-binary==2.9.9
