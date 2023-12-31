@@ -1,61 +1,29 @@
-.tbl-responsive {
-    min-width: 300px;
-}
-
-.tbl-responsive th {
-    display: none;
-}
-
-.tbl-responsive td {
-    display: block;
-    padding: .25em .5em;
-}
-
-.tbl-responsive td:first-child {
-    padding-top: .5em;
-}
-
-.tbl-responsive td:last-child {
-    padding-bottom: .5em;
-}
-
-.tbl-responsive td:before {
-    content: attr(data-th) " ";
-    font-weight: bold;
-    width: 9em;
-    display: inline-block;
-}
-
-.tbl-responsive td ul {
-    display: inline-block;
-}
-
-@media (min-width: 768px) {
-    .tbl-responsive td:before {
+@media (max-width: 767px) {
+    .tbl-responsive th {
         display: none;
     }
-}
 
-.tbl-responsive th, .tbl-responsive td {
-    text-align: left;
-}
-
-@media (min-width: 768px) {
-    .tbl-responsive th, .tbl-responsive td {
-        display: table-cell;
+    .tbl-responsive td {
+        display: block;
+        padding: .25em .5em;
     }
 
-    .tbl-responsive th:first-child, .tbl-responsive td:first-child {
-        padding-left: 0;
+    .tbl-responsive td:first-child {
+        padding-top: .5em;
     }
 
-    .tbl-responsive th:last-child, .tbl-responsive td:last-child {
-        padding-right: 0;
+    .tbl-responsive td:last-child {
+        padding-bottom: .5em;
     }
-}
 
-@media (min-width: 768px) {
-    .tbl-responsive th, .tbl-responsive td {
-        padding: .5em !important;
+    .tbl-responsive td:before {
+        content: attr(data-th) "";
+        font-weight: bold;
+        width: 9em;
+        display: inline-block;
+    }
+
+    .tbl-responsive td ul {
+        display: inline-block;
     }
 }
