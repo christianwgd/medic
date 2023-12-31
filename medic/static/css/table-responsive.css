@@ -1,61 +1,61 @@
-.responsive {
+.tbl-responsive {
     min-width: 300px;
 }
 
-.responsive th {
+.tbl-responsive th {
     display: none;
 }
 
-.responsive td {
+.tbl-responsive td {
     display: block;
     padding: .25em .5em;
 }
 
-.responsive td:first-child {
+.tbl-responsive td:first-child {
     padding-top: .5em;
 }
 
-.responsive td:last-child {
+.tbl-responsive td:last-child {
     padding-bottom: .5em;
 }
 
-.responsive td:before {
+.tbl-responsive td:before {
     content: attr(data-th) " ";
     font-weight: bold;
     width: 9em;
     display: inline-block;
 }
 
-.responsive td ul {
+.tbl-responsive td ul {
     display: inline-block;
 }
 
 @media (min-width: 768px) {
-    .responsive td:before {
+    .tbl-responsive td:before {
         display: none;
     }
 }
 
-.responsive th, .responsive td {
+.tbl-responsive th, .tbl-responsive td {
     text-align: left;
 }
 
 @media (min-width: 768px) {
-    .responsive th, .responsive td {
+    .tbl-responsive th, .tbl-responsive td {
         display: table-cell;
     }
 
-    .responsive th:first-child, .responsive td:first-child {
+    .tbl-responsive th:first-child, .tbl-responsive td:first-child {
         padding-left: 0;
     }
 
-    .responsive th:last-child, .responsive td:last-child {
+    .tbl-responsive th:last-child, .tbl-responsive td:last-child {
         padding-right: 0;
     }
 }
 
 @media (min-width: 768px) {
-    .responsive th, .responsive td {
+    .tbl-responsive th, .tbl-responsive td {
         padding: .5em !important;
     }
 }
