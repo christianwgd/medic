@@ -1,4 +1,4 @@
-Django==5.0
+Django==5.0.1
 django-admin-sortable2==2.1.10
 django-axes==6.3.0
 django-bitfield==2.2.0
