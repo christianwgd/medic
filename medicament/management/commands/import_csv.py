@@ -9,7 +9,7 @@ from medicament.models import DosageForm, MedPznData
 
 
 class Command(BaseCommand):
-    help = 'Import PZN'  # noqa: A003
+    help = 'Import PZN'
 
     # pylint: disable=too-many-locals
     def handle(self, *args, **options):

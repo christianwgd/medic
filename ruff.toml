@@ -1,5 +1,5 @@
 # Enable flake8-bugbear (`B`) rules.
-select = [
+lint.select = [
     "A", "B", "E", "F", "S", "W", "N", "G", "C4", "EM", "PL", "UP", "YTT", "INT",
     "ISC", "ICN", "PIE", "T20", "PYI", "PT", "RET", "INT", "RUF", "FBT", "SIM", "TID",
     "PTH",
@@ -7,7 +7,7 @@ select = [
 
 line-length = 120
 
-ignore = [
+lint.ignore = [
     "B905",  # `zip()` without an explicit `strict=` parameter
     "PT009",  # Use a regular `assert` instead of unittest-style `{assertion}`
     "S308",  # Use of `mark_safe` may expose cross-site scripting vulnerabilities
@@ -19,6 +19,6 @@ ignore = [
 ]
 
 # Ignore `E501` (line length) in all `__init__.py`  and migration files
-[per-file-ignores]
+[lint.per-file-ignores]
 "__init__.py" = ["E501"]
 "**/migrations/*.py" = ["E501"]
