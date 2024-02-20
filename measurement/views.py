@@ -80,7 +80,7 @@ class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
             measurement.owner = self.request.user
             measurement.save()
             for value_type in ValueType.objects.active():
-                if value_type.slug in form.cleaned_data and form.cleaned_data[value_type.slug]:
+                if form.cleaned_data.get(value_type.slug):
                     Value.objects.create(
                         value_type=value_type,
                         measurement=measurement,
