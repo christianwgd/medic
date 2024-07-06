@@ -25,7 +25,7 @@ class ActivePrescriptionManager(Manager):
         return self.filter(
             Q(owner=for_user) &
             Q(valid_from__lte=timezone.now()) &
-            Q(valid_until__gt=timezone.now()) | Q(valid_until=None)
+            Q(valid_until__gt=timezone.now()) | Q(valid_until=None),
         ).order_by('valid_from')
 
 
@@ -89,28 +89,28 @@ class Prescription(models.Model):
 
     medicament = models.ForeignKey(
         Medicament, verbose_name=_('Medicament'),
-        on_delete=models.PROTECT, related_name='prescriptions'
+        on_delete=models.PROTECT, related_name='prescriptions',
     )
     morning = models.DecimalField(
         verbose_name=_('Morning'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True
+        decimal_places=2, default=0.0, blank=True,
     )
     noon = models.DecimalField(
         verbose_name=_('Noon'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True
+        decimal_places=2, default=0.0, blank=True,
     )
     evening = models.DecimalField(
         verbose_name=_('Evening'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True
+        decimal_places=2, default=0.0, blank=True,
     )
     night = models.DecimalField(
         verbose_name=_('Night'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True
+        decimal_places=2, default=0.0, blank=True,
     )
     weekdays = BitField(flags=('mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'), default=0)
     owner = models.ForeignKey(
         User, verbose_name=_('Owner'), on_delete=models.PROTECT,
-        related_name='prescriptions'
+        related_name='prescriptions',
     )
     valid_from = models.DateField(verbose_name=_('Valid from'), null=True, blank=True)
     valid_until = models.DateField(verbose_name=_('Valid until'), null=True, blank=True)

@@ -27,10 +27,10 @@
         {% trans 'Tabl. <span id="nndosis"></span>' as nndose %}
         {% trans 'Tabl. <span id="evdosis"></span>' as evdose %}
         {% trans 'Tabl. <span id="ngdosis"></span>' as ngdose %}
-        {% bootstrap_field form.morning addon_after=modose addon_after_class='input-group-text wide-addon' %}
-        {% bootstrap_field form.noon addon_after=nndose addon_after_class='input-group-text wide-addon' %}
-        {% bootstrap_field form.evening addon_after=evdose addon_after_class='input-group-text wide-addon' %}
-        {% bootstrap_field form.night addon_after=ngdose addon_after_class='input-group-text wide-addon' %}
+        {% bootstrap_field form.morning addon_after=modose %}
+        {% bootstrap_field form.noon addon_after=nndose %}
+        {% bootstrap_field form.evening addon_after=evdose %}
+        {% bootstrap_field form.night addon_after=ngdose %}
 
         <h4>Wochentage</h4>
         <div class="mb-2">

@@ -3,15 +3,12 @@
 
 {% block bootstrap5_extra_head %}
 {{ block.super }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/table-responsive.css' %}">
 <link rel="stylesheet" href="{% static 'css/order.css' %}">
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -43,8 +40,7 @@ $(document).ready(function() {
 
 <div class="row mt-3">
     <div class="col">
-    <table data-toggle="table" data-classes="table table-striped table-bordered"
-           data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
+    <table class="table table-striped table-bordered tbl-responsive">
         <thead>
             <tr>
                 <th>{% trans 'Order' context 'order' %}</th>
@@ -53,12 +49,12 @@ $(document).ready(function() {
             <tbody>
                 {% for order in order_list %}
                 <tr>
-                    <td>
+                    <td data-th="{% trans 'Order' context 'order' %}">
                         <a href="{% url 'order:detail' order.id %}">
                             {{ order.date|date:"SHORT_DATETIME_FORMAT" }}
                         </a>
                     </td>
-                    <td>
+                    <td data-th="{% trans 'Medicaments' %}">
                         {% for med in order.medicaments.all %}
                             {% if order.done %}
                             <span class="badge bg-secondary">{{ med }}</span>
