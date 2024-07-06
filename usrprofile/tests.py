@@ -21,7 +21,7 @@ class UserProfileModelTest(TestCase):
         )
         self.start_url = StartUrl.objects.create(
             name='Test-Start-Url',
-            url='measurement:list'
+            url='measurement:list',
         )
 
     def test_profile_created(self):
@@ -97,11 +97,11 @@ class UserProfileTagsTest(TestCase):
         formatted_birth_date = formats.date_format(
                 self.user.profile.gebdat,
                 format='SHORT_DATE_FORMAT',
-                use_l10n=True
+                use_l10n=True,
             )
         self.assertEqual(
             header['userinfo'],
-            f"{self.user.username} {_('born')} {formatted_birth_date}"
+            f"{self.user.username} {_('born')} {formatted_birth_date}",
         )
         self.assertEqual(header['title'].strip(), 'title')
 
@@ -122,13 +122,13 @@ class UserProfileTagsTest(TestCase):
         formatted_birth_date = formats.date_format(
             self.user.profile.gebdat,
             format='SHORT_DATE_FORMAT',
-            use_l10n=True
+            use_l10n=True,
         )
         title = self.fake.word()
         header = user_header(title=title, user=self.user)
         self.assertEqual(
             header['userinfo'],
-            f"{self.user.get_full_name()} {_('born')} {formatted_birth_date}"
+            f"{self.user.get_full_name()} {_('born')} {formatted_birth_date}",
         )
         self.assertEqual(header['title'].strip(), title)
 

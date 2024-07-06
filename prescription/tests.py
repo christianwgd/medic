@@ -1,6 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 
+import pytest
 from django.contrib import auth
 from django.test import TestCase
 from django.urls import reverse
@@ -27,7 +28,7 @@ class PrescriptionTestCase(TestCase):
             package=self.fake.random_int(min=50, max=250, step=50),
             strength=self.fake.random_int(min=1, max=50, step=5),
             unit=UNIT_CHOICES[self.fake.random_int(min=0, max=3)][0],
-            owner=self.user
+            owner=self.user,
         )
         today = timezone.now().date()
         self.prescription = Prescription.objects.create(
@@ -36,7 +37,7 @@ class PrescriptionTestCase(TestCase):
             weekdays=127,  # All days a week
             owner=self.user,
             valid_from=today - timedelta(days=90),
-            valid_until=today - timedelta(days=61)
+            valid_until=today - timedelta(days=61),
         )
         self.active_prescription = Prescription.objects.create(
             medicament=self.medicament,
@@ -44,7 +45,7 @@ class PrescriptionTestCase(TestCase):
             weekdays=127,  # All days a week
             owner=self.user,
             valid_from=today - timedelta(days=29),
-            valid_until=None
+            valid_until=None,
         )
 
 
@@ -104,18 +105,18 @@ class PrescriptionModelTest(PrescriptionTestCase):
         end = timezone.now().date() - timedelta(days=70)
         self.assertEqual(
             self.prescription.get_amount_for_time(start, end, self.user),
-            Decimal('10')
+            Decimal('10'),
         )
 
     def test_prescription_get_days_before_empty(self):
         self.assertEqual(
             self.prescription.get_days_before_empty(self.user),
-            self.prescription.medicament.stock
+            self.prescription.medicament.stock,
         )
 
     def test_prescription_active_manager(self):
         self.assertEqual(
-            Prescription.objects.active(for_user=self.user).count(), 1
+            Prescription.objects.active(for_user=self.user).count(), 1,
         )
 
 
@@ -160,8 +161,8 @@ class PrescriptionTagTest(PrescriptionTestCase):
                     (_('Fr'), self.prescription.weekdays.fr),
                     (_('Sa'), self.prescription.weekdays.sa),
                     (_('Su'), self.prescription.weekdays.su),
-                ]
-            }
+                ],
+            },
         )
 
     def test_calc_days_danger(self):
@@ -200,7 +201,7 @@ class PrescriptionViewsTest(PrescriptionTestCase):
     def test_prescription_detail_view_no_user(self):
         detail_url = reverse(
             'prescription:detail',
-            kwargs={'pk': self.active_prescription.id}
+            kwargs={'pk': self.active_prescription.id},
         )
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, 302)
@@ -210,7 +211,7 @@ class PrescriptionViewsTest(PrescriptionTestCase):
         self.client.force_login(self.user)
         detail_url = reverse(
             'prescription:detail',
-            kwargs={'pk': self.active_prescription.id}
+            kwargs={'pk': self.active_prescription.id},
         )
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, 200)
@@ -310,5 +311,5 @@ class PrescriptionViewsTest(PrescriptionTestCase):
         delete_url = reverse('prescription:delete', kwargs={'pk': self.prescription.id})
         response = self.client.post(delete_url)
         self.assertEqual(response.status_code, 302)
-        with self.assertRaises(Prescription.DoesNotExist):  # pylint: disable=no-member
+        with pytest.raises(Prescription.DoesNotExist):  # pylint: disable=no-member
             Prescription.objects.get(pk=prescription_id)

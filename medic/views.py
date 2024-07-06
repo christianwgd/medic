@@ -1,4 +1,3 @@
-# encoding: utf-8
 from logging import getLogger
 
 from django.contrib import auth
@@ -21,10 +20,7 @@ def index(request):
 @login_required(login_url='/login/')
 def startpage(request):
     profile = request.user.profile
-    if profile.my_start_page:
-        start_page = profile.my_start_page.url
-    else:
-        start_page = 'index'
+    start_page = profile.my_start_page.url if profile.my_start_page else 'index'
     return redirect(reverse_lazy(start_page))
 
 

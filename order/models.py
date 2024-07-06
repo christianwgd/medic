@@ -31,9 +31,9 @@ class Order(models.Model):
         User, on_delete=models.PROTECT, verbose_name=_('Owner'),
     )
     medicaments = models.ManyToManyField(
-        Medicament, verbose_name=_('Medicaments')
+        Medicament, verbose_name=_('Medicaments'),
     )
     date = models.DateTimeField(auto_now_add=True)
     done = models.BooleanField(
-        verbose_name=_('Done'), default=False
+        verbose_name=_('Done'), default=False,
     )

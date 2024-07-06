@@ -4,16 +4,13 @@
 {% block bootstrap5_extra_head %}
 {{ block.super }}
 {{ form.media.css }}
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="{% static 'css/table-responsive.css' %}">
 <link rel="stylesheet" href="{% static 'css/filter.css' %}">
 {% endblock %}
 
 {% block bootstrap5_extra_script %}
 {{ block.super }}
 {{ form.media.js }}
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -76,7 +73,7 @@ $(document).ready(function() {
         <i class="far fa-arrows-v"></i>
     </a>
     <a href="{% url 'measurement:print' min_date max_date %}"
-        class="btn btn-primary" role="button" title="{% trans 'Statistics' %}"
+        class="btn btn-primary" role="button" title="{% trans 'Print' %}"
         data-toggle="tooltip" data-placement="bottom">
         <i class="far fa-print"></i>
     </a>
@@ -103,8 +100,7 @@ $(document).ready(function() {
 
 <div class="row mt-2">
     <div class="col">
-        <table id="wertelist" data-toggle="table" data-classes="table table-striped table-bordered"
-                data-locale="de-DE" data-mobile-responsive="true" data-min-width="768">
+        <table id="wertelist" class="table table-striped table-bordered tbl-responsive">
             <thead>
                 <tr>
                     <th>{% trans 'Date' %}</th>
@@ -123,15 +119,15 @@ $(document).ready(function() {
             <tbody>
                 {% for wert in page_obj %}
                 <tr>
-                    <td>
+                    <td data-th="{% trans 'Date' %}">
                         <span class="as_link update-action" data-url="{% url 'measurement:edit' wert.id %}">
                             {{ wert.date|date:"SHORT_DATETIME_FORMAT" }}
                         </span>
                     </td>
                     {% for value_type in value_types %}
-                        <td>{% format_value wert value_type %}</td>
+                        <td data-th="{{ value_type.name }} ({{ value_type.unit }})">{% format_value wert value_type %}</td>
                     {% endfor %}
-                    <td>{{ wert.comment|default_if_none:"" }}</td>
+                    <td data-th="{% trans 'Peculiarity' %}">{{ wert.comment|default_if_none:"" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

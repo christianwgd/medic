@@ -2,18 +2,17 @@ name: Django CI run test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8, 3.9, '3.10']
+        python-version: ['3.10', '3.11', '3.12']
 
     steps:
     - uses: actions/checkout@v3
@@ -27,19 +26,20 @@ jobs:
         pip install -r test-requirements.txt
         pip install -r requirements.txt
         python manage.py migrate
+    - name: Run Ruff
+      run: ruff check --output-format=github .
     - name: Run Tests
-      run: |
-        pytest
+      run: pytest
 
   Coverage:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.9
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: 3.11
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -56,7 +56,6 @@ jobs:
       uses: codecov/codecov-action@v3
       env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:

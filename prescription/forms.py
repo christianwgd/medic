@@ -24,17 +24,17 @@ class PrescriptionForm(BSModalModelForm):
         model = Prescription
         fields = [
             'medicament', 'morning', 'noon', 'evening', 'night',
-            'weekdays', 'valid_from', 'valid_until'
+            'weekdays', 'valid_from', 'valid_until',
         ]
         widgets = {
             'weekdays': WeekdaysBitFieldCheckboxSelectMultiple,
             'valid_from': forms.DateInput(
                 format='%Y-%m-%d',
-                attrs={'type': 'date'}
+                attrs={'type': 'date'},
             ),
             'valid_until': forms.DateInput(
                 format='%Y-%m-%d',
-                attrs={'type': 'date'}
+                attrs={'type': 'date'},
             ),
         }
 

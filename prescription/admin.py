@@ -23,9 +23,9 @@ class PrescriptionAdmin (admin.ModelAdmin):
         (_('Medicament'),
             {'fields': (('medicament',),)}),
         (_('Dosage'), {
-            'fields': (('morning', 'noon', 'evening', 'night'), 'weekdays')
+            'fields': (('morning', 'noon', 'evening', 'night'), 'weekdays'),
         }),
         (_('Valid'), {
-            'fields': (('valid_from', 'valid_until'),)
+            'fields': (('valid_from', 'valid_until'),),
         }),
     )

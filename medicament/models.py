@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib import auth
 from django.dispatch import receiver
@@ -47,7 +47,7 @@ class MedPznData(models.Model):
             'id': self.id,
             'pzn': self.pzn,
             'name': self.name,
-            'producer': self.producer
+            'producer': self.producer,
         }
 
     pzn = models.PositiveIntegerField(db_index=True, verbose_name=_('PZN'))
@@ -55,7 +55,7 @@ class MedPznData(models.Model):
     producer = models.CharField(verbose_name=_('Producer'), max_length=100)
     dosage_form = models.ForeignKey(
         DosageForm, on_delete=models.RESTRICT,
-        verbose_name=_('Dosage form')
+        verbose_name=_('Dosage form'),
     )
     ref_date = models.DateField(verbose_name=_('Reference date'))
     verification = models.CharField(max_length=10, verbose_name=_('Verification'))
@@ -80,40 +80,40 @@ class Medicament(models.Model):
         return self.prescriptions.active(for_user=for_user).first()
 
     name = models.CharField(
-        verbose_name=_('Denomination'), max_length=50
+        verbose_name=_('Denomination'), max_length=50,
     )
     producer = models.CharField(
         verbose_name=_('Producer'), max_length=50,
-        null=True, blank=True
+        null=True, blank=True,
     )
     ingredient = models.CharField(
         verbose_name=_('Active ingredient'), max_length=50,
-        null=True, blank=True
+        null=True, blank=True,
     )
     package = models.PositiveIntegerField(
-        verbose_name=_('Package size'), help_text=_('Tablets')
+        verbose_name=_('Package size'), help_text=_('Tablets'),
     )
     strength = models.DecimalField(
-        verbose_name=_('Strength'), max_digits=8, decimal_places=2
+        verbose_name=_('Strength'), max_digits=8, decimal_places=2,
     )
     unit = models.CharField(
         verbose_name=_('Unit'), max_length=2, choices=UNIT_CHOICES,
     )
     owner = models.ForeignKey(
-        User, verbose_name=_('Owner'), on_delete=models.PROTECT
+        User, verbose_name=_('Owner'), on_delete=models.PROTECT,
     )
     stock = models.DecimalField(
         verbose_name=_('Stock'), max_digits=6, decimal_places=2,
-        default=0.0
+        default=0.0,
     )
     last_calc = models.DateField(
         verbose_name=_('Last stock calculation'),
-        auto_now_add=False, null=True
+        auto_now_add=False, null=True,
     )
     pzn = models.ForeignKey(
         MedPznData, verbose_name=_('PZN Data'),
         on_delete=models.SET_NULL,
-        null=True, blank=True
+        null=True, blank=True,
     )
 
 
@@ -144,13 +144,13 @@ class StockChange(models.Model):
     )
     date = models.DateField(verbose_name=_('Date'), auto_now_add=False)
     amount = models.DecimalField(
-        verbose_name=_('Amount'), max_digits=5, decimal_places=2
+        verbose_name=_('Amount'), max_digits=5, decimal_places=2,
     )
     reason = models.CharField(
-        verbose_name=_('Reason'), max_length=2, choices=REASON_CHOICES
+        verbose_name=_('Reason'), max_length=2, choices=REASON_CHOICES,
     )
     text = models.CharField(
-        verbose_name=_('Note'), max_length=50, null=True, blank=True
+        verbose_name=_('Note'), max_length=50, null=True, blank=True,
     )
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT, verbose_name=_('Owner'),
