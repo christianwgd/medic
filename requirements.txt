@@ -1,7 +1,8 @@
-Django==5.0.6
+Django==5.0.7
 django-admin-sortable2==2.2.1
 django-axes==6.5.1
 django-bitfield==2.2.0
+django-bootstrap-datepicker-plus==5.0.5
 django-bootstrap-modal-forms==3.0.4
 django-bootstrap5==24.2
 django-chartjs==2.3.0
