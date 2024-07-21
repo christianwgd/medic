@@ -93,19 +93,19 @@ class Prescription(models.Model):
     )
     morning = models.DecimalField(
         verbose_name=_('Morning'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True,
+        decimal_places=2, default=0.0, blank=True, null=True,
     )
     noon = models.DecimalField(
         verbose_name=_('Noon'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True,
+        decimal_places=2, default=0.0, blank=True, null=True,
     )
     evening = models.DecimalField(
         verbose_name=_('Evening'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True,
+        decimal_places=2, default=0.0, blank=True, null=True,
     )
     night = models.DecimalField(
         verbose_name=_('Night'), max_digits=3,
-        decimal_places=2, default=0.0, blank=True,
+        decimal_places=2, default=0.0, blank=True, null=True,
     )
     weekdays = BitField(flags=('mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'), default=0)
     owner = models.ForeignKey(
