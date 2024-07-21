@@ -24,9 +24,11 @@ class ActivePrescriptionManager(Manager):
     def active(self, for_user):
         return self.filter(
             Q(owner=for_user) &
-            Q(valid_from__lte=timezone.now()) &
-            Q(valid_until__gt=timezone.now()) | Q(valid_until=None),
-        ).order_by('valid_from')
+            (
+                (Q(valid_from__isnull=True) | Q(valid_from__lte=timezone.now())) &
+                (Q(valid_until__isnull=True) | Q(valid_until__gte=timezone.now()))
+            ),
+        )
 
 
 class Prescription(models.Model):
