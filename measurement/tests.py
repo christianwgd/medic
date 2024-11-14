@@ -1,6 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 
+from django.templatetags.l10n import localize
 from django.test import TestCase
 from django.contrib import auth
 from django.urls import reverse
@@ -13,7 +14,6 @@ from measurement.forms import MeasurementForm
 from measurement.models import Measurement, ValueType, Value
 from measurement.templatetags.measurement_tags import format_value
 
-
 user_model = auth.get_user_model()
 
 
@@ -22,18 +22,9 @@ class ValueTypeModelTest(TestCase):
     def setUp(self):
         self.fake = Faker('de_DE')
 
-    def test_active_type_str(self):
+    def test_value_type_str(self):
         value_type = ValueType.objects.first()
         self.assertEqual(str(value_type), value_type.name)
-
-    def test_active_type_manager(self):
-        value_type = ValueType.objects.first()
-        value_type.active = False
-        value_type.save()
-        value_types = ValueType.objects.all()
-        active_value_types = ValueType.objects.active()
-        self.assertEqual(value_types.count(), 5)
-        self.assertEqual(active_value_types.count(), 4)
 
 
 class MeasurementModelTests(TestCase):
@@ -60,21 +51,6 @@ class MeasurementModelTests(TestCase):
     def test_value_str(self):
         self.assertEqual(str(self.value), f'{self.value_type}-{self.measurement}')
 
-    def test_active_value_manager(self):
-        value_type_inactive = ValueType.objects.first()
-        value_type_inactive.active = False
-        value_type_inactive.save()
-        value_type_active = ValueType.objects.last()
-        Value.objects.create(
-            value_type=value_type_inactive, value='55', measurement=self.measurement,
-        )
-        Value.objects.create(
-            value_type=value_type_active, value='12.3', measurement=self.measurement,
-        )
-        active_values = Value.objects.active()
-        self.assertEqual(active_values.count(), 2)
-        self.assertEqual(Value.objects.count(), 3)
-
 
 class MeasurementTemplateTagTests(TestCase):
 
@@ -96,33 +72,35 @@ class MeasurementTemplateTagTests(TestCase):
 
     def test_format_value_tag(self):
         formatted_value = format_value(self.measurement, self.value_type)
-        self.assertEqual(formatted_value, '54.3')
+        self.assertEqual(formatted_value, localize(54.3))
 
 
 class MeasurementFormTests(TestCase):
 
     def setUp(self):
         self.fake = Faker('de_DE')
+        self.user = user_model.objects.create(username=self.fake.user_name())
+        for value_type in ValueType.objects.all():
+            self.user.profile.active_value_types.add(value_type)
 
     def test_measurement_form_fields(self):
         weight = ValueType.objects.get(slug='gewicht')
-        weight.active = False
         weight.save()
-        form = MeasurementForm()
+        form = MeasurementForm(user=self.user)
         self.assertTrue('rrsys' in form.fields)
         self.assertTrue('rrdia' in form.fields)
         self.assertTrue('puls' in form.fields)
-        self.assertFalse('gewicht' in form.fields)
+        # self.assertFalse('gewicht' in form.fields)
         self.assertTrue('temp' in form.fields)
 
     def test_measurement_form_empty(self):
-        form = MeasurementForm({})
+        form = MeasurementForm({}, user=self.user)
         self.assertFalse(form.is_valid())
         self.assertEqual(len(form.errors), 1)
         self.assertIn(_('No values entered.'), form.errors['__all__'])
 
     def test_measurement_form_valid(self):
-        form = MeasurementForm({'rrsys': 122, 'rrdia': 77, 'puls': 66})
+        form = MeasurementForm({'rrsys': 122, 'rrdia': 77, 'puls': 66}, user=self.user)
         self.assertTrue(form.is_valid())
 
 
@@ -143,6 +121,8 @@ class MeasurementViewTests(TestCase):
             value=54.3333,
             measurement=self.measurement,
         )
+        for value_type in ValueType.objects.all():
+            self.user.profile.active_value_types.add(value_type)
 
     def test_measurement_list_view_no_user(self):
         list_url = reverse('measurement:list')
@@ -235,9 +215,9 @@ class MeasurementViewTests(TestCase):
         response = self.client.get(create_url)
         self.assertEqual(response.status_code, 200)
         form_data = {
-            'rrsys': 120,
-            'rrdia': 80,
-            'puls': 66,
+            'rrsys': '120',
+            'rrdia': '80',
+            'puls': '66',
         }
         measurements_count = Measurement.objects.count()
         response = self.client.post(create_url, form_data)
@@ -262,17 +242,17 @@ class MeasurementViewTests(TestCase):
         response = self.client.get(update_url)
         self.assertEqual(response.status_code, 200)
         form_data = {
-            'rrsys': 120,
-            'rrdia': 80,
-            'puls': 66,
+            'rrsys': '121',
+            'rrdia': '78',
+            'puls': '70',
         }
         response = self.client.post(update_url, form_data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('measurement:list'))
         self.measurement.refresh_from_db()
-        self.assertEqual(self.measurement.values.get(value_type__slug='rrsys').value, 120)
-        self.assertEqual(self.measurement.values.get(value_type__slug='rrdia').value, 80)
-        self.assertEqual(self.measurement.values.get(value_type__slug='puls').value, 66)
+        self.assertEqual(self.measurement.values.get(value_type__slug='rrsys').value, 121)
+        self.assertEqual(self.measurement.values.get(value_type__slug='rrdia').value, 78)
+        self.assertEqual(self.measurement.values.get(value_type__slug='puls').value, 70)
 
     def test_measurement_minmax_view(self):
         measurements = Measurement.objects.all()

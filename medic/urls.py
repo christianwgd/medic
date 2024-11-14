@@ -44,4 +44,5 @@ urlpatterns = [
     path('prescription/', include('prescription.urls')),
     path('order/', include('order.urls')),
     path('usrprofile/', include('usrprofile.urls')),
+    path("select2/", include("django_select2.urls")),
 ]

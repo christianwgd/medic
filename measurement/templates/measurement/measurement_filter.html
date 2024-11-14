@@ -125,7 +125,9 @@ $(document).ready(function() {
                         </span>
                     </td>
                     {% for value_type in value_types %}
-                        <td data-th="{{ value_type.name }} ({{ value_type.unit }})">{% format_value wert value_type %}</td>
+                        <td data-th="{{ value_type.name }} ({{ value_type.unit }})">
+                            {% format_value wert value_type %}
+                        </td>
                     {% endfor %}
                     <td data-th="{% trans 'Peculiarity' %}">{{ wert.comment|default_if_none:"" }}</td>
                 </tr>

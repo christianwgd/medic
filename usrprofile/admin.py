@@ -14,6 +14,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
     list_display = ['ref_usr', 'warn_days_before', 'show_measurement_days']
     list_filter = ['ref_usr']
+    autocomplete_fields = ['active_value_types']
 
 
 class StartUrlAdminForm(forms.ModelForm):

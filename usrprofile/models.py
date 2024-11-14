@@ -7,6 +7,7 @@ from django.utils import formats
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from measurement.models import ValueType
 
 User = auth.get_user_model()
 
@@ -71,6 +72,7 @@ class UserProfile(models.Model):
     medicaments_items_per_page = models.PositiveSmallIntegerField(
         verbose_name=_('Items per page'), default=16,
     )
+    active_value_types = models.ManyToManyField(ValueType, verbose_name=_('Active types'), blank=True)
 
     @property
     def usr_inf(self):

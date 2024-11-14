@@ -31,7 +31,7 @@ class MeasurementListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['value_types'] = ValueType.objects.active()
+        ctx['value_types'] = self.request.user.profile.active_value_types.all()
         # change dates because of reversed ordering!
         if self.filterset.qs.all():
             ctx['max_date'] = formats.date_format(self.filterset.qs.first().date, 'Y-m-d')
@@ -53,7 +53,7 @@ class MeasurementPrintView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['value_types'] = ValueType.objects.active()
+        ctx['value_types'] = self.request.user.profile.active_value_types.all()
         ctx['min_date'] = datetime.strptime(self.kwargs['von'], '%Y-%m-%d').astimezone()
         ctx['max_date'] = datetime.strptime(self.kwargs['bis'], '%Y-%m-%d').astimezone()
         return ctx
@@ -74,12 +74,17 @@ class MeasurementCreateView(LoginRequiredMixin, BSModalCreateView):
     success_message = _('New masurements saved.')
     success_url = reverse_lazy('measurement:list')
 
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super().get_form_kwargs(*args, **kwargs)
+        form_kwargs['user'] = self.request.user
+        return form_kwargs
+
     def form_valid(self, form):
         if not is_ajax(self.request.META):
             measurement = form.save(commit=False)
             measurement.owner = self.request.user
             measurement.save()
-            for value_type in ValueType.objects.active():
+            for value_type in self.request.user.profile.active_value_types.all():
                 if form.cleaned_data.get(value_type.slug):
                     Value.objects.create(
                         value_type=value_type,
@@ -97,9 +102,14 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
     success_message = _('Masurements saved.')
     success_url = reverse_lazy('measurement:list')
 
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super().get_form_kwargs(*args, **kwargs)
+        form_kwargs['user'] = self.request.user
+        return form_kwargs
+
     def get_initial(self):
         initial = super().get_initial()
-        for value_type in ValueType.objects.active():
+        for value_type in self.request.user.profile.active_value_types.all():
             try:
                 value = Value.objects.get(
                     value_type=value_type,
@@ -113,10 +123,9 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
     def form_valid(self, form):
         measurement = form.save(commit=False)
-        for value_type in ValueType.objects.active():
+        for value_type in self.request.user.profile.active_value_types.all():
             if value_type.slug in form.cleaned_data and value_type.slug in form.changed_data:
-                # pylint: disable=unused-variable
-                value, created = Value.objects.get_or_create(
+                value, _created = Value.objects.get_or_create(
                     value_type=value_type,
                     measurement=measurement,
                 )
@@ -139,7 +148,7 @@ class MeasurementMinMaxView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        value_types = ValueType.objects.active().order_by('sort_order')
+        value_types = self.request.user.profile.active_value_types.all()
         values = self.get_queryset()
         stats = {}
         for value_type in value_types:
@@ -160,7 +169,7 @@ class MeasurementDiagramView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['value_types'] = ValueType.objects.active()
+        context['value_types'] = self.request.user.profile.active_value_types.all()
         context['von'] = self.kwargs.get('von', '')
         context['bis'] = self.kwargs.get('bis', '')
         context['first'] = datetime.strptime(context['von'], '%Y-%m-%d').astimezone()

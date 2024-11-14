@@ -11,8 +11,9 @@ User = auth.get_user_model()
 
 class ActiveTypeManager(Manager):
 
-    def active(self):
-        return self.filter(active=True)
+    @staticmethod
+    def active(for_user):
+        return for_user.profile.active_value_types.filter(active=True)
 
 
 class ValueType(models.Model):
@@ -27,10 +28,6 @@ class ValueType(models.Model):
 
     objects = ActiveTypeManager()
 
-    owner = models.ForeignKey(
-        User, on_delete=models.PROTECT,
-        verbose_name=_('user'), null=True, blank=True,
-    )
     name = models.CharField(
         verbose_name=_('Name'), max_length=50,
     )
@@ -41,7 +38,6 @@ class ValueType(models.Model):
         verbose_name=_('Decimal places'), default=0)
     slug = models.SlugField()
     sort_order = models.PositiveIntegerField(default=0)
-    active = models.BooleanField(verbose_name=_('active'), default=False)
 
 
 class Measurement(models.Model):

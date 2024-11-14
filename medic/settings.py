@@ -122,6 +122,7 @@ INSTALLED_APPS = [
     'axes',
     'mail_templated',
     'adminsortable2',
+    'django_select2',
     'medic',
     'chartjs',
     'django_filters',
