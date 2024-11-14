@@ -4,6 +4,7 @@ from django.forms import TextInput
 from django.forms.models import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django_select2.forms import Select2MultipleWidget
 
 from usrprofile.models import UserProfile
 
@@ -30,7 +31,7 @@ class UsrProfForm(ModelForm):
             'warn_days_before', 'medicaments_items_per_page',
             'show_measurement_days', 'measurements_items_per_page',
             'doc_can_see_msm', 'doc_can_see_med', 'email_arzt',
-            'my_start_page', 'gebdat',
+            'my_start_page', 'gebdat', 'active_value_types'
         ]
         widgets = {
             'warn_days_before': forms.NumberInput(attrs={'step': 1.0, 'min': 0}),
@@ -39,4 +40,5 @@ class UsrProfForm(ModelForm):
                 format='%Y-%m-%d',
                 attrs={'type': 'date'},
             ),
+            'active_value_types': Select2MultipleWidget
         }
