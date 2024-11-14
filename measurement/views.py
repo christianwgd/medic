@@ -201,4 +201,6 @@ class ValuesJSONView(BaseLineChartView):
         return [formats.date_format(item.measurement.date, 'd.m.y') for item in self.queryset]
 
     def get_data(self):
-        return [[round(item.value, self.value_type.decimals) for item in self.queryset]]
+        return [
+            [None if item.value is None else round(item.value, self.value_type.decimals) for item in self.queryset]
+        ]

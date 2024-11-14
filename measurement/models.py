@@ -1,19 +1,11 @@
 
 from django.db import models
 from django.contrib import auth
-from django.db.models import Manager
 from django.utils.formats import date_format
 from django.utils.translation import gettext_lazy as _
 
 
 User = auth.get_user_model()
-
-
-class ActiveTypeManager(Manager):
-
-    @staticmethod
-    def active(for_user):
-        return for_user.profile.active_value_types.filter(active=True)
 
 
 class ValueType(models.Model):
@@ -25,8 +17,6 @@ class ValueType(models.Model):
 
     def __str__(self):
         return self.name
-
-    objects = ActiveTypeManager()
 
     name = models.CharField(
         verbose_name=_('Name'), max_length=50,
@@ -63,12 +53,6 @@ class Measurement(models.Model):
     )
 
 
-class ActiveValueManager(Manager):
-
-    def active(self):
-        return self.filter(value_type__active=True)
-
-
 class Value(models.Model):
 
     class Meta:
@@ -77,8 +61,6 @@ class Value(models.Model):
 
     def __str__(self):
         return f'{self.value_type}-{self.measurement}'
-
-    objects = ActiveValueManager()
 
     value_type = models.ForeignKey(
         ValueType, db_index=True, verbose_name=_('Value Type'),

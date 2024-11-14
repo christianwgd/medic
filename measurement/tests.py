@@ -21,6 +21,9 @@ class ValueTypeModelTest(TestCase):
 
     def setUp(self):
         self.fake = Faker('de_DE')
+        self.user = user_model.objects.create(username=self.fake.user_name())
+        for value_type in ValueType.objects.all():
+            self.user.profile.active_value_types.add(value_type)
 
     def test_value_type_str(self):
         value_type = ValueType.objects.first()
