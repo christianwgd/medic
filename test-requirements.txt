@@ -1,6 +1,6 @@
-coverage==7.6.4
-Faker==32.1.0
-pytest==8.3.3
+coverage==7.6.9
+Faker==33.1.0
+pytest==8.3.4
 pytest-cov==6.0.0
 pytest-django==4.9.0
-ruff==0.7.3
+ruff==0.8.4
