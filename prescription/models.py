@@ -69,7 +69,7 @@ class Prescription(models.Model):
         return None
 
     def get_amount_for_time(self, start_date, end_date, user):
-        needed = Decimal(0.0)
+        needed = Decimal('0.0')
         for day in daterange(start_date, end_date):
             dpd = self.get_dose_per_day(day, user)
             needed += Decimal(dpd)

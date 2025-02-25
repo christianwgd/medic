@@ -143,7 +143,7 @@ class PrescriptionFormTests(PrescriptionTestCase):
 class PrescriptionTagTest(PrescriptionTestCase):
 
     def test_calc_dosis(self):
-        value = Decimal(2.00)
+        value = Decimal('2.00')
         result = calc_dosis(value, self.prescription.id)
         dose = formats.localize(round(self.prescription.medicament.strength * value, 2), use_l10n=True)
         self.assertEqual(result, f'{dose}{self.prescription.medicament.unit}')
@@ -246,7 +246,7 @@ class PrescriptionViewsTest(PrescriptionTestCase):
         self.assertEqual(response.url, list_url)
         new_prescription = Prescription.objects.get(morning=1.5)
         self.assertEqual(new_prescription.medicament, self.medicament)
-        self.assertEqual(new_prescription.morning, Decimal(1.5))
+        self.assertEqual(new_prescription.morning, Decimal('1.5'))
         self.assertTrue(new_prescription.weekdays.mo)
         self.assertFalse(new_prescription.weekdays.tu)
         self.assertTrue(new_prescription.weekdays.we)
@@ -284,7 +284,7 @@ class PrescriptionViewsTest(PrescriptionTestCase):
         self.assertEqual(response.url, detail_url)
         self.prescription.refresh_from_db()
         self.assertEqual(self.prescription.medicament, self.medicament)
-        self.assertEqual(self.prescription.morning, Decimal(2.5))
+        self.assertEqual(self.prescription.morning, Decimal('2.5'))
         self.assertFalse(self.prescription.weekdays.mo)
         self.assertTrue(self.prescription.weekdays.tu)
         self.assertFalse(self.prescription.weekdays.we)
