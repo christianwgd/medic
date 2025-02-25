@@ -214,7 +214,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         form_data = {
             'name': 'New medicament',
             'package': 100,
-            'strength': Decimal(2.0),
+            'strength': Decimal('2.0'),
             'unit': 'mg',
         }
         response = self.client.post(create_url, form_data)
@@ -223,7 +223,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.url, list_url)
         new_med = Medicament.objects.get(name='New medicament')
         self.assertEqual(new_med.package, 100)
-        self.assertEqual(new_med.strength, Decimal(2.0))
+        self.assertEqual(new_med.strength, Decimal('2.0'))
         self.assertEqual(new_med.unit, 'mg')
 
     def test_medicament_create_view_post_with_pzn(self):
@@ -232,7 +232,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         form_data = {
             'name': 'New medicament',
             'package': 100,
-            'strength': Decimal(2.0),
+            'strength': Decimal('2.0'),
             'unit': 'mg',
             'pzn_no': str(self.pzn.pzn),
         }
@@ -242,7 +242,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.assertEqual(response.url, list_url)
         new_med = Medicament.objects.get(name='New medicament')
         self.assertEqual(new_med.package, 100)
-        self.assertEqual(new_med.strength, Decimal(2.0))
+        self.assertEqual(new_med.strength, Decimal('2.0'))
         self.assertEqual(new_med.unit, 'mg')
         self.assertEqual(new_med.pzn, self.pzn)
 
@@ -279,7 +279,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         form_data = {
             'name': 'new name',
             'package': 100,
-            'strength': Decimal(2.0),
+            'strength': Decimal('2.0'),
             'unit': 'mg',
         }
         response = self.client.post(update_url, form_data)
@@ -289,7 +289,7 @@ class MedicamentViewsTest(MedicamentTestCase):
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.name, 'new name')
         self.assertEqual(self.medicament.package, 100)
-        self.assertEqual(self.medicament.strength, Decimal(2.0))
+        self.assertEqual(self.medicament.strength, Decimal('2.0'))
         self.assertEqual(self.medicament.unit, 'mg')
 
     def test_medicament_delete_view_no_user(self):
@@ -457,7 +457,7 @@ class MedicamentViewsTest(MedicamentTestCase):
             medicament=self.medicament,
         ).order_by('-date').first()
         self.assertEqual(new_stock_change.date, stock_change_date)
-        self.assertEqual(new_stock_change.amount, Decimal(10.0))
+        self.assertEqual(new_stock_change.amount, Decimal('10.0'))
         self.assertEqual(new_stock_change.reason, '00')
         self.medicament.refresh_from_db()
         self.assertEqual(self.medicament.last_calc, timezone.now().date())
