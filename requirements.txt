@@ -1,4 +1,4 @@
-Django==5.2.2
+Django==5.2.3
 django-admin-sortable2==2.2.8
 django-axes==8.0.0
 django-bitfield==2.2.0
@@ -13,5 +13,5 @@ django-mail-templated==2.6.5
 django-phonenumber-field < 7.0.0
 django-select2==8.4.1
 django-two-factor-auth==1.17.0
-phonenumbers==9.0.6
+phonenumbers==9.0.7
 psycopg2-binary==2.9.10
