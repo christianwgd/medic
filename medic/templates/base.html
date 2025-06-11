@@ -72,11 +72,11 @@
                         {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="{% url 'logoff' %}">
+                        <a class="dropdown-item" href="{% url 'account_logout' %}">
                             <i class="far fa-sign-out"></i>
                             {% trans 'Log out' %}
                         </a>
-                        <a class="dropdown-item" href="{% url 'pwd_change' %}">
+                        <a class="dropdown-item" href="{% url 'account_set_password' %}">
                             <i class="far fa-key"></i>
                             {% trans 'Password change' %}
                         </a>
@@ -84,7 +84,7 @@
                             <i class="far fa-cog"></i>
                             {% trans 'Settings' %}
                         </a>
-                        <a class="dropdown-item" href="{% url 'two_factor:profile' %}">
+                        <a class="dropdown-item" href="{% url 'mfa_index' %}">
                             <!-- user-cog in fa5.0.6 nicht enthalten -->
                             <i class="far fa-user-lock"></i>
                             {% trans 'Two factor authentication' %}
@@ -116,9 +116,9 @@
 
     <div class="row">
         <div class="col-12">
-        <h3 style="text-align: center;">{% block page_title %}(no content){% endblock %}</h3>
+        <h3 style="text-align: center;">{% block page_title %}{% endblock %}</h3>
         {% bootstrap_messages %}
-        {% block content %}(no content){% endblock %}
+        {% block content %}{% endblock %}
         </div>
     </div>
 
