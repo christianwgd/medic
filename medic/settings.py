@@ -66,13 +66,14 @@ THOUSAND_SEPARATOR = '.'
 STATIC_URL = '/static/'
 STATIC_ROOT = Path(BASE_DIR) / 'static'
 
+LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'startpage'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'account_login'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,18 +93,14 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'axes.middleware.AxesMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
-    'axes.backends.AxesBackend',
-
-    # Django ModelBackend is the default authentication backend.
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 ROOT_URLCONF = 'medic.urls'
@@ -119,11 +116,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'axes',
+    'medic',
+    'allauth',
+    'allauth.account',
+    'allauth.mfa',
     'mail_templated',
     'adminsortable2',
     'django_select2',
-    'medic',
     'chartjs',
     'django_filters',
     'usrprofile.apps.UsrProfileConfig',
@@ -131,10 +130,6 @@ INSTALLED_APPS = [
     'medicament.apps.MedicamentConfig',
     'prescription.apps.PrescriptionConfig',
     'order.apps.OrderConfig',
-    'django_otp',
-    'django_otp.plugins.otp_static',
-    'django_otp.plugins.otp_totp',
-    'two_factor',
     'django_bootstrap5',
     'bootstrap_modal_forms',
 ]
@@ -146,6 +141,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 BOOTSTRAP5 = {
     # 'theme_url': '/static/css/bootstrap.min.css',
 }
+
+# All-auth settings
+ACCOUNT_LOGIN_METHODS = {"username"}
+MFA_PASSKEY_LOGIN_ENABLED = True
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',

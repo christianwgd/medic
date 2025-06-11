@@ -57,7 +57,7 @@ class MedicViewTest(TestCase):
 
     def test_start_view(self):
         self.client.force_login(self.user)
-        logoff_url = reverse('logoff')
+        logoff_url = reverse('account_logout')
         response = self.client.post(logoff_url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse('medic_login'))
+        self.assertEqual(response.url, reverse('account_login'))
