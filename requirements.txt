@@ -4,11 +4,11 @@ django-allauth[mfa]==65.10.0
 django-bitfield==2.2.0
 django-bootstrap-datepicker-plus==5.0.5
 django-bootstrap-modal-forms==3.0.5
-django-bootstrap5==25.1
+django-bootstrap5==25.2
 django-chartjs==2.3.0
 django-filter==25.1
 django-formtools==2.5.1
 django-mail-templated==2.6.5
 django-select2==8.4.1
-phonenumbers==9.0.9
+phonenumbers==9.0.10
 psycopg2-binary==2.9.10
