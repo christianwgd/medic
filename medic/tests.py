@@ -20,7 +20,7 @@ class MedicViewTest(TestCase):
         index_url = reverse('index')
         response = self.client.get(index_url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/login/?next={index_url}')
+        self.assertEqual(response.url, f'/accounts/login/?next={index_url}')
 
     def test_index_view(self):
         self.client.force_login(self.user)
@@ -33,7 +33,7 @@ class MedicViewTest(TestCase):
         start_url = reverse('startpage')
         response = self.client.get(start_url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/login/?next={start_url}')
+        self.assertEqual(response.url, f'/accounts/login/?next={start_url}')
 
     def test_start_view_no_start_page(self):
         self.client.force_login(self.user)
