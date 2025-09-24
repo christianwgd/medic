@@ -9,7 +9,7 @@ def migrate_werte(apps, schema_editor):
     value_type_model = apps.get_model('measurement', 'valuetype')
     measurement_model = apps.get_model('measurement', 'measurement')
 
-    rr_sys, created = value_type_model.objects.get_or_create(
+    rr_sys, _created = value_type_model.objects.get_or_create(
         slug='rrsys', defaults={
             'owner': None,
             'name': 'RR sys',
@@ -18,7 +18,7 @@ def migrate_werte(apps, schema_editor):
             'sort_order': 0,
         },
     )
-    rr_dia, created = value_type_model.objects.get_or_create(
+    rr_dia, _created = value_type_model.objects.get_or_create(
         slug='rrdia', defaults={
             'owner': None,
             'name': 'RR dia',
@@ -27,7 +27,7 @@ def migrate_werte(apps, schema_editor):
             'sort_order': 1,
         },
     )
-    puls, created = value_type_model.objects.get_or_create(
+    puls, _created = value_type_model.objects.get_or_create(
         slug='puls', defaults={
             'owner': None,
             'name': 'Puls',
@@ -36,7 +36,7 @@ def migrate_werte(apps, schema_editor):
             'sort_order': 2,
         },
     )
-    temp, created = value_type_model.objects.get_or_create(
+    temp, _created = value_type_model.objects.get_or_create(
         slug='temp', defaults={
             'owner': None,
             'name': 'Temp.',
@@ -45,7 +45,7 @@ def migrate_werte(apps, schema_editor):
             'sort_order': 3,
         },
     )
-    gew, created = value_type_model.objects.get_or_create(
+    gew, _created = value_type_model.objects.get_or_create(
         slug='gewicht', defaults={
             'owner': None,
             'name': 'Gewicht',

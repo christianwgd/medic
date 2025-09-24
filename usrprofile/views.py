@@ -18,8 +18,7 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView)
     success_url = reverse_lazy('startpage')
 
     def get_object(self, queryset=None):
-        # pylint: disable=unused-variable
-        user, created = UserProfile.objects.get_or_create(
+        user, _created = UserProfile.objects.get_or_create(
             ref_usr=self.request.user, defaults={'email': self.request.user.email},
         )
         return user
