@@ -1,6 +1,6 @@
-Django==5.2.5
+Django==5.2.6
 django-admin-sortable2==2.2.8
-django-allauth[mfa]==65.11.1
+django-allauth[mfa]==65.11.2
 django-bitfield==2.2.0
 django-bootstrap-datepicker-plus==5.0.5
 django-bootstrap-modal-forms==3.0.5
@@ -10,5 +10,5 @@ django-filter==25.1
 django-formtools==2.5.1
 django-mail-templated==2.6.5
 django-select2==8.4.1
-phonenumbers==9.0.13
+phonenumbers==9.0.14
 psycopg2-binary==2.9.10
