@@ -11,7 +11,6 @@ class MeasurementForm(BSModalModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.Meta.fields = []
         for idx, value_type in enumerate(self.user.profile.active_value_types.all()):
             self.fields[value_type.slug] = forms.DecimalField(
                 label=value_type.name,
@@ -20,16 +19,11 @@ class MeasurementForm(BSModalModelForm):
                 required=False,
             )
             self.fields[value_type.slug].localize = True
+            self.fields[value_type.slug].widget = forms.NumberInput(
+                attrs={'min': 0},
+            )
             if idx == 0:
-                self.fields[value_type.slug].widget = forms.NumberInput(
-                    attrs={'min': 0, "autofocus": "autofocus"},
-                )
-            else:
-                self.fields[value_type.slug].widget = forms.NumberInput(
-                    attrs={'min': 0},
-                )
-            self.Meta.fields.append(value_type.slug)
-        self.Meta.fields.append('comment')
+                self.fields[value_type.slug].widget.attrs.update({'autofocus': 'autofocus'})
 
     def clean(self):
         cleaned_data = super().clean()
