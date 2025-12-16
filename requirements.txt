@@ -8,6 +8,6 @@ django-chartjs==2.3.0
 django-filter==25.2
 django-formtools==2.5.1
 django-mail-templated==2.6.5
-django-select2==8.4.3
+django-select2==8.4.4
 phonenumbers==9.0.20
 psycopg2-binary==2.9.11
