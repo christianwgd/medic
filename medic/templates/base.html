@@ -24,6 +24,11 @@
 {{ block.super }}
 <script defer src="{% static 'font-awesome-5/js/all.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+<script>
+$('#modal').on('shown.bs.modal', function() {
+      $(this).find('[autofocus]').focus();
+});
+</script>
 {% endblock %}
 
 {% block bootstrap5_title %}medic{% endblock %}
