@@ -1,4 +1,4 @@
-Django==6.0
+Django==6.0.1
 django-admin-sortable2==2.3
 django-allauth[mfa]==65.13.1
 django-bitfield==2.2.0
@@ -8,6 +8,6 @@ django-chartjs==2.3.0
 django-filter==25.2
 django-formtools==2.5.1
 django-mail-templated==2.6.5
-django-select2==8.4.7
-phonenumbers==9.0.21
+django-select2==8.4.8
+phonenumbers==9.0.22
 psycopg2-binary==2.9.11
