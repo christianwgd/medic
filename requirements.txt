@@ -1,6 +1,6 @@
 Django==6.0.1
 django-admin-sortable2==2.3
-django-allauth[mfa]==65.13.1
+django-allauth[mfa]==65.14.0
 django-bitfield==2.2.0
 django-bootstrap-modal-forms==3.0.5
 django-bootstrap5==26.1

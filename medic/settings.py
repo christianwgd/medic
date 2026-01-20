@@ -175,3 +175,4 @@ if Path.exists(f):
     sys.modules[module_name] = module
     with Path.open(f, "rb") as settings_file:
         exec(settings_file.read())  # noqa: S102
+        settings_file.close()
