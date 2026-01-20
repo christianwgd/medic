@@ -10,5 +10,4 @@ django-formtools==2.5.1
 django-mail-templated==2.6.5
 django-select2==8.4.8
 phonenumbers==9.0.22
-psycopg==3.3.2
-psycopg-binary==3.3.2
+psycopg2-binary==2.9.11
