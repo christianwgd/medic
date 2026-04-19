@@ -1,5 +1,3 @@
-
-
 from django.db import models
 from django.contrib import auth
 from django.dispatch import receiver
@@ -84,7 +82,8 @@ class UserProfile(models.Model):
                 format='SHORT_DATE_FORMAT',
                 use_l10n=True,
             )
-            born = f"{_('born')} {birth_date}"
+            born_str = _('born')
+            born = f"{born_str} {birth_date}"
         if self.ref_usr.first_name and self.ref_usr.last_name:
             user_full_name = self.ref_usr.get_full_name()
         else:

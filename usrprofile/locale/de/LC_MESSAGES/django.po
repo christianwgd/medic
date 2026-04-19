@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-11 13:04+0200\n"
+"POT-Creation-Date: 2026-04-19 13:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:30
+#: admin.py:31 tests.py:160
 msgid "Not a valid url name"
 msgstr "Kein gültiger URL-Name"
 
@@ -26,81 +26,89 @@ msgstr "Kein gültiger URL-Name"
 msgid "User profile"
 msgstr "Benutzerprofil"
 
-#: forms.py:17
+#: forms.py:18
 msgid "first name"
 msgstr ""
 
-#: forms.py:21
+#: forms.py:22
 msgid "last name"
 msgstr ""
 
-#: forms.py:24
+#: forms.py:25
 msgid "email adress"
 msgstr "Email Adresse"
 
-#: models.py:17
+#: models.py:16
 msgid "Home page"
 msgstr "Startseite"
 
-#: models.py:18
+#: models.py:17
 msgid "Home pages"
 msgstr "Startseiten"
 
-#: models.py:24
+#: models.py:23
 msgid "Name"
 msgstr "Name"
 
-#: models.py:25
+#: models.py:24
 msgid "URL pattern"
 msgstr "URL-Pattern"
 
-#: models.py:32
+#: models.py:31
 msgid "User setting"
 msgstr "Benutzereinstellung"
 
-#: models.py:33
+#: models.py:32
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: models.py:39
+#: models.py:38
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: models.py:42
+#: models.py:41
 msgid "Hold medicaments inventory for at least"
 msgstr "Medikamente vorhalten für mindestens"
 
-#: models.py:44 models.py:49
+#: models.py:43 models.py:48
 msgid "days"
 msgstr "Tage"
 
-#: models.py:47
+#: models.py:46
 msgid "Show readings for"
 msgstr "Standart Zeitraum Messwerte anzeigen"
 
-#: models.py:52
+#: models.py:51
 msgid "Doctor is allowed to see measurements"
 msgstr "Arzt darf Messwerte sehen"
 
-#: models.py:55
+#: models.py:54
 msgid "Doctor is allowed to see prescription"
 msgstr "Arzt darf Medikamente sehen"
 
-#: models.py:59
+#: models.py:58
 msgid "User"
 msgstr "Benutzer"
 
-#: models.py:62
+#: models.py:61
 msgid "Doctor's email address"
 msgstr "Email-Adresse Arzt"
 
-#: models.py:66
+#: models.py:65
 msgid "My home page"
 msgstr "Meine Startseite"
 
-#: models.py:69 models.py:72
+#: models.py:68 models.py:71
 msgid "Items per page"
 msgstr "Zeilen pro Seite"
+
+#: models.py:73
+msgid "Active types"
+msgstr ""
+
+#: models.py:85
+msgid "born"
+msgstr "geb."
 
 #: templates/usrprofile/userprofile_form.html:19
 msgid "Settings"
@@ -114,23 +122,27 @@ msgstr "Persönliche Daten"
 msgid "Measurements"
 msgstr ""
 
-#: templates/usrprofile/userprofile_form.html:70
+#: templates/usrprofile/userprofile_form.html:71
 msgid "Medicaments"
 msgstr ""
 
-#: templates/usrprofile/userprofile_form.html:86
+#: templates/usrprofile/userprofile_form.html:87
 msgid "Doctor"
 msgstr "Arzt"
 
-#: templates/usrprofile/userprofile_form.html:107
+#: templates/usrprofile/userprofile_form.html:108
 msgid "Ok"
 msgstr ""
 
-#: templates/usrprofile/userprofile_form.html:110
+#: templates/usrprofile/userprofile_form.html:111
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: views.py:29
+#: tests.py:150 tests.py:151
+msgid "This field is required."
+msgstr ""
+
+#: views.py:27
 #, python-brace-format
 msgid "Settings for user {user} saved."
 msgstr "Einstellungen für Benutzer {user} gespeichert."
