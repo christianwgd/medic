@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from medicament.models import Medicament, StockChange, DosageForm, MedPznData
+from medicament.models import Medicament, StockChange, DosageForm
 
 
 @admin.register(Medicament)
@@ -25,10 +25,3 @@ class DosageFormAdmin(admin.ModelAdmin):
 
     list_display = ['key', 'short', 'name']
     search_fields = ['key', 'short', 'name']
-
-
-@admin.register(MedPznData)
-class MedPznDataAdmin(admin.ModelAdmin):
-
-    list_display = ['pzn', 'name', 'producer']
-    search_fields = ['pzn', 'name']
