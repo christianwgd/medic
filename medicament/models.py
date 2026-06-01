@@ -33,34 +33,6 @@ class DosageForm(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=200)
 
 
-class MedPznData(models.Model):
-
-    class Meta:
-        verbose_name = _('PZN Data')
-        ordering = ['pzn']
-
-    def __str__(self):
-        return self.name
-
-    def as_json(self):
-        return {
-            'id': self.id,
-            'pzn': self.pzn,
-            'name': self.name,
-            'producer': self.producer,
-        }
-
-    pzn = models.PositiveIntegerField(db_index=True, verbose_name=_('PZN'))
-    name = models.CharField(verbose_name=_('Name'), max_length=50)
-    producer = models.CharField(verbose_name=_('Producer'), max_length=100)
-    dosage_form = models.ForeignKey(
-        DosageForm, on_delete=models.RESTRICT,
-        verbose_name=_('Dosage form'),
-    )
-    ref_date = models.DateField(verbose_name=_('Reference date'))
-    verification = models.CharField(max_length=10, verbose_name=_('Verification'))
-
-
 class Medicament(models.Model):
 
     class Meta:
@@ -109,11 +81,6 @@ class Medicament(models.Model):
     last_calc = models.DateField(
         verbose_name=_('Last stock calculation'),
         auto_now_add=False, null=True,
-    )
-    pzn = models.ForeignKey(
-        MedPznData, verbose_name=_('PZN Data'),
-        on_delete=models.SET_NULL,
-        null=True, blank=True,
     )
 
 
