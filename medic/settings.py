@@ -1,8 +1,12 @@
-
 # Django settings for measurement project.
 
 import sys
+import os
+from ast import AugLoad
+
 from pathlib import Path
+
+from django.contrib import messages
 
 # turn warnings into exception...
 # import warnings
@@ -11,23 +15,32 @@ from pathlib import Path
 #     RuntimeWarning, r'django\.db\.models\.fields')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from django.contrib import messages
 
 BASE_DIR = Path(Path(Path(__file__).resolve()).parent).parent
 PROJECT_APP_PATH = Path(Path(__file__).resolve()).parent
 PROJECT_APP = Path(PROJECT_APP_PATH).name
 
 # Settings for tests, override in production with localsettings!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True')
 
-SECRET_KEY = 'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'  # noqa: S105
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'  # noqa: S105
+)
+
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '*'),]
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': Path(BASE_DIR) / 'medic.db',  # Or path to database file if using sqlite3.
+        "ENGINE": os.getenv('DB_ENGINE', 'postgresql_psycopg2'),
+        'NAME': os.getenv('DB_NAME', 'medic'),
+        "USER": os.getenv('DB_USER', None),
+        "PASSWORD": os.getenv('DB_PASSWORD', None),
+        "HOST": os.getenv('DB_HOST', 'localhost'),
+        "PORT": os.getenv('DB_PORT', '5432'),
     },
 }
+print(DATABASES['default'])
 
 ADMINS = [
     ('cwiegand', 'cwiegand@wgdnet.de'),
@@ -154,25 +167,50 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-##################
-# LOCAL SETTINGS #
-##################
+# axes
+AXES_COOLOFF_TIME = 1 # lock for 1 hour
+AXES_RESET_ON_SUCCESS = True
+AXES_ENABLE_ACCESS_FAILURE_LOG = True
+AXES_CLIENT_IP_CALLABLE = "medic.utils.get_client_ip"
 
-# Allow any settings to be defined in local_settings.py which should be
-# ignored in your version control system allowing for settings to be
-# defined per machine.
+LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
 
-# Instead of doing "from .local_settings import *", we use exec so that
-# local_settings has full access to everything defined in this module.
-# Also force into sys.modules so it's visible to Django's autoreload.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'root' : {'level': 'DEBUG',
+              'handlers': None},
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(name)s %(funcName)s %(message)s'
+            },
+        },
 
-f = Path(PROJECT_APP_PATH) / "localsettings.py"
-if Path.exists(f):
-    import importlib
-    module_name = f"{PROJECT_APP}.localsettings"
-    module = importlib.import_module(module_name)
-    module.__file__ = f
-    sys.modules[module_name] = module
-    with Path.open(f, "rb") as settings_file:
-        exec(settings_file.read())  # noqa: S102
-        settings_file.close()
+    'handlers': {
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'formatter': 'verbose',
+            'filename' : LOG_FILE,
+            'when': 'd',
+            'interval' : 10,
+            'backupCount': 5,  # 5 Generationen aufheben
+            },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'verbose',
+            }
+        },
+    'loggers': {
+        'django.db.backends' : {
+            'level': 'CRITICAL',
+            # 'level': 'DEBUG',
+        },
+        'medic' : {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+        }
+    }
+
+}
