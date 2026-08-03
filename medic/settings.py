@@ -30,10 +30,7 @@ SECRET_KEY = os.getenv(
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8000',
-    'https://medic.wgdnet.de',
-]
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(',')
 
 DATABASES = {
     'default': {
