@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv(
     'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'  # noqa: S105
 )
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 DATABASES = {
     'default': {
