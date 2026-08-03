@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '*'),]
 
 DATABASES = {
     'default': {
-        "ENGINE": os.getenv('DB_ENGINE', 'postgresql_psycopg2'),
+        "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
         'NAME': os.getenv('DB_NAME', 'medic'),
         "USER": os.getenv('DB_USER', None),
         "PASSWORD": os.getenv('DB_PASSWORD', None),
@@ -40,7 +40,6 @@ DATABASES = {
         "PORT": os.getenv('DB_PORT', '5432'),
     },
 }
-print(DATABASES['default'])
 
 ADMINS = [
     ('cwiegand', 'cwiegand@wgdnet.de'),
@@ -79,6 +78,12 @@ THOUSAND_SEPARATOR = '.'
 STATIC_URL = '/static/'
 STATIC_ROOT = Path(BASE_DIR) / 'static'
 
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'startpage'
 LOGOUT_REDIRECT_URL = 'account_login'
@@ -102,6 +107,7 @@ TEMPLATES = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -173,7 +179,7 @@ AXES_RESET_ON_SUCCESS = True
 AXES_ENABLE_ACCESS_FAILURE_LOG = True
 AXES_CLIENT_IP_CALLABLE = "medic.utils.get_client_ip"
 
-LOG_FILE = os.path.join(BASE_DIR, 'log/medic.log')
+LOG_FILE = BASE_DIR / 'log/medic.log'
 
 LOGGING = {
     'version': 1,

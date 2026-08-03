@@ -1,0 +1,22 @@
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:5002 medic.wsgi:application
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+    ports:
+      - "5002:5002"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+
+volumes:
+  static_volume:

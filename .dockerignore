@@ -1,0 +1,14 @@
+*.pyc
+*__pycache__*
+db.sqlite3
+.venv
+.env
+.env.*
+.git
+.gitignore
+.dockerignore
+htmlcov/
+coverage.xml
+unittest.xml
+log/
+static/
