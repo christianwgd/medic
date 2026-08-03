@@ -30,6 +30,11 @@ SECRET_KEY = os.getenv(
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'https://medic.wgdnet.de',
+]
+
 DATABASES = {
     'default': {
         "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
