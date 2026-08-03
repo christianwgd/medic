@@ -1,14 +1,14 @@
 services:
   web:
     build: .
-    command: gunicorn --bind localhost:5002 medic.wsgi:application
+    command: gunicorn -c config.py medic.wsgi
     volumes:
       - .:/app
       - static_volume:/app/static
     ports:
-      - "5002:5002"
+      - "${PORT:-8000}:8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5002/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
       timeout: 10s
       retries: 3

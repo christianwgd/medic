@@ -29,7 +29,7 @@ RUN mkdir -p /app/log /app/static && chmod 777 /app/log /app/static
 RUN python manage.py collectstatic --noinput
 
 # Expose port
-EXPOSE 5002
+EXPOSE ${PORT:-8000}
 
 # Default command
-CMD ["gunicorn", "--bind", "localhost:5002", "medic.wsgi:application"]
+CMD ["gunicorn", "-c", "config.py", "medic.wsgi"]
