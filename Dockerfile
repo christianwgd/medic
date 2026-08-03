@@ -32,4 +32,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 5002
 
 # Default command
-CMD ["gunicorn", "--bind", "0.0.0.0:5002", "medic.wsgi:application"]
+CMD ["gunicorn", "--bind", "localhost:5002", "medic.wsgi:application"]
