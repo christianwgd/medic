@@ -15,6 +15,5 @@ services:
       start_period: 10s
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    env_file:
 volumes:
   static_volume:
