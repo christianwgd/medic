@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:5002 medic.wsgi:application
+    command: gunicorn --bind localhost:5002 medic.wsgi:application
     volumes:
       - .:/app
       - static_volume:/app/static
