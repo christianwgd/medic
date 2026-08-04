@@ -29,7 +29,7 @@ CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000'
 DATABASES = {
     'default': {
         "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.getenv('DB_NAME', 'medic'),
+        'NAME': os.getenv('DB_NAME', BASE_DIR / 'db.sqlite3'),
         "USER": os.getenv('DB_USER', None),
         "PASSWORD": os.getenv('DB_PASSWORD', None),
         "HOST": os.getenv('DB_HOST', 'localhost'),
