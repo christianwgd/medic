@@ -17,5 +17,6 @@ services:
       - "host.docker.internal:host-gateway"
     env_file:
       - .env
+    restart: unless-stopped
 volumes:
   static_volume:
