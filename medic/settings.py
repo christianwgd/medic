@@ -1,8 +1,6 @@
 # Django settings for measurement project.
 
-import sys
 import os
-from ast import AugLoad
 
 from pathlib import Path
 
@@ -25,7 +23,7 @@ DEBUG = os.getenv('DEBUG', 'True')
 
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
-    'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'  # noqa: S105
+    'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 )
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
