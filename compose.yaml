@@ -1,0 +1,21 @@
+services:
+  web:
+    build: .
+    command: gunicorn -c config.py medic.wsgi
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+    ports:
+      - "${PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+volumes:
+  static_volume:

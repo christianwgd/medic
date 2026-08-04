@@ -1,4 +1,5 @@
 .idea/
+/static/
 media/
 __pycache__/
 localsettings.py
@@ -17,3 +18,4 @@ htmlcov/
 coverage.xml
 unittest.xml
 .ruff_cache/
+.env.*

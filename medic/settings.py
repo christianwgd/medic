@@ -1,8 +1,10 @@
-
 # Django settings for measurement project.
 
-import sys
+import os
+
 from pathlib import Path
+
+from django.contrib import messages
 
 # turn warnings into exception...
 # import warnings
@@ -10,22 +12,28 @@ from pathlib import Path
 #     'error', r"DateTimeField .* received a naive datetime",
 #     RuntimeWarning, r'django\.db\.models\.fields')
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from django.contrib import messages
-
 BASE_DIR = Path(Path(Path(__file__).resolve()).parent).parent
-PROJECT_APP_PATH = Path(Path(__file__).resolve()).parent
-PROJECT_APP = Path(PROJECT_APP_PATH).name
 
 # Settings for tests, override in production with localsettings!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True')
 
-SECRET_KEY = 'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'  # noqa: S105
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+)
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(',')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': Path(BASE_DIR) / 'medic.db',  # Or path to database file if using sqlite3.
+        "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('DB_NAME', BASE_DIR / 'db.sqlite3'),
+        "USER": os.getenv('DB_USER', None),
+        "PASSWORD": os.getenv('DB_PASSWORD', None),
+        "HOST": os.getenv('DB_HOST', 'localhost'),
+        "PORT": os.getenv('DB_PORT', '5432'),
     },
 }
 
@@ -64,7 +72,7 @@ DECIMAL_SEPARATOR = ','
 THOUSAND_SEPARATOR = '.'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = Path(BASE_DIR) / 'static'
+STATIC_ROOT = BASE_DIR / 'static'
 
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'startpage'
@@ -154,25 +162,8 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-##################
-# LOCAL SETTINGS #
-##################
-
-# Allow any settings to be defined in local_settings.py which should be
-# ignored in your version control system allowing for settings to be
-# defined per machine.
-
-# Instead of doing "from .local_settings import *", we use exec so that
-# local_settings has full access to everything defined in this module.
-# Also force into sys.modules so it's visible to Django's autoreload.
-
-f = Path(PROJECT_APP_PATH) / "localsettings.py"
-if Path.exists(f):
-    import importlib
-    module_name = f"{PROJECT_APP}.localsettings"
-    module = importlib.import_module(module_name)
-    module.__file__ = f
-    sys.modules[module_name] = module
-    with Path.open(f, "rb") as settings_file:
-        exec(settings_file.read())  # noqa: S102
-        settings_file.close()
+# axes
+AXES_COOLOFF_TIME = 1 # lock for 1 hour
+AXES_RESET_ON_SUCCESS = True
+AXES_ENABLE_ACCESS_FAILURE_LOG = True
+AXES_CLIENT_IP_CALLABLE = "medic.utils.get_client_ip"
