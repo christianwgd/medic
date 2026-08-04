@@ -11,4 +11,3 @@ django-mail-templated==2.6.5
 django-select2==8.4.8
 psycopg2-binary==2.9.12
 gunicorn==26.0.0
-whitenoise==6.9.0

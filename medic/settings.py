@@ -12,11 +12,7 @@ from django.contrib import messages
 #     'error', r"DateTimeField .* received a naive datetime",
 #     RuntimeWarning, r'django\.db\.models\.fields')
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-
 BASE_DIR = Path(Path(Path(__file__).resolve()).parent).parent
-PROJECT_APP_PATH = Path(Path(__file__).resolve()).parent
-PROJECT_APP = Path(PROJECT_APP_PATH).name
 
 # Settings for tests, override in production with localsettings!
 DEBUG = os.getenv('DEBUG', 'True')
@@ -32,7 +28,7 @@ CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000'
 
 DATABASES = {
     'default': {
-        "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.sqlite3'),
         'NAME': os.getenv('DB_NAME', 'medic'),
         "USER": os.getenv('DB_USER', None),
         "PASSWORD": os.getenv('DB_PASSWORD', None),
@@ -76,13 +72,7 @@ DECIMAL_SEPARATOR = ','
 THOUSAND_SEPARATOR = '.'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = Path(BASE_DIR) / 'static'
-
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATIC_ROOT = BASE_DIR / 'static'
 
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'startpage'
@@ -107,7 +97,6 @@ TEMPLATES = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
