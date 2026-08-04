@@ -1,10 +1,12 @@
 from allauth.account.decorators import secure_admin_login
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.utils.translation import gettext_lazy as _
 
-from . import  views
+from . import views
 
 admin.autodiscover()
 admin.site.site_header = _('medic')
@@ -28,3 +30,6 @@ urlpatterns = [
     path('usrprofile/', include('usrprofile.urls')),
     path("select2/", include("django_select2.urls")),
 ]
+if settings.DEBUG:  # pragma: no cover
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
