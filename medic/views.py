@@ -2,9 +2,8 @@ from logging import getLogger
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-
 
 logger = getLogger('medic')
 User = auth.get_user_model()

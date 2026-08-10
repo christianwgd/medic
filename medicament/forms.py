@@ -2,7 +2,7 @@ from bootstrap_modal_forms.forms import BSModalModelForm
 from django import forms
 from django.utils.translation import gettext as _
 
-from medicament.models import Medicament, StockChange, REASON_CHOICES
+from medicament.models import REASON_CHOICES, Medicament, StockChange
 
 
 class MedicamentForm(BSModalModelForm):

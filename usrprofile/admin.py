@@ -1,12 +1,12 @@
 
 from adminsortable2.admin import SortableAdminMixin
-from django.contrib import admin
 from django import forms
+from django.contrib import admin
 from django.core.exceptions import ValidationError
-from django.urls import reverse, NoReverseMatch
+from django.urls import NoReverseMatch, reverse
 from django.utils.translation import gettext_lazy as _
 
-from usrprofile.models import UserProfile, StartUrl
+from usrprofile.models import StartUrl, UserProfile
 
 
 @admin.register(UserProfile)

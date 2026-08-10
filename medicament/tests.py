@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 from faker import Faker
 
 from medicament.forms import MedicamentForm, StockChangeForm
-from medicament.models import Medicament, UNIT_CHOICES, StockChange, DosageForm
+from medicament.models import UNIT_CHOICES, DosageForm, Medicament, StockChange
 from prescription.models import Prescription
 
 

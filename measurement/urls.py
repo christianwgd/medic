@@ -2,7 +2,6 @@ from django.urls import path
 
 from measurement import views
 
-
 app_name = 'measurement'
 
 urlpatterns = [

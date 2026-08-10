@@ -1,9 +1,9 @@
 from datetime import timedelta
 from decimal import Decimal
 
+from django.contrib import auth
 from django.templatetags.l10n import localize
 from django.test import TestCase
-from django.contrib import auth
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format
@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 from faker import Faker
 
 from measurement.forms import MeasurementForm
-from measurement.models import Measurement, ValueType, Value
+from measurement.models import Measurement, Value, ValueType
 from measurement.templatetags.measurement_tags import format_value
 
 user_model = auth.get_user_model()

@@ -1,7 +1,6 @@
 # Django settings for measurement project.
 
 import os
-
 from pathlib import Path
 
 from django.contrib import messages
@@ -19,7 +18,7 @@ DEBUG = os.getenv('DEBUG', 'True')
 
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
-    'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    'django-insecure-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 )
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
@@ -103,7 +102,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [

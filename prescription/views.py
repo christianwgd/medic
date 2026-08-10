@@ -1,8 +1,8 @@
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView, BSModalUpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
+from django.views.generic import DetailView, ListView
 
 from prescription.forms import PrescriptionForm
 from prescription.models import Prescription

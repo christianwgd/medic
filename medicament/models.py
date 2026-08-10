@@ -1,11 +1,10 @@
 
-from django.db import models
 from django.contrib import auth
+from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import formats
 from django.utils.translation import gettext as _
-
 
 User = auth.get_user_model()
 

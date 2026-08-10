@@ -1,24 +1,24 @@
 
 import logging
 
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalReadView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import ProtectedError
 from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse_lazy, reverse
-from django.shortcuts import redirect
 from django.views.decorators.http import require_http_methods
-from django.views.generic import DetailView, DeleteView
-from django.contrib import messages
-from django.db.models import ProtectedError
+from django.views.generic import DeleteView, DetailView
 from django_filters.views import FilterView
 
-from medicament.models import Medicament, StockChange
 from medicament.filter import MedicamentFilter, StockChangeFilter
 from medicament.forms import MedicamentForm, StockChangeForm
+from medicament.models import Medicament, StockChange
 
 logger = logging.getLogger('medic')
 

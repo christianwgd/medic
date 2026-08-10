@@ -1,7 +1,8 @@
 
 from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
-from measurement.models import ValueType, Value, Measurement
+
+from measurement.models import Measurement, Value, ValueType
 
 
 @admin.register(ValueType)

@@ -6,18 +6,17 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from bootstrap_modal_forms.mixins import is_ajax
 from chartjs.views.lines import BaseLineChartView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg, Max, Min
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.db.models import Avg, Max, Min
 from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, TemplateView
 from django_filters.views import FilterView
 
 from measurement.filters import MeasurementFilter
-
 from measurement.forms import MeasurementForm
-from measurement.models import Measurement, ValueType, Value
+from measurement.models import Measurement, Value, ValueType
 
 logger = getLogger('medic')
 
@@ -109,16 +108,18 @@ class MeasurementUpdateView(LoginRequiredMixin, BSModalUpdateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        for value_type in self.request.user.profile.active_value_types.all():
-            try:
-                value = Value.objects.get(
-                    value_type=value_type,
-                    measurement=self.object,
-                )
-                if value.value is not None:
-                    initial[value_type.slug] = f'{value.value:.{value_type.decimals}f}'
-            except Value.DoesNotExist:
-                pass
+        value_types = self.request.user.profile.active_value_types.all()
+        values_by_type = {
+            value.value_type_id: value
+            for value in Value.objects.filter(
+                value_type__in=value_types,
+                measurement=self.object,
+            )
+        }
+        for value_type in value_types:
+            value = values_by_type.get(value_type.pk)
+            if value is not None and value.value is not None:
+                initial[value_type.slug] = f'{value.value:.{value_type.decimals}f}'
         return initial
 
     def form_valid(self, form):
@@ -183,8 +184,8 @@ class ValuesJSONView(BaseLineChartView):
 
     def get(self, request, *args, **kwargs):
         typus = kwargs.get('type')
-        low_date = timezone.make_aware(datetime.strptime(self.kwargs['von'], '%Y-%m-%d'))
-        high_date = timezone.make_aware(datetime.strptime(self.kwargs['bis'], '%Y-%m-%d'))
+        low_date = timezone.make_aware(datetime.strptime(self.kwargs['von'], '%Y-%m-%d'))  # noqa: DTZ007
+        high_date = timezone.make_aware(datetime.strptime(self.kwargs['bis'], '%Y-%m-%d'))  # noqa: DTZ007
         self.value_type = ValueType.objects.get(slug=typus)
         self.queryset = Value.objects.filter(
             measurement__owner=self.request.user,
@@ -202,5 +203,5 @@ class ValuesJSONView(BaseLineChartView):
 
     def get_data(self):
         return [
-            [None if item.value is None else round(item.value, self.value_type.decimals) for item in self.queryset]
+            [None if item.value is None else round(item.value, self.value_type.decimals) for item in self.queryset],
         ]

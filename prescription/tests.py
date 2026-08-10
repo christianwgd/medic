@@ -5,14 +5,14 @@ import pytest
 from django.contrib import auth
 from django.test import TestCase
 from django.urls import reverse
-from django.utils import timezone, formats
+from django.utils import formats, timezone
 from django.utils.translation import gettext as _
 from faker import Faker
 
-from medicament.models import Medicament, UNIT_CHOICES
+from medicament.models import UNIT_CHOICES, Medicament
 from prescription.forms import PrescriptionForm
 from prescription.models import Prescription
-from prescription.templatetags.prescription_tags import calc_dosis, weekday_disp, calc_days
+from prescription.templatetags.prescription_tags import calc_days, calc_dosis, weekday_disp
 
 user_model = auth.get_user_model()
 
@@ -105,7 +105,7 @@ class PrescriptionModelTest(PrescriptionTestCase):
         end = timezone.now().date() - timedelta(days=70)
         self.assertEqual(
             self.prescription.get_amount_for_time(start, end, self.user),
-            Decimal('10'),
+            Decimal(10),
         )
 
     def test_prescription_get_days_before_empty(self):

@@ -1,6 +1,6 @@
-from django_filters import FilterSet, DateTimeFromToRangeFilter
-from django_filters.widgets import RangeWidget
 from django.utils.translation import gettext_lazy as _
+from django_filters import DateTimeFromToRangeFilter, FilterSet
+from django_filters.widgets import RangeWidget
 
 from measurement.models import Measurement
 

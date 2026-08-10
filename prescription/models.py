@@ -10,7 +10,6 @@ from django.utils.translation import gettext_lazy as _
 
 from medicament.models import Medicament
 
-
 User = auth.get_user_model()
 
 
