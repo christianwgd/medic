@@ -9,6 +9,5 @@ django-filter==26.1
 django-formtools==2.7
 django-mail-templated==2.6.5
 django-select2==8.4.8
-psycopg==3.3.5
-psycopg-binary==3.3.5
+psycopg2-binary==2.9.12
 gunicorn==26.2.0
